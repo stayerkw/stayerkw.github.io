@@ -60,6 +60,10 @@
   --color-ivory: #faf6ef;
   --color-gold: #b08d57;
   --color-whatsapp: #25d366;
+
+  /* لمسة "فخامة داكنة" — تُستخدم فقط لقسم الهيرو وبطاقات المنتجات بالرئيسية */
+  --color-ink: #111827;
+  --color-ink-light: #1f2937;
 }
 
 html {
