@@ -1,10 +1,15 @@
 ---
 import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Card from "../components/Card.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
 import { business } from "../data/business";
 import { kuwaitAreas } from "../data/areas";
+
+const products = (await getCollection("products", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
 
 const types = (await getCollection("curtainTypes", ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order)
@@ -36,6 +41,51 @@ const services = (await getCollection("services", ({ data }) => !data.draft))
       </div>
     </div>
   </section>
+
+  {products.length > 0 && (
+    <section class="mx-auto max-w-6xl px-4 py-16">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+        <div>
+          <h2 class="text-2xl font-bold text-charcoal mb-2">من منتجاتنا</h2>
+          <p class="text-charcoal/60">نماذج حقيقية من تنفيذاتنا — ألوان وخامات متعددة متوفرة</p>
+        </div>
+        <a href="/products/" class="shrink-0 font-semibold text-olive hover:underline">
+          عرض كل المنتجات ←
+        </a>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {products.map((product) => (
+          <a
+            href={`/products/${product.id}/`}
+            class="group block overflow-hidden rounded-2xl border border-sand bg-white shadow-sm hover:shadow-lg transition-shadow"
+          >
+            {product.data.image && (
+              <Image
+                src={product.data.image}
+                alt={product.data.imageAlt ?? product.data.title}
+                width={600}
+                height={450}
+                loading="lazy"
+                fetchpriority="auto"
+                class="h-48 w-full object-cover"
+              />
+            )}
+            <div class="p-5">
+              <h3 class="text-lg font-bold text-charcoal group-hover:text-olive transition-colors">
+                {product.data.title}
+              </h3>
+              <p class="mt-2 text-sm text-charcoal/70 line-clamp-2">{product.data.description}</p>
+              {product.data.price && (
+                <p class="mt-3 font-semibold text-olive">
+                  {product.data.price} د.ك <span class="text-xs font-normal text-charcoal/50">/ المتر</span>
+                </p>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 
   <section class="mx-auto max-w-6xl px-4 py-16">
     <h2 class="text-2xl font-bold text-charcoal mb-2">أنواع الستائر</h2>
