@@ -1,0 +1,34 @@
+---
+import { mainNav } from "../data/navigation";
+import { business } from "../data/business";
+---
+<header class="sticky top-0 z-50 bg-ivory/95 backdrop-blur border-b border-sand shadow-sm">
+  <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-4">
+    <a href="/" class="text-lg font-bold text-charcoal">{business.name}</a>
+
+    <nav class="hidden md:flex items-center gap-6 text-sm">
+      {mainNav.map((item) => (
+        <a href={item.href} class="text-charcoal/80 hover:text-olive transition-colors">
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <a
+      href={business.whatsappLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+    >
+      واتساب
+    </a>
+  </div>
+
+  <nav class="md:hidden flex overflow-x-auto gap-4 px-4 pb-3 text-sm">
+    {mainNav.map((item) => (
+      <a href={item.href} class="whitespace-nowrap text-charcoal/80 hover:text-olive">
+        {item.label}
+      </a>
+    ))}
+  </nav>
+</header>

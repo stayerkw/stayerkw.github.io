@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+---
+<BaseLayout
+  title="أسعار الستائر في الكويت"
+  description="العوامل التي تحدد سعر الستارة في الكويت: النوع، القماش، المقاس، والتركيب — واحصل على عرض سعر دقيق عبر واتساب."
+>
+  <div class="mx-auto max-w-3xl px-4 py-16">
+    <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الأسعار" }]} />
+    <h1 class="text-3xl font-bold text-charcoal mb-6">أسعار الستائر في الكويت</h1>
+    <p class="text-charcoal/70 mb-6">
+      سعر الستارة يختلف حسب عدة عوامل، ولا يمكن تحديد رقم ثابت قبل معرفة تفاصيل النافذة والمنتج المطلوب. أهم ما يؤثر على السعر:
+    </p>
+    <ul class="space-y-3 text-charcoal/80 mb-10 list-disc pr-5">
+      <li>نوع الستارة (رول، بلاك أوت، شيفون، كهربائية، خشبية).</li>
+      <li>نوع القماش وجودته.</li>
+      <li>مقاس النافذة ومساحة القماش المطلوبة.</li>
+      <li>هل التركيب سكة يدوية أم نظام كهربائي بموتور.</li>
+      <li>عدد النوافذ (الطلبات الكبيرة غالباً بسعر أفضل للوحدة).</li>
+    </ul>
+    <p class="text-charcoal/70 mb-8">
+      لمعرفة السعر الدقيق، أرسل لنا صورة النافذة والمقاس التقريبي عبر واتساب وسنرد عليك بعرض سعر مبدئي مجاناً — بما في ذلك خيارات اقتصادية إن كنت تبحث عن أفضل سعر لستائر رول أو غيرها.
+    </p>
+    <WhatsAppButton label="احصل على عرض سعر الآن" />
+    <p class="mt-6 text-sm text-charcoal/60">
+      القياس والتركيب متاحان في
+      <a href="/مناطق-الخدمة/" class="text-olive underline hover:text-charcoal">جميع مناطق الكويت</a>.
+    </p>
+  </div>
+</BaseLayout>

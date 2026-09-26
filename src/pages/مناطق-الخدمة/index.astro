@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { business } from "../../data/business";
+import { kuwaitAreas } from "../../data/areas";
+---
+<BaseLayout
+  title="مناطق تغطية تفصيل وتركيب الستائر في الكويت"
+  description={`${business.name} يخدم جميع محافظات ومناطق الكويت: العاصمة، حولي، الفروانية، مبارك الكبير، الأحمدي، والجهراء — تفصيل وتركيب ستائر بالمقاس مع قياس وتوصيل.`}
+  schemaType="Service"
+>
+  <div class="mx-auto max-w-4xl px-4 py-16">
+    <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "مناطق الخدمة" }]} />
+    <h1 class="text-3xl font-bold text-charcoal mb-4">نخدم جميع مناطق الكويت</h1>
+    <p class="text-charcoal/70 mb-10">
+      فريق {business.name} يصل إلى كل محافظات الكويت الست لقياس النوافذ، وتفصيل الستائر،
+      وتركيبها في موقعك مباشرة — سواء في السكن الخاص أو المكتب أو المحل التجاري.
+    </p>
+
+    <div class="grid gap-8 sm:grid-cols-2">
+      {kuwaitAreas.map((group) => (
+        <div class="rounded-2xl border border-sand bg-white p-6">
+          <h2 class="text-lg font-bold text-charcoal mb-3">{group.governorate}</h2>
+          <ul class="flex flex-wrap gap-2">
+            {group.areas.map((area) => (
+              <li class="rounded-full bg-sand px-3 py-1 text-sm text-charcoal/80">{area}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-12 text-center">
+      <p class="text-charcoal/70 mb-6">
+        منطقتك غير مذكورة أعلاه أو غير متأكد من التغطية؟ تواصل معنا وسنؤكد لك فوراً عبر واتساب.
+      </p>
+      <WhatsAppButton label="اسأل عن التغطية في منطقتك" />
+    </div>
+  </div>
+</BaseLayout>

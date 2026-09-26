@@ -1,0 +1,106 @@
+---
+import { business } from "../data/business";
+import { kuwaitAreas } from "../data/areas";
+
+export interface Props {
+  type?: "WebSite" | "LocalBusiness" | "Service" | "Product" | "Article" | "FAQPage";
+  title?: string;
+  description?: string;
+  url?: string;
+  faqs?: { question: string; answer: string }[];
+  price?: number;
+  image?: string;
+  pubDate?: Date;
+}
+
+const { type = "WebSite", title, description, url, faqs, price, image, pubDate } = Astro.props;
+const pageUrl = url ?? Astro.url.href;
+const absoluteImage = image ? new URL(image, business.domain).href : undefined;
+
+// النشاط يخدم كل محافظات الكويت الست — تُستخدم كقيمة areaServed في LocalBusiness/Service/Product
+// بدل نص "الكويت" العام فقط، لأن قوائم الأماكن الصريحة أوضح لمحركات البحث.
+const areaServedList = kuwaitAreas.map((g) => ({
+  "@type": "AdministrativeArea",
+  name: g.governorate,
+}));
+
+let data: Record<string, unknown> = {};
+
+if (type === "WebSite") {
+  data = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: business.name,
+    alternateName: business.alternateName,
+    url: business.domain,
+    inLanguage: business.language,
+  };
+} else if (type === "LocalBusiness") {
+  data = {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    name: business.name,
+    url: business.domain,
+    telephone: business.phone,
+    areaServed: areaServedList,
+    address: { "@type": "PostalAddress", addressCountry: business.country },
+    // ⚠️ عدّل هذه القائمة من src/data/business.ts فقط — لا تكتب هنا كلمات لا تعكس نشاطك الفعلي
+    knowsAbout: business.knowsAbout,
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "خدمات الستائر في الكويت",
+      itemListElement: business.offerCatalog.map((name) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name },
+      })),
+    },
+  };
+} else if (type === "Service" || type === "Product") {
+  data = {
+    "@context": "https://schema.org",
+    "@type": type,
+    name: title,
+    description,
+    url: pageUrl,
+    ...(absoluteImage ? { image: absoluteImage } : {}),
+    provider: { "@type": "Organization", name: business.name },
+    areaServed: areaServedList,
+    // "offers" لا يُضاف إلا عند وجود سعر فعلي في المحتوى (product.price) — لا نخترع سعراً
+    // لأن Google قد يعاقب أسعاراً وهمية في نتائج المنتجات (Merchant listing issues).
+    ...(type === "Product" && price
+      ? {
+          offers: {
+            "@type": "Offer",
+            price,
+            priceCurrency: business.currency,
+            availability: "https://schema.org/InStock",
+            url: pageUrl,
+          },
+        }
+      : {}),
+  };
+} else if (type === "Article") {
+  data = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    url: pageUrl,
+    inLanguage: business.language,
+    ...(absoluteImage ? { image: absoluteImage } : {}),
+    ...(pubDate ? { datePublished: pubDate.toISOString() } : {}),
+    publisher: { "@type": "Organization", name: business.name },
+  };
+} else if (type === "FAQPage" && faqs?.length) {
+  data = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+---
+<script type="application/ld+json" set:html={JSON.stringify(data)} />

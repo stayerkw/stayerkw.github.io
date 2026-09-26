@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import FAQ from "../../components/FAQ.astro";
+
+const faqs = [
+  {
+    question: "كم يستغرق تفصيل وتركيب الستارة؟",
+    answer: "المدة تعتمد على نوع القماش والكمية، وعادة ما يتم التنسيق مع العميل بعد القياس مباشرة.",
+  },
+  {
+    question: "هل يوجد قياس مجاني للمنزل؟",
+    answer: "نعم، نرسل فريقاً لقياس النوافذ على الطبيعة قبل التفصيل لضمان دقة المقاس.",
+  },
+  {
+    question: "ما الفرق بين البلاك أوت والرول؟",
+    answer: "البلاك أوت يحجب الضوء بالكامل تقريباً، بينما الرول يمنحك تحكماً تدريجياً بكمية الضوء الداخل.",
+  },
+  {
+    question: "كيف أطلب عرض سعر؟",
+    answer: "أرسل لنا صورة النافذة والمقاس التقريبي عبر واتساب وسنرد عليك بعرض سعر مبدئي.",
+  },
+  {
+    question: "هل تغطون كل مناطق الكويت؟",
+    answer: "نعم، نصل إلى جميع محافظات الكويت الست: العاصمة، حولي، الفروانية، مبارك الكبير، الأحمدي، والجهراء.",
+  },
+];
+---
+<BaseLayout title="الأسئلة الشائعة" description="إجابات عن أكثر الأسئلة شيوعاً حول تفصيل وتركيب الستائر في الكويت." schemaType="FAQPage" faqs={faqs}>
+  <div class="mx-auto max-w-3xl px-4 py-16">
+    <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الأسئلة الشائعة" }]} />
+    <h1 class="text-3xl font-bold text-charcoal mb-8">الأسئلة الشائعة</h1>
+    <FAQ faqs={faqs} />
+  </div>
+</BaseLayout>

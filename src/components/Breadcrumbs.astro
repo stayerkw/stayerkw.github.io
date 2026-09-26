@@ -1,0 +1,36 @@
+---
+import { business } from "../data/business";
+
+export interface Props {
+  items: { label: string; href?: string }[];
+}
+const { items } = Astro.props;
+
+// BreadcrumbList JSON-LD يظهر مسار الصفحة داخل نتائج جوجل (rich results) — يُبنى تلقائياً
+// من نفس عناصر الـ breadcrumb الظاهرة للمستخدم.
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: item.label,
+    ...(item.href ? { item: new URL(item.href, business.domain).href } : {}),
+  })),
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+<nav aria-label="Breadcrumb" class="text-sm text-charcoal/60 mb-4">
+  <ol class="flex flex-wrap items-center gap-1">
+    {items.map((item, i) => (
+      <li class="flex items-center gap-1">
+        {item.href ? (
+          <a href={item.href} class="hover:text-olive">{item.label}</a>
+        ) : (
+          <span class="text-charcoal">{item.label}</span>
+        )}
+        {i < items.length - 1 && <span class="mx-1">/</span>}
+      </li>
+    ))}
+  </ol>
+</nav>

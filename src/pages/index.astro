@@ -1,0 +1,86 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Card from "../components/Card.astro";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
+import { business } from "../data/business";
+import { kuwaitAreas } from "../data/areas";
+
+const types = (await getCollection("curtainTypes", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+
+const services = (await getCollection("services", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+<BaseLayout title={business.name} description={business.description}>
+  <section class="bg-sand">
+    <div class="mx-auto max-w-6xl px-4 py-16 md:py-24 grid gap-10 md:grid-cols-2 items-center">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-bold text-charcoal leading-tight">
+          تفصيل وتركيب ستائر حسب المقاس في الكويت
+        </h1>
+        <p class="mt-4 text-charcoal/70 text-lg">
+          رول، بلاك أوت، شيفون، وستائر كهربائية — قياس دقيق، تفصيل احترافي، وتركيب متقن.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <WhatsAppButton />
+          <a
+            href="/curtains/"
+            class="inline-flex items-center gap-2 rounded-full border border-charcoal px-6 py-3 font-semibold text-charcoal hover:bg-charcoal hover:text-white transition-colors"
+          >
+            تصفح الأنواع
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <h2 class="text-2xl font-bold text-charcoal mb-2">أنواع الستائر</h2>
+    <p class="text-charcoal/60 mb-8">اختر النوع المناسب لمساحتك</p>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {types.map((type) => (
+        <Card title={type.data.title} description={type.data.description} href={`/curtains/${type.id}/`} />
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-white border-y border-sand">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <h2 class="text-2xl font-bold text-charcoal mb-2">خدماتنا</h2>
+      <p class="text-charcoal/60 mb-8">من القياس إلى التركيب النهائي</p>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {services.map((service) => (
+          <Card title={service.data.title} description={service.data.description} href={`/services/${service.id}/`} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white border-y border-sand">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <h2 class="text-2xl font-bold text-charcoal mb-2">نخدم جميع مناطق الكويت</h2>
+      <p class="text-charcoal/60 mb-8">
+        قياس وتفصيل وتركيب في كل محافظات الكويت الست، من العاصمة إلى الجهراء.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        {kuwaitAreas.map((group) => (
+          <span class="rounded-full border border-sand bg-sand/50 px-4 py-2 text-sm font-medium text-charcoal">
+            {group.governorate}
+          </span>
+        ))}
+      </div>
+      <a href="/مناطق-الخدمة/" class="mt-6 inline-block font-semibold text-olive hover:underline">
+        عرض كل المناطق التفصيلية ←
+      </a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-16 text-center">
+    <h2 class="text-2xl font-bold text-charcoal mb-4">جاهز لتجديد نوافذك؟</h2>
+    <p class="text-charcoal/60 mb-8">تواصل معنا الآن واحصل على عرض سعر مبدئي خلال دقائق</p>
+    <WhatsAppButton />
+  </section>
+</BaseLayout>

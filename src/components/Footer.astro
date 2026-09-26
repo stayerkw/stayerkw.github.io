@@ -1,0 +1,44 @@
+---
+import { business } from "../data/business";
+import { mainNav } from "../data/navigation";
+import { kuwaitAreas } from "../data/areas";
+---
+<footer class="bg-charcoal text-sand mt-16">
+  <div class="mx-auto max-w-6xl px-4 py-10 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <p class="text-lg font-bold text-white">{business.name}</p>
+      <p class="mt-2 text-sm text-sand/80">{business.description}</p>
+    </div>
+
+    <div>
+      <p class="font-semibold text-white mb-3">روابط سريعة</p>
+      <ul class="space-y-2 text-sm">
+        {mainNav.map((item) => (
+          <li><a href={item.href} class="hover:text-gold">{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <p class="font-semibold text-white mb-3">تواصل معنا</p>
+      <ul class="space-y-2 text-sm">
+        <li><a href={business.whatsappLink} class="hover:text-gold">واتساب: {business.phone}</a></li>
+        <li><a href={`tel:${business.phone}`} class="hover:text-gold">اتصال مباشر</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="font-semibold text-white mb-3">نخدم جميع محافظات الكويت</p>
+      <ul class="space-y-2 text-sm text-sand/80">
+        {kuwaitAreas.map((group) => <li>{group.governorate}</li>)}
+      </ul>
+      <a href="/مناطق-الخدمة/" class="mt-3 inline-block text-sm text-gold hover:underline">
+        كل مناطق التغطية بالتفصيل
+      </a>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10 py-4 text-center text-xs text-sand/60">
+    © {new Date().getFullYear()} {business.name} — جميع الحقوق محفوظة
+  </div>
+</footer>

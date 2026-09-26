@@ -1,0 +1,75 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Schema from "../components/Schema.astro";
+import { business } from "../data/business";
+
+export interface Props {
+  title: string;
+  description: string;
+  schemaType?: "WebSite" | "LocalBusiness" | "Service" | "Product" | "Article" | "FAQPage";
+  faqs?: { question: string; answer: string }[];
+  ogImage?: string;
+  noindex?: boolean;
+  price?: number;
+  pubDate?: Date;
+}
+
+const {
+  title,
+  description,
+  schemaType = "WebSite",
+  faqs,
+  ogImage = "/og/default.jpg",
+  noindex = false,
+  price,
+  pubDate,
+} = Astro.props;
+
+const fullTitle = title.includes(business.name) ? title : `${title} | ${business.name}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- تحميل مسبق لخط العناوين العربي (الأرجح أن يكون هو عنصر LCP) -->
+    <link
+      rel="preload"
+      href="/fonts/cairo-arabic-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:locale" content={business.locale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <Schema type={schemaType} title={fullTitle} description={description} faqs={faqs} image={ogImage} price={price} pubDate={pubDate} />
+    <Schema type="LocalBusiness" />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

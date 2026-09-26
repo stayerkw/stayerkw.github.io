@@ -1,0 +1,34 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+export interface Props {
+  title: string;
+  description: string;
+  href: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  priority?: boolean; // true فقط لأول بطاقة ظاهرة فوق الطية إن وُجدت
+}
+const { title, description, href, image, imageAlt, priority = false } = Astro.props;
+---
+<a
+  href={href}
+  class="group block overflow-hidden rounded-2xl border border-sand bg-white shadow-sm hover:shadow-lg transition-shadow"
+>
+  {image && (
+    <Image
+      src={image}
+      alt={imageAlt ?? title}
+      width={600}
+      height={450}
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : "auto"}
+      class="h-48 w-full object-cover"
+    />
+  )}
+  <div class="p-5">
+    <h3 class="text-lg font-bold text-charcoal group-hover:text-olive transition-colors">{title}</h3>
+    <p class="mt-2 text-sm text-charcoal/70 line-clamp-2">{description}</p>
+  </div>
+</a>

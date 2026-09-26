@@ -1,0 +1,19 @@
+---
+import { business } from "../data/business";
+export interface Props {
+  label?: string;
+  class?: string;
+}
+const { label = "اطلب عرض سعر عبر واتساب", class: className = "" } = Astro.props;
+---
+<a
+  href={business.whatsappLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={[
+    "inline-flex items-center gap-2 rounded-full bg-whatsapp px-6 py-3 font-semibold text-white shadow-md hover:opacity-90 transition-opacity",
+    className,
+  ]}
+>
+  {label}
+</a>

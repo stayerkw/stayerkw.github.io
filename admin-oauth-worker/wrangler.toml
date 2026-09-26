@@ -1,0 +1,7 @@
+name = "stayerkw-cms-oauth"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# بعد النشر، أضف المتغيرات السرية بأوامر:
+#   npx wrangler secret put GITHUB_CLIENT_ID
+#   npx wrangler secret put GITHUB_CLIENT_SECRET

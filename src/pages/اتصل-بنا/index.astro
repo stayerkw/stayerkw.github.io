@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { business } from "../../data/business";
+---
+<BaseLayout title="اتصل بنا" description={`تواصل مع ${business.name} عبر واتساب أو الهاتف لطلب عرض سعر أو الاستفسار.`}>
+  <div class="mx-auto max-w-3xl px-4 py-16 text-center">
+    <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "اتصل بنا" }]} />
+    <h1 class="text-3xl font-bold text-charcoal mb-4">تواصل معنا</h1>
+    <p class="text-charcoal/70 mb-8">
+      أسرع طريقة للرد هي واتساب. أرسل صور النافذة أو المقاس التقريبي وسنرد عليك بعرض سعر مبدئي.
+    </p>
+    <div class="flex flex-col items-center gap-4">
+      <WhatsAppButton />
+      <a href={`tel:${business.phone}`} class="text-charcoal underline hover:text-olive">
+        اتصال مباشر: {business.phone}
+      </a>
+    </div>
+
+    <p class="mt-8 text-sm text-charcoal/60">
+      نصل إلى جميع محافظات الكويت —
+      <a href="/مناطق-الخدمة/" class="text-olive underline hover:text-charcoal">اطّلع على مناطق التغطية</a>.
+    </p>
+  </div>
+</BaseLayout>
