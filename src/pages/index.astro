@@ -7,84 +7,150 @@ import { business } from "../data/business";
 
 const products = (await getCollection("products", ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 3);
+  .slice(0, 9);
 
-const types = (await getCollection("curtainTypes", ({ data }) => !data.draft))
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 4);
+const typesAll = (await getCollection("curtainTypes", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+const typeTitle = Object.fromEntries(typesAll.map((t) => [t.id, t.data.title]));
 
+// تبويبات الفرز تُبنى من التصنيفات الموجودة فعلياً بالمنتجات، بدل قائمة ثابتة
+// قد تحتوي منتجات غير موجودة بعد — بهالشكل التبويب ما يظهر إلا إذا فيه منتج فعلي بداخله
+const activeCategories = [...new Set(products.map((p) => p.data.curtainType).filter(Boolean))] as string[];
+
+const types = typesAll.slice(0, 4);
 const services = (await getCollection("services", ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order);
 ---
 <BaseLayout title={business.name} description={business.description}>
-  <section class="bg-sand">
-    <div class="mx-auto max-w-6xl px-4 py-14 md:py-20 grid gap-10 md:grid-cols-2 items-center">
-      <div>
-        <h1 class="text-3xl md:text-4xl font-bold text-charcoal leading-tight">
-          تفصيل وتركيب ستائر حسب المقاس في الكويت
-        </h1>
-        <p class="mt-4 text-charcoal/70 text-lg">
-          رول، بلاك أوت، شيفون، وستائر كهربائية — قياس دقيق، تفصيل احترافي، وتركيب متقن.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-4">
-          <WhatsAppButton />
-          <a
-            href="/curtains/"
-            class="inline-flex items-center gap-2 rounded-full border border-charcoal px-6 py-3 font-semibold text-charcoal hover:bg-charcoal hover:text-white transition-colors"
-          >
-            تصفح الأنواع
-          </a>
-        </div>
+  <section class="relative overflow-hidden bg-gradient-to-br from-ink to-ink-light">
+    <div
+      class="pointer-events-none absolute -top-1/2 -right-1/4 h-[140%] w-[80%] rounded-full bg-gold/10 blur-3xl"
+      aria-hidden="true"
+    ></div>
+    <div class="relative mx-auto max-w-4xl px-4 pt-16 md:pt-20 pb-28 md:pb-32 text-center">
+      <span class="inline-block rounded-full border border-gold/30 bg-gold/15 px-4 py-1.5 text-sm font-bold text-gold">
+        عالم ستائر الكويت • جودة وفخامة
+      </span>
+      <h1 class="mt-5 text-3xl md:text-5xl font-extrabold leading-tight text-white">
+        تفصيل وتركيب ستائر <span class="text-gold">حسب المقاس</span> بالمليمتر
+      </h1>
+      <p class="mt-5 text-lg text-white/60 max-w-2xl mx-auto">
+        تصاميم عصرية تناسب المجالس، المكاتب، والفلل. دقة عالية في المواعيد والتركيب في كافة مناطق الكويت.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <WhatsAppButton label="اطلب أخذ المقاسات مجاناً (واتساب)" class="shadow-lg shadow-whatsapp/30" />
+        <a
+          href="#catalog"
+          class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur hover:bg-white/15 transition-colors"
+        >
+          تصفح الكتالوج
+        </a>
       </div>
     </div>
   </section>
 
   {products.length > 0 && (
-    <section class="mx-auto max-w-6xl px-4 py-14 md:py-16">
+    <section id="catalog" class="relative -mt-16 md:-mt-20 mx-auto max-w-6xl px-4 pb-16 md:pb-20">
       <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
         <div>
           <h2 class="text-2xl font-bold text-charcoal mb-1">من منتجاتنا</h2>
           <p class="text-charcoal/60 text-sm">نماذج حقيقية من تنفيذاتنا — ألوان وخامات متعددة متوفرة</p>
         </div>
-        <a href="/products/" class="shrink-0 text-sm font-semibold text-olive hover:underline">
+        <a href="/products/" class="shrink-0 text-sm font-semibold text-gold hover:underline">
           عرض كل المنتجات ←
         </a>
       </div>
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+      {activeCategories.length > 1 && (
+        <div
+          class="filter-tabs mb-6 flex gap-2 overflow-x-auto rounded-2xl bg-white p-2 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+          role="tablist"
+          aria-label="فرز المنتجات حسب النوع"
+        >
+          <button type="button" class="tab-btn active" data-filter="all">الكل</button>
+          {activeCategories.map((cat) => (
+            <button type="button" class="tab-btn" data-filter={cat}>{typeTitle[cat] ?? cat}</button>
+          ))}
+        </div>
+      )}
+
+      <div class="product-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((product) => (
           <a
             href={`/products/${product.id}/`}
-            class="group block overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow"
+            data-category={product.data.curtainType ?? ""}
+            class="product-card group block overflow-hidden rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all"
           >
-            {product.data.image && (
-              <Image
-                src={product.data.image}
-                alt={product.data.imageAlt ?? product.data.title}
-                width={600}
-                height={450}
-                loading="lazy"
-                fetchpriority="auto"
-                class="h-44 w-full object-cover"
-              />
-            )}
-            <div class="p-4">
-              <div class="flex items-start justify-between gap-3">
-                <h3 class="font-bold text-charcoal group-hover:text-olive transition-colors">
-                  {product.data.title}
-                </h3>
-                {product.data.price && (
-                  <span class="shrink-0 rounded-full bg-sand px-2.5 py-1 text-xs font-semibold text-charcoal">
-                    {product.data.price} د.ك/م
-                  </span>
-                )}
-              </div>
+            <div class="relative aspect-[4/3] overflow-hidden bg-sand">
+              {product.data.price && (
+                <span class="absolute top-3 right-3 z-10 rounded-lg bg-ink/85 px-3 py-1.5 text-sm font-extrabold text-gold backdrop-blur">
+                  {product.data.price} د.ك / متر
+                </span>
+              )}
+              {product.data.image && (
+                <Image
+                  src={product.data.image}
+                  alt={product.data.imageAlt ?? product.data.title}
+                  width={600}
+                  height={450}
+                  loading="lazy"
+                  fetchpriority="auto"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              )}
+            </div>
+            <div class="p-5">
+              {product.data.curtainType && typeTitle[product.data.curtainType] && (
+                <p class="mb-1 text-xs font-bold uppercase tracking-wide text-gold">
+                  {typeTitle[product.data.curtainType]}
+                </p>
+              )}
+              <h3 class="text-lg font-bold text-charcoal">{product.data.title}</h3>
               <p class="mt-1.5 text-sm text-charcoal/60 line-clamp-2">{product.data.description}</p>
+              <span class="mt-4 flex items-center justify-center gap-1.5 rounded-lg border border-sand py-2.5 text-sm font-bold text-charcoal group-hover:bg-gold group-hover:border-gold group-hover:text-white transition-colors">
+                طلب هذا الموديل ←
+              </span>
             </div>
           </a>
         ))}
       </div>
     </section>
   )}
+
+  <script>
+    const tabs = document.querySelectorAll<HTMLButtonElement>(".tab-btn");
+    const cards = document.querySelectorAll<HTMLElement>(".product-card");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        const filter = tab.dataset.filter;
+        cards.forEach((card) => {
+          const show = filter === "all" || card.dataset.category === filter;
+          card.style.display = show ? "" : "none";
+        });
+      });
+    });
+  </script>
+
+  <style>
+    .tab-btn {
+      white-space: nowrap;
+      border-radius: 0.625rem;
+      padding: 0.5rem 1.1rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-charcoal);
+      opacity: 0.6;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active,
+    .tab-btn:hover {
+      background: var(--color-ink);
+      color: #fff;
+      opacity: 1;
+    }
+  </style>
 
   <section class="bg-white border-y border-sand">
     <div class="mx-auto max-w-6xl px-4 py-14 md:py-16 grid gap-12 md:grid-cols-2">
@@ -96,17 +162,17 @@ const services = (await getCollection("services", ({ data }) => !data.draft))
             <li>
               <a href={`/curtains/${type.id}/`} class="group flex items-center justify-between gap-4 py-3.5">
                 <span>
-                  <span class="block font-semibold text-charcoal group-hover:text-olive transition-colors">
+                  <span class="block font-semibold text-charcoal group-hover:text-gold transition-colors">
                     {type.data.title}
                   </span>
                   <span class="block text-sm text-charcoal/55 mt-0.5 line-clamp-1">{type.data.description}</span>
                 </span>
-                <span class="shrink-0 text-charcoal/30 group-hover:text-olive group-hover:-translate-x-1 transition-all" aria-hidden="true">←</span>
+                <span class="shrink-0 text-charcoal/30 group-hover:text-gold group-hover:-translate-x-1 transition-all" aria-hidden="true">←</span>
               </a>
             </li>
           ))}
         </ul>
-        <a href="/curtains/" class="mt-4 inline-block text-sm font-semibold text-olive hover:underline">
+        <a href="/curtains/" class="mt-4 inline-block text-sm font-semibold text-gold hover:underline">
           عرض كل الأنواع ←
         </a>
       </div>
@@ -119,17 +185,17 @@ const services = (await getCollection("services", ({ data }) => !data.draft))
             <li>
               <a href={`/services/${service.id}/`} class="group flex items-center justify-between gap-4 py-3.5">
                 <span>
-                  <span class="block font-semibold text-charcoal group-hover:text-olive transition-colors">
+                  <span class="block font-semibold text-charcoal group-hover:text-gold transition-colors">
                     {service.data.title}
                   </span>
                   <span class="block text-sm text-charcoal/55 mt-0.5 line-clamp-1">{service.data.description}</span>
                 </span>
-                <span class="shrink-0 text-charcoal/30 group-hover:text-olive group-hover:-translate-x-1 transition-all" aria-hidden="true">←</span>
+                <span class="shrink-0 text-charcoal/30 group-hover:text-gold group-hover:-translate-x-1 transition-all" aria-hidden="true">←</span>
               </a>
             </li>
           ))}
         </ul>
-        <a href="/services/" class="mt-4 inline-block text-sm font-semibold text-olive hover:underline">
+        <a href="/services/" class="mt-4 inline-block text-sm font-semibold text-gold hover:underline">
           عرض كل الخدمات ←
         </a>
       </div>
@@ -140,7 +206,7 @@ const services = (await getCollection("services", ({ data }) => !data.draft))
     <h2 class="text-2xl font-bold text-charcoal mb-3">جاهز لتجديد نوافذك؟</h2>
     <p class="text-charcoal/60 mb-8 max-w-xl mx-auto">
       تواصل معنا الآن واحصل على عرض سعر مبدئي خلال دقائق. نخدم
-      <a href="/مناطق-الخدمة/" class="text-olive underline hover:text-charcoal">جميع محافظات الكويت الست</a>،
+      <a href="/مناطق-الخدمة/" class="text-gold underline hover:text-charcoal">جميع محافظات الكويت الست</a>،
       من العاصمة إلى الجهراء.
     </p>
     <WhatsAppButton />
