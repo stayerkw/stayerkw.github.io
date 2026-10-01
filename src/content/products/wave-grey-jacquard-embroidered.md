@@ -1,13 +1,21 @@
 ---
-urlSlug: "wave-grey-jacquard-embroidered"
-title: "ستائر ويفي رمادي جاكار مع شيفون مطرّز"
-description: "ستائر ويفي رمادية داكنة بنقشة جاكار فضية فوق شيفون أبيض بتطريز سفلي. تصميم كلاسيكي للمجالس والصالات، تفصيل وتركيب في الكويت من 7 د.ك للمتر المربع."
-order: 22
-curtainType: "wave"
+title: ستائر ويفي رمادي جاكار مع شيفون مطرّز
+image: ./images/wave-grey-jacquard-embroidered.jpg
+imageAlt: ستائر ويفي رمادية داكنة بنقشة جاكار فضية فوق شيفون أبيض بتطريز سفلي
+curtainType: wave
 price: 7
-priceNote: "للمتر المربع (ويفي مع شيفون) — يختلف حسب القماش والمقاس"
-image: "./images/wave-grey-jacquard-embroidered.jpg"
-imageAlt: "ستائر ويفي رمادية داكنة بنقشة جاكار فضية فوق شيفون أبيض بتطريز سفلي"
+priceNote: للمتر المربع (ويفي مع شيفون) — يختلف حسب القماش والمقاس
+gallery: []
+fabricType: ''
+opacity: ''
+colors: []
+care: ''
+description: ستائر ويفي رمادية داكنة بنقشة جاكار فضية فوق شيفون أبيض بتطريز سفلي. تصميم كلاسيكي للمجالس والصالات، تفصيل وتركيب في الكويت من 7 د.ك للمتر المربع.
+focusKeyword: تركيب ستائر
+seoTitle: ''
+noindex: false
+urlSlug: wave-grey-jacquard-embroidered
+order: 22
 draft: false
 ---
 
