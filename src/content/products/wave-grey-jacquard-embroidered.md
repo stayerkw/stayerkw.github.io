@@ -11,7 +11,7 @@ opacity: ''
 colors: []
 care: ''
 description: ستائر ويفي رمادية داكنة بنقشة جاكار فضية فوق شيفون أبيض بتطريز سفلي. تصميم كلاسيكي للمجالس والصالات، تفصيل وتركيب في الكويت من 7 د.ك للمتر المربع.
-focusKeyword: تركيب ستائر
+focusKeyword: ''
 seoTitle: ''
 noindex: false
 urlSlug: wave-grey-jacquard-embroidered
