@@ -6,12 +6,16 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-// صفحات المحافظات الموسومة noindex: true تُستبعد من sitemap (تتسق مع meta robots)
-const areasDir = fileURLToPath(new URL('./src/content/areas/', import.meta.url));
-const noindexAreas = readdirSync(areasDir)
-  .filter((f) => f.endsWith('.md'))
-  .filter((f) => /^noindex:\s*true\s*$/m.test(readFileSync(areasDir + f, 'utf8').split(/^---\s*$/m)[1] ?? ''))
-  .map((f) => f.replace(/\.md$/, ''));
+// كل صفحة محتوى موسومة noindex: true تُستبعد من sitemap (تتسق مع meta robots في BaseLayout)
+const frontmatter = (file) => readFileSync(file, 'utf8').split(/^---\s*$/m)[1] ?? '';
+const noindexDirs = { areas: 'areas', products: 'products', blog: 'blog', curtains: 'curtain-types', services: 'services' };
+const noindexPaths = Object.entries(noindexDirs).flatMap(([route, dir]) => {
+  const abs = fileURLToPath(new URL(`./src/content/${dir}/`, import.meta.url));
+  if (!existsSync(abs)) return [];
+  return readdirSync(abs)
+    .filter((f) => f.endsWith('.md') && /^noindex:\s*true\s*$/m.test(frontmatter(abs + f)))
+    .map((f) => `/${route}/${f.replace(/\.md$/, '')}`);
+});
 
 // P-WORKS: صفحة /projects/ تُنشر noindex ما دام لا يوجد مشروع منشور (غير مسودة)، فتُستبعد من sitemap أيضاً
 const projectsDir = fileURLToPath(new URL('./src/content/projects/', import.meta.url));
@@ -49,7 +53,7 @@ export default defineConfig({
       filter: (page) => {
         const path = decodeURIComponent(new URL(page).pathname).replace(/\/$/, '');
         if (!hasPublishedProjects && path === '/projects') return false;
-        return !noindexAreas.some((slug) => path === `/areas/${slug}`);
+        return !noindexPaths.includes(path);
       },
       serialize(item) {
         const lastmod = lastmodFor(decodeURIComponent(new URL(item.url).pathname));

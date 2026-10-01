@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import RelatedLinks from "../../components/RelatedLinks.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import { business } from "../../data/business";
@@ -14,7 +15,7 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const fmt = (d: Date) => d.toLocaleDateString("ar-KW", { year: "numeric", month: "long", day: "numeric" });
 ---
-<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} schemaType="Article" pubDate={entry.data.pubDate} updatedDate={entry.data.updatedDate} waTopic="general">
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} noindex={entry.data.noindex} schemaType="Article" pubDate={entry.data.pubDate} updatedDate={entry.data.updatedDate} waTopic="general">
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[
@@ -33,5 +34,6 @@ const fmt = (d: Date) => d.toLocaleDateString("ar-KW", { year: "numeric", month:
     <div class="mt-10">
       <WhatsAppButton label="أرسل صورة نافذتك عبر واتساب" topic="general" />
     </div>
+    <RelatedLinks productIds={entry.data.relatedProducts} postIds={entry.data.relatedPosts} exclude={[entry.id]} />
   </article>
 </BaseLayout>

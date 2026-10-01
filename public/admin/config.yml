@@ -22,6 +22,16 @@ editor:
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
+# الصور تُضغط في المتصفح قبل الرفع: WebP بجودة 85 وأقصى بُعد 2000 بكسل (صور الجوال 5–12 م.ب تصير بضع مئات ك.ب).
+# مكتبة الصور الجاهزة (Unsplash/Pexels…) مُعطّلة: الموقع لا يعرض إلا صوراً حقيقية من أعمالنا (قاعدة 5.1/5.2).
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image: { format: webp, quality: 85, width: 2000, height: 2000 }
+  stock_assets:
+    providers: []
+
 collections:
   # ───────────── الاستخدام اليومي ─────────────
   - name: "products"
@@ -32,6 +42,7 @@ collections:
     folder: "src/content/products"
     create: true
     slug: "{{fields.urlSlug}}"
+    preview_path: "/products/{{slug}}/"
     identifier_field: title
     summary: "{{title}} · {{price}} د.ك/م²"
     thumbnail: image
@@ -46,7 +57,7 @@ collections:
     fields:
       - { label: "اسم المنتج", name: "title", widget: "string", hint: "مثال: ستائر رول رمادي — مكتب" }
       - { label: "الصورة الرئيسية", name: "image", widget: "image", required: false, choose_url: false, hint: "صورة طولية 3:4 تظهر كاملة بلا قص." }
-      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة لا تقل عن 15 حرفاً"], hint: "النوع واللون والمكان، مثل: ستارة رول رمادية في مكتب." }
+      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, minlength: 15, hint: "النوع واللون والمكان، مثل: ستارة رول رمادية في مكتب." }
       - label: "نوع الستارة"
         name: "curtainType"
         widget: "relation"
@@ -63,8 +74,97 @@ collections:
       - { label: "الشفافية", name: "opacity", widget: "select", required: false, options: ["شفاف", "نصف معتم", "بلاك أوت"] }
       - { label: "الألوان المتاحة", name: "colors", widget: "list", required: false, field: { label: "لون", name: "color", widget: "string" } }
       - { label: "العناية والتنظيف", name: "care", widget: "text", required: false }
-      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"], hint: "110–160 حرفاً يظهر تحت العنوان في نتائج البحث." }
-      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"], hint: "اتركه فارغاً لاستعمال اسم المنتج. اسم النشاط يُضاف تلقائياً." }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", minlength: 110, maxlength: 160, hint: "110–160 حرفاً يظهر تحت العنوان في نتائج البحث." }
+      - label: "🔎 الكلمة المستهدفة"
+        name: "focusKeyword"
+        widget: "select"
+        required: false
+        hint: "كلمة واحدة من خريطة الكلمات، لصفحة واحدة فقط. يفحص البناء ظهورها في العنوان والوصف ويرفض تكرارها في صفحتين."
+        options: &keywords
+# >>> keywords (مولَّد: npm run cms:keywords — لا تعدّله يدوياً)
+          - { label: "ستائر · 1550 بحث/شهر → /", value: "ستائر" }
+          - { label: "ستاير · 1550 بحث/شهر → /", value: "ستاير" }
+          - { label: "تركيب ستائر · 1546 بحث/شهر → /services/installation/", value: "تركيب ستائر" }
+          - { label: "curtains · 1050 بحث/شهر", value: "curtains" }
+          - { label: "تفصيل ستائر · 757 بحث/شهر → /services/tailoring/", value: "تفصيل ستائر" }
+          - { label: "ستارة · 613 بحث/شهر → /", value: "ستارة" }
+          - { label: "ستائر رول · 557 بحث/شهر → /curtains/roll/", value: "ستائر رول" }
+          - { label: "curtains kuwait · 480 بحث/شهر", value: "curtains kuwait" }
+          - { label: "ستائر ويفي · 433 بحث/شهر → /curtains/wave/", value: "ستائر ويفي" }
+          - { label: "blinds · 338 بحث/شهر", value: "blinds" }
+          - { label: "تفصيل ستائر الكويت · 260 بحث/شهر → /services/tailoring/", value: "تفصيل ستائر الكويت" }
+          - { label: "ستائر الكويت · 260 بحث/شهر → /", value: "ستائر الكويت" }
+          - { label: "curtain rod · 238 بحث/شهر", value: "curtain rod" }
+          - { label: "ikea curtains · 185 بحث/شهر", value: "ikea curtains" }
+          - { label: "blackout · 173 بحث/شهر", value: "blackout" }
+          - { label: "ستائر رول جاهزة الكويت · 140 بحث/شهر → /ready-roll-curtains/", value: "ستائر رول جاهزة الكويت" }
+          - { label: "تفصال ستائر · 122 بحث/شهر → /services/tailoring/", value: "تفصال ستائر" }
+          - { label: "تركيب ستائر الكويت · 110 بحث/شهر → /services/installation/", value: "تركيب ستائر الكويت" }
+          - { label: "ستائر جاهزة في الكويت · 110 بحث/شهر → /ready-roll-curtains/", value: "ستائر جاهزة في الكويت" }
+          - { label: "roller blinds kuwait · 110 بحث/شهر", value: "roller blinds kuwait" }
+          - { label: "ستائر بلاك اوت · 96 بحث/شهر → /curtains/blackout/", value: "ستائر بلاك اوت" }
+          - { label: "ارخص ستائر في الكويت · 90 بحث/شهر → /prices/", value: "ارخص ستائر في الكويت" }
+          - { label: "محل ستائر · 83 بحث/شهر → /", value: "محل ستائر" }
+          - { label: "برادي · 80 بحث/شهر → /services/tailoring/", value: "برادي" }
+          - { label: "ستائر ايكيا الكويت · 70 بحث/شهر", value: "ستائر ايكيا الكويت" }
+          - { label: "roller blinds · 65 بحث/شهر", value: "roller blinds" }
+          - { label: "ستائر غرف نوم · 63 بحث/شهر", value: "ستائر غرف نوم" }
+          - { label: "تركيب ستائر الجهراء · 50 بحث/شهر → /areas/jahra/", value: "تركيب ستائر الجهراء" }
+          - { label: "ستائر رول الكويت · 50 بحث/شهر → /curtains/roll/", value: "ستائر رول الكويت" }
+          - { label: "blackout curtains kuwait · 50 بحث/شهر", value: "blackout curtains kuwait" }
+          - { label: "curtain rod kuwait · 50 بحث/شهر", value: "curtain rod kuwait" }
+          - { label: "ikea curtains kuwait · 50 بحث/شهر", value: "ikea curtains kuwait" }
+          - { label: "ستائر الجهراء · 48 بحث/شهر → /areas/jahra/", value: "ستائر الجهراء" }
+          - { label: "ستائر مطبخ · 46 بحث/شهر", value: "ستائر مطبخ" }
+          - { label: "ستائر جاهزة · 32 بحث/شهر → /ready-roll-curtains/", value: "ستائر جاهزة" }
+          - { label: "ستائر خشبية · 30 بحث/شهر → /curtains/wooden/", value: "ستائر خشبية" }
+          - { label: "ستائر شيفون · 29 بحث/شهر → /curtains/sheer/", value: "ستائر شيفون" }
+          - { label: "ستائر حولي · 23 بحث/شهر → /areas/hawalli/", value: "ستائر حولي" }
+          - { label: "ستائر رومانية · 23 بحث/شهر", value: "ستائر رومانية" }
+          - { label: "ستائر مكاتب · 20 بحث/شهر → /curtains/office/", value: "ستائر مكاتب" }
+          - { label: "ستائر مكتبية · 17 بحث/شهر → /curtains/office/", value: "ستائر مكتبية" }
+          - { label: "ستائر زيبرا · 12 بحث/شهر", value: "ستائر زيبرا" }
+          - { label: "تركيب ستائر حولي · 10 بحث/شهر → /areas/hawalli/", value: "تركيب ستائر حولي" }
+          - { label: "ستائر كهربائية · 10 بحث/شهر", value: "ستائر كهربائية" }
+          - { label: "ستائر كهربائية الكويت · 10 بحث/شهر", value: "ستائر كهربائية الكويت" }
+          - { label: "ستائر ويفي الكويت · 10 بحث/شهر → /curtains/wave/", value: "ستائر ويفي الكويت" }
+          - { label: "سعر متر ستائر الويفي · 10 بحث/شهر → /prices/", value: "سعر متر ستائر الويفي" }
+          - { label: "curtain installation · 10 بحث/شهر", value: "curtain installation" }
+          - { label: "سعر ستائر · 9 بحث/شهر → /prices/", value: "سعر ستائر" }
+          - { label: "curtain prices · 9 بحث/شهر", value: "curtain prices" }
+          - { label: "ستائر خيطان · 8 بحث/شهر", value: "ستائر خيطان" }
+          - { label: "ستائر صالات · 8 بحث/شهر", value: "ستائر صالات" }
+          - { label: "ستائر مجالس · 7 بحث/شهر", value: "ستائر مجالس" }
+          - { label: "شركة ستائر · 7 بحث/شهر → /", value: "شركة ستائر" }
+          - { label: "custom curtains · 7 بحث/شهر", value: "custom curtains" }
+          - { label: "ستائر منزلية · 4 بحث/شهر → /", value: "ستائر منزلية" }
+          - { label: "أسعار تفصيل الستائر · بلا بيانات → /prices/", value: "أسعار تفصيل الستائر" }
+          - { label: "أسعار ستائر · بلا بيانات → /prices/", value: "أسعار ستائر" }
+          - { label: "تركيب ستائر الأحمدي · بلا بيانات", value: "تركيب ستائر الأحمدي" }
+          - { label: "تركيب ستائر العاصمة · بلا بيانات → /areas/", value: "تركيب ستائر العاصمة" }
+          - { label: "تركيب ستائر الفروانية · بلا بيانات", value: "تركيب ستائر الفروانية" }
+          - { label: "تركيب ستائر مبارك الكبير · بلا بيانات → /areas/mubarak-al-kabeer/", value: "تركيب ستائر مبارك الكبير" }
+          - { label: "تفصال ستاير الكويت · بلا بيانات → /services/tailoring/", value: "تفصال ستاير الكويت" }
+          - { label: "ستائر الأحمدي · بلا بيانات", value: "ستائر الأحمدي" }
+          - { label: "ستائر السالمية · بلا بيانات → /areas/hawalli/", value: "ستائر السالمية" }
+          - { label: "ستائر الشويخ · بلا بيانات → /areas/", value: "ستائر الشويخ" }
+          - { label: "ستائر العاصمة · بلا بيانات → /areas/", value: "ستائر العاصمة" }
+          - { label: "ستائر العدان · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر العدان" }
+          - { label: "ستائر الفحيحيل · بلا بيانات", value: "ستائر الفحيحيل" }
+          - { label: "ستائر الفروانية · بلا بيانات", value: "ستائر الفروانية" }
+          - { label: "ستائر بلاك أوت الكويت · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك أوت الكويت" }
+          - { label: "ستائر ديوانية · بلا بيانات", value: "ستائر ديوانية" }
+          - { label: "ستائر صالة · بلا بيانات", value: "ستائر صالة" }
+          - { label: "ستائر مبارك الكبير · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر مبارك الكبير" }
+          - { label: "ستائر ويفي مع شيفون · بلا بيانات → /wave-curtains/", value: "ستائر ويفي مع شيفون" }
+          - { label: "سعر ستائر الرول · بلا بيانات → /prices/", value: "سعر ستائر الرول" }
+          - { label: "سعر ستائر الكويت · بلا بيانات → /prices/", value: "سعر ستائر الكويت" }
+          - { label: "curtain installation kuwait · بلا بيانات", value: "curtain installation kuwait" }
+          - { label: "curtain prices kuwait · بلا بيانات", value: "curtain prices kuwait" }
+          - { label: "custom curtains kuwait · بلا بيانات", value: "custom curtains kuwait" }
+# <<< keywords
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, maxlength: 42, hint: "اتركه فارغاً لاستعمال اسم المنتج. اسم النشاط يُضاف تلقائياً." }
+      - { label: "🔎 عدم الفهرسة (noindex)", name: "noindex", widget: "boolean", default: false, hint: "مفعّل = تُنشر الصفحة لكن لا تظهر في جوجل ولا في sitemap. للصفحات الرفيعة بدل حذفها." }
       - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "مثل roll-ready-grey. لا تغيّره بعد النشر." }
       - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int", hint: "الأصغر يظهر أولاً." }
       - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
@@ -77,6 +177,7 @@ collections:
     folder: "src/content/projects"
     create: true
     slug: "{{fields.urlSlug}}"
+    preview_path: "/projects/{{slug}}/"
     identifier_field: title
     summary: "{{title}} · {{governorate}}"
     sortable_fields: ["title", "order"]
@@ -117,7 +218,8 @@ collections:
       - { label: "تفاصيل إضافية", name: "body", widget: "markdown", required: false }
       - { label: "✅ موافقة العميل على النشر", name: "consent", widget: "boolean", default: false, hint: "إلزامي. بدونها يفشل البناء ولا يُنشر المشروع." }
       - { label: "كيف وُثّقت الموافقة؟ (داخلي)", name: "consentNote", widget: "string", required: false, hint: "مثال: رسالة واتساب بتاريخ كذا. لا يظهر في الموقع." }
-      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", minlength: 110, maxlength: 160 }
+      - { label: "🔎 الكلمة المستهدفة", name: "focusKeyword", widget: "select", required: false, options: *keywords }
       - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "مثل jahra-wave-living. لا تغيّره بعد النشر." }
       - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
       - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
@@ -130,6 +232,7 @@ collections:
     folder: "src/content/blog"
     create: true
     slug: "{{fields.urlSlug}}"
+    preview_path: "/blog/{{slug}}/"
     identifier_field: title
     summary: "{{title}} · {{pubDate | date('YYYY-MM-DD')}}"
     sortable_fields: ["title", "pubDate", "order"]
@@ -142,14 +245,41 @@ collections:
       - { label: "عنوان المقال", name: "title", widget: "string" }
       - { label: "تاريخ النشر", name: "pubDate", widget: "datetime" }
       - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
-      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false }
+      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, minlength: 15 }
       - { label: "نص المقال", name: "body", widget: "markdown" }
+      - { label: "🔗 منتجات ذات صلة", name: "relatedProducts", widget: "relation", collection: "products", search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], multiple: true, required: false, max: 6, hint: "روابط داخلية تظهر أسفل الصفحة." }
+      - { label: "🔗 مقالات ذات صلة", name: "relatedPosts", widget: "relation", collection: "blog", search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], multiple: true, required: false, max: 4 }
       - { label: "تاريخ آخر تحديث", name: "updatedDate", widget: "datetime", required: false }
-      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
-      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ["^.{1,42}$", "حتى 42 حرفاً"] }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", minlength: 110, maxlength: 160 }
+      - { label: "🔎 الكلمة المستهدفة", name: "focusKeyword", widget: "select", required: false, options: *keywords }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, maxlength: 42 }
+      - { label: "🔎 عدم الفهرسة (noindex)", name: "noindex", widget: "boolean", default: false, hint: "مفعّل = تُنشر الصفحة لكن لا تظهر في جوجل ولا في sitemap. للصفحات الرفيعة بدل حذفها." }
       - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "مثل how-to-measure-window." }
       - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
       - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: true }
+
+  - name: "pricing"
+    label: "الأسعار"
+    icon: "payments"
+    description: "مصدر واحد لجدول الأسعار والحاسبة ونصوص الأسعار في الأسئلة الشائعة. أوصاف المنتجات وصفحات الأنواع المكتوبة يدوياً تُعدَّل في أماكنها."
+    files:
+      - name: "price-list"
+        label: "جدول الأسعار وقاعدة التركيب"
+        file: "src/data/pricing.json"
+        preview_path: "/prices/"
+        fields:
+          - { label: "التركيب مجاني ابتداءً من (عدد الستائر)", name: "installFreeFrom", widget: "number", value_type: "int", min: 1 }
+          - { label: "رسم تركيب الستارة الواحدة أقل من ذلك (د.ك)", name: "installFee", widget: "number", value_type: "float", min: 0, step: 0.5 }
+          - label: "الأنواع وأسعارها"
+            name: "rows"
+            widget: "list"
+            summary: "{{fields.name}} · {{fields.price}} د.ك/م²"
+            fields:
+              - { label: "اسم النوع في الجدول", name: "name", widget: "string" }
+              - { label: "السعر (د.ك / م²)", name: "price", widget: "number", value_type: "float", min: 0, step: 0.5 }
+              - { label: "اسم مختصر للنصوص", name: "short", widget: "string", hint: "مثل: رول، شيفون. يُستعمل في جملة الأسعار المجمّعة." }
+              - { label: "رابط صفحة النوع", name: "href", widget: "string", pattern: ["^/[a-z0-9/-]*/$", "رابط داخلي مثل /curtains/roll/"] }
+              - { label: "⚙️ المعرّف (لا تغيّره)", name: "id", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وشرطات"], hint: "تعتمد عليه النصوص والحاسبة؛ تغييره أو حذفه قد يُفشل البناء." }
 
   - divider: true
 
@@ -162,6 +292,7 @@ collections:
     folder: "src/content/curtain-types"
     create: true
     slug: "{{fields.urlSlug}}"
+    preview_path: "/curtains/{{slug}}/"
     identifier_field: title
     thumbnail: image
     sortable_fields: ["title", "order"]
@@ -170,10 +301,22 @@ collections:
     fields:
       - { label: "اسم النوع", name: "title", widget: "string" }
       - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
-      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة لا تقل عن 15 حرفاً"] }
+      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, minlength: 15 }
       - { label: "محتوى الصفحة", name: "body", widget: "markdown" }
-      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
-      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"] }
+      - label: "أسئلة شائعة"
+        name: "faqs"
+        widget: "list"
+        required: false
+        summary: "{{fields.question}}"
+        hint: "تظهر أسفل الصفحة وتُضاف بيانات FAQ المنظمة تلقائياً. اكتب أسئلة حقيقية يسألها العملاء."
+        fields:
+          - { label: "السؤال", name: "question", widget: "string" }
+          - { label: "الجواب", name: "answer", widget: "text" }
+      - { label: "🔗 منتجات ذات صلة", name: "relatedProducts", widget: "relation", collection: "products", search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], multiple: true, required: false, max: 6, hint: "روابط داخلية تظهر أسفل الصفحة." }
+      - { label: "🔗 مقالات ذات صلة", name: "relatedPosts", widget: "relation", collection: "blog", search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], multiple: true, required: false, max: 4 }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", minlength: 110, maxlength: 160 }
+      - { label: "🔎 الكلمة المستهدفة", name: "focusKeyword", widget: "select", required: false, options: *keywords }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, maxlength: 42 }
       - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "لا تغيّره بعد النشر." }
       - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "float" }
       - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
@@ -185,6 +328,7 @@ collections:
     folder: "src/content/services"
     create: true
     slug: "{{fields.urlSlug}}"
+    preview_path: "/services/{{slug}}/"
     identifier_field: title
     thumbnail: image
     media_folder: "images"
@@ -192,10 +336,22 @@ collections:
     fields:
       - { label: "اسم الخدمة", name: "title", widget: "string" }
       - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
-      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة لا تقل عن 15 حرفاً"] }
+      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, minlength: 15 }
       - { label: "محتوى الصفحة", name: "body", widget: "markdown" }
-      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
-      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"] }
+      - label: "أسئلة شائعة"
+        name: "faqs"
+        widget: "list"
+        required: false
+        summary: "{{fields.question}}"
+        hint: "تظهر أسفل الصفحة وتُضاف بيانات FAQ المنظمة تلقائياً. اكتب أسئلة حقيقية يسألها العملاء."
+        fields:
+          - { label: "السؤال", name: "question", widget: "string" }
+          - { label: "الجواب", name: "answer", widget: "text" }
+      - { label: "🔗 منتجات ذات صلة", name: "relatedProducts", widget: "relation", collection: "products", search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], multiple: true, required: false, max: 6, hint: "روابط داخلية تظهر أسفل الصفحة." }
+      - { label: "🔗 مقالات ذات صلة", name: "relatedPosts", widget: "relation", collection: "blog", search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], multiple: true, required: false, max: 4 }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", minlength: 110, maxlength: 160 }
+      - { label: "🔎 الكلمة المستهدفة", name: "focusKeyword", widget: "select", required: false, options: *keywords }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, maxlength: 42 }
       - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "لا تغيّره بعد النشر." }
       - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
       - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
@@ -208,6 +364,7 @@ collections:
     folder: "src/content/areas"
     create: true
     slug: "{{fields.urlSlug}}"
+    preview_path: "/areas/{{slug}}/"
     identifier_field: title
     summary: "{{title}}"
     fields:
@@ -227,8 +384,9 @@ collections:
           - { label: "السؤال", name: "question", widget: "string" }
           - { label: "الجواب", name: "answer", widget: "text" }
       - { label: "محتوى إضافي", name: "body", widget: "markdown", hint: "معلومات حقيقية عن عملك في المنطقة؛ كلما اختلف عن بقية المناطق كان أفضل." }
-      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
-      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"] }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", minlength: 110, maxlength: 160 }
+      - { label: "🔎 الكلمة المستهدفة", name: "focusKeyword", widget: "select", required: false, options: *keywords }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, maxlength: 42 }
       - { label: "🔎 عدم الفهرسة (noindex)", name: "noindex", widget: "boolean", default: false, hint: "مفعّل = لا تظهر في جوجل ولا في sitemap." }
       - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "لا تغيّره بعد النشر." }
       - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
@@ -242,6 +400,7 @@ collections:
       - name: "ready-roll"
         label: "ستائر رول جاهزة"
         file: "src/data/pages/ready-roll.md"
+        preview_path: "/ready-roll-curtains/"
         fields:
           - { label: "عنوان الصفحة الظاهر", name: "h1", widget: "string" }
           - { label: "المقدمة", name: "intro", widget: "text" }
@@ -255,11 +414,12 @@ collections:
               - { label: "السؤال", name: "question", widget: "string" }
               - { label: "الجواب", name: "answer", widget: "text" }
           - { label: "المحتوى", name: "body", widget: "markdown" }
-          - { label: "🔎 عنوان جوجل", name: "title", widget: "string" }
-          - { label: "🔎 وصف جوجل", name: "description", widget: "text" }
+          - { label: "🔎 عنوان جوجل", name: "title", widget: "string", maxlength: 60 }
+          - { label: "🔎 وصف جوجل", name: "description", widget: "text", minlength: 110, maxlength: 160 }
       - name: "wave"
         label: "ستائر ويفي مع شيفون"
         file: "src/data/pages/wave.md"
+        preview_path: "/wave-curtains/"
         fields:
           - { label: "عنوان الصفحة الظاهر", name: "h1", widget: "string" }
           - { label: "المقدمة", name: "intro", widget: "text" }
@@ -271,5 +431,5 @@ collections:
               - { label: "السؤال", name: "question", widget: "string" }
               - { label: "الجواب", name: "answer", widget: "text" }
           - { label: "المحتوى", name: "body", widget: "markdown" }
-          - { label: "🔎 عنوان جوجل", name: "title", widget: "string" }
-          - { label: "🔎 وصف جوجل", name: "description", widget: "text" }
+          - { label: "🔎 عنوان جوجل", name: "title", widget: "string", maxlength: 60 }
+          - { label: "🔎 وصف جوجل", name: "description", widget: "text", minlength: 110, maxlength: 160 }

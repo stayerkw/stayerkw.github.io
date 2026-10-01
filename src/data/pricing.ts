@@ -10,22 +10,36 @@ export interface PriceRow {
   name: string;
   href: string;
   price: number;
+  /** اسم مختصر للنصوص المجمّعة (مثل: رول، شيفون) */
+  short: string;
 }
 
-export const installRule = { freeFrom: 5, fee: 5 };
+// القيم نفسها تُحرَّر من لوحة التحكم (قسم «الأسعار») وتُحفظ في pricing.json — مصدر واحد للجدول والحاسبة وصفحات الأنواع.
+import data from "./pricing.json";
 
-export const priceList: PriceRow[] = [
-  { id: "roll", name: "ستائر رول", href: "/curtains/roll/", price: 6 },
-  { id: "wave", name: "ستائر ويفي", href: "/curtains/wave/", price: 6 },
-  { id: "wave-sheer", name: "ستائر ويفي مع شيفون (الخام)", href: "/wave-curtains/", price: 7 },
-  { id: "wave-blackout", name: "ستائر ويفي مع بلاك أوت (طبقة واحدة)", href: "/wave-curtains/", price: 6 },
-  { id: "blackout", name: "ستائر بلاك أوت", href: "/curtains/blackout/", price: 6 },
-  { id: "khaam-blackout", name: "ستائر خام بلاك أوت مع شيفون", href: "/curtains/blackout/", price: 9 },
-  { id: "sheer", name: "ستائر شيفون", href: "/curtains/sheer/", price: 5 },
-  { id: "kids", name: "ستائر أطفال", href: "/curtains/kids/", price: 6 },
-  { id: "office", name: "ستائر مكتبية (رول)", href: "/curtains/office/", price: 6 },
-  { id: "wooden", name: "ستائر خشبية (بليندات)", href: "/curtains/wooden/", price: 17 },
-];
+export const installRule = { freeFrom: data.installFreeFrom, fee: data.installFee };
+
+export const priceList: PriceRow[] = data.rows;
+
+/** سعر نوع بمعرّفه؛ يُفشل البناء إن حُذف النوع من اللوحة وهو ما زال مستعملاً في نص. */
+export function priceOf(id: string): number {
+  const row = priceList.find((r) => r.id === id);
+  if (!row) throw new Error(`pricing.json: لا يوجد نوع بالمعرّف «${id}» وهو مستعمل في نص الموقع`);
+  return row.price;
+}
+
+/** نص مجمّع حسب السعر بترتيب المعرّفات، مثل: «رول وويفي 6 د.ك، وشيفون 5 د.ك». يتحدث تلقائياً عند تغيير الأسعار. */
+export function priceSummary(ids: string[]): string {
+  const groups: { price: number; names: string[] }[] = [];
+  for (const id of ids) {
+    const row = priceList.find((r) => r.id === id);
+    if (!row) throw new Error(`pricing.json: لا يوجد نوع بالمعرّف «${id}»`);
+    const g = groups.find((x) => x.price === row.price);
+    g ? g.names.push(row.short) : groups.push({ price: row.price, names: [row.short] });
+  }
+  const join = (a: string[]) => a.length < 2 ? a.join("") : a.slice(0, -1).join(" و") + " و" + a[a.length - 1];
+  return groups.map((g, i) => `${i ? "و" : ""}${join(g.names)} ${g.price} د.ك`).join("، ");
+}
 
 export interface EstimateInput {
   price: number;

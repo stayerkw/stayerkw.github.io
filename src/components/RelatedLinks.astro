@@ -1,0 +1,39 @@
+---
+// روابط داخلية يختارها المالك من اللوحة (حقلا «منتجات ذات صلة» و«مقالات ذات صلة»).
+// تُتجاهل المعرّفات غير الموجودة أو المسودات بصمت كي لا يُنشر رابط مكسور.
+import { getCollection } from "astro:content";
+import Card from "./Card.astro";
+
+export interface Props {
+  productIds?: string[];
+  postIds?: string[];
+  exclude?: string[];
+}
+const { productIds = [], postIds = [], exclude = [] } = Astro.props;
+
+const pick = <T extends { id: string }>(all: T[], ids: string[]) =>
+  ids.filter((id, i) => ids.indexOf(id) === i && !exclude.includes(id)).map((id) => all.find((e) => e.id === id)).filter((e): e is T => Boolean(e));
+
+const products = productIds.length ? pick(await getCollection("products", ({ data }) => !data.draft), productIds) : [];
+const posts = postIds.length ? pick(await getCollection("blog", ({ data }) => !data.draft), postIds) : [];
+---
+{products.length > 0 && (
+  <section class="mt-14" aria-labelledby="related-products">
+    <h2 id="related-products" class="text-xl font-bold text-charcoal mb-6">منتجات قد تناسبك</h2>
+    <div class="grid gap-6 sm:grid-cols-2">
+      {products.map((p) => (
+        <Card title={p.data.title} description={p.data.description} href={`/products/${p.id}/`} image={p.data.image} imageAlt={p.data.imageAlt} />
+      ))}
+    </div>
+  </section>
+)}
+{posts.length > 0 && (
+  <section class="mt-14" aria-labelledby="related-posts">
+    <h2 id="related-posts" class="text-xl font-bold text-charcoal mb-4">اقرأ أيضاً</h2>
+    <ul class="divide-y divide-sand rounded-2xl border border-sand bg-white">
+      {posts.map((p) => (
+        <li><a href={`/blog/${p.id}/`} class="flex items-center justify-between gap-4 p-5 font-semibold text-charcoal hover:text-gold-deep"><span>{p.data.title}</span><span aria-hidden="true">←</span></a></li>
+      ))}
+    </ul>
+  </section>
+)}

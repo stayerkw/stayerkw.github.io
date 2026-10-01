@@ -1,0 +1,76 @@
+{
+  "installFreeFrom": 5,
+  "installFee": 5,
+  "rows": [
+    {
+      "id": "roll",
+      "name": "ستائر رول",
+      "href": "/curtains/roll/",
+      "price": 6,
+      "short": "رول"
+    },
+    {
+      "id": "wave",
+      "name": "ستائر ويفي",
+      "href": "/curtains/wave/",
+      "price": 6,
+      "short": "ويفي"
+    },
+    {
+      "id": "wave-sheer",
+      "name": "ستائر ويفي مع شيفون (الخام)",
+      "href": "/wave-curtains/",
+      "price": 7,
+      "short": "ويفي مع شيفون (الخام)"
+    },
+    {
+      "id": "wave-blackout",
+      "name": "ستائر ويفي مع بلاك أوت (طبقة واحدة)",
+      "href": "/wave-curtains/",
+      "price": 6,
+      "short": "ويفي مع بلاك أوت"
+    },
+    {
+      "id": "blackout",
+      "name": "ستائر بلاك أوت",
+      "href": "/curtains/blackout/",
+      "price": 6,
+      "short": "بلاك أوت"
+    },
+    {
+      "id": "khaam-blackout",
+      "name": "ستائر خام بلاك أوت مع شيفون",
+      "href": "/curtains/blackout/",
+      "price": 9,
+      "short": "خام بلاك أوت مع شيفون"
+    },
+    {
+      "id": "sheer",
+      "name": "ستائر شيفون",
+      "href": "/curtains/sheer/",
+      "price": 5,
+      "short": "شيفون"
+    },
+    {
+      "id": "kids",
+      "name": "ستائر أطفال",
+      "href": "/curtains/kids/",
+      "price": 6,
+      "short": "أطفال"
+    },
+    {
+      "id": "office",
+      "name": "ستائر مكتبية (رول)",
+      "href": "/curtains/office/",
+      "price": 6,
+      "short": "مكتبي"
+    },
+    {
+      "id": "wooden",
+      "name": "ستائر خشبية (بليندات)",
+      "href": "/curtains/wooden/",
+      "price": 17,
+      "short": "خشبية"
+    }
+  ]
+}
