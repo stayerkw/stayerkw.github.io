@@ -3,17 +3,23 @@ import { glob } from 'astro/loaders';
 
 // image() يجعل Astro يولّد نسخاً محسّنة (WebP، أحجام متعددة) من أي صورة تُرفق في المحتوى
 // تلقائياً عند البناء — بدل الاعتماد على صورة خام من public/ بلا معالجة.
+// لوحة التحكم قد تحفظ الحقل الاختياري الفارغ كنص فارغ ('') — نعامله كأنه غير موجود
+// كي لا يفشل البناء (مثل opacity: '') ولا يصير العنوان فارغاً (seoTitle: '').
+const blank = (v: unknown) => (v === '' || v === null ? undefined : v);
+const optStr = () => z.preprocess(blank, z.string().optional());
+const opt = <T extends z.ZodTypeAny>(t: T) => z.preprocess(blank, t.optional());
+
 const withImage = (image: ReturnType<typeof z.string>) =>
   z.object({
     title: z.string(),
     description: z.string(),
     order: z.number().default(0),
-    image: image.optional(),
-    imageAlt: z.string().optional(),
+    image: opt(image),
+    imageAlt: optStr(),
     // I1: عنوان SEO اختياري يُستعمل في <title> بدل title (اسم النشاط يُضاف تلقائياً)
-    seoTitle: z.string().optional(),
+    seoTitle: optStr(),
     // الكلمة المستهدفة من seo/keyword-master.csv — يفحصها scripts/keyword-check.mjs (تكرار/ظهور/الصفحة المستهدفة)
-    focusKeyword: z.string().optional(),
+    focusKeyword: optStr(),
     // true = تُنشر الصفحة بـ noindex وتُستبعد من sitemap (لصفحة رفيعة لم يكتمل محتواها)
     noindex: z.boolean().default(false),
     draft: z.boolean().default(false),
@@ -43,22 +49,22 @@ const products = defineCollection({
   schema: ({ image }) =>
     withImage(image()).extend({
       // ربط المنتج بنوع الستارة (يطابق اسم ملف داخل src/content/curtain-types)
-      curtainType: z.string().optional(),
-      price: z.number().optional(),
-      priceNote: z.string().optional(),
+      curtainType: optStr(),
+      price: opt(z.number()),
+      priceNote: optStr(),
       // صور إضافية للمنتج الواحد (تظهر كمعرض أسفل الصورة الرئيسية)
       gallery: z.array(image()).optional(),
       // I1: حقول موسعة اختيارية — تُعرض فقط إن عُبّئت (لا قيم افتراضية مخمّنة)
-      fabricType: z.string().optional(),
-      opacity: z.enum(['شفاف', 'نصف معتم', 'بلاك أوت']).optional(),
-      colors: z.array(z.string()).optional(),
-      care: z.string().optional(),
+      fabricType: optStr(),
+      opacity: opt(z.enum(['شفاف', 'نصف معتم', 'بلاك أوت'])),
+      colors: opt(z.array(z.string())),
+      care: optStr(),
     }),
 });
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: ({ image }) => withImage(image()).extend({ pubDate: z.date(), updatedDate: z.date().optional(), ...related }),
+  schema: ({ image }) => withImage(image()).extend({ pubDate: z.date(), updatedDate: opt(z.date()), ...related }),
 });
 
 // صفحات مناطق الخدمة — تُنشأ فقط للمناطق التي لها حجم بحث فعلي (حسب Google Keyword Planner)
@@ -66,8 +72,8 @@ const areas = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/areas' }),
   schema: z.object({
     title: z.string(),
-    seoTitle: z.string().optional(),
-    focusKeyword: z.string().optional(),
+    seoTitle: optStr(),
+    focusKeyword: optStr(),
     description: z.string(),
     governorate: z.string(),
     intro: z.string(),
@@ -90,20 +96,20 @@ const projects = defineCollection({
     z.object({
       title: z.string(),
       description: z.string(),
-      focusKeyword: z.string().optional(),
+      focusKeyword: optStr(),
       governorate: z.string(),
       // اختياري: الحي/المنطقة داخل المحافظة
-      area: z.string().optional(),
+      area: optStr(),
       // يطابق اسم ملف في src/content/curtain-types (مثل wave أو roll)
-      curtainType: z.string().optional(),
+      curtainType: optStr(),
       room: z.enum(['living', 'bedroom', 'diwaniya', 'office', 'kitchen', 'majlis', 'other']),
       // المشكلة التي أراد العميل حلها، والحل المنفذ
       problem: z.string(),
       solution: z.string(),
-      fabric: z.string().optional(),
+      fabric: optStr(),
       // مدة التنفيذ الفعلية لهذا المشروع (نص حر، مثل «يومان»)
-      duration: z.string().optional(),
-      tip: z.string().optional(),
+      duration: optStr(),
+      tip: optStr(),
       images: z
         .array(
           z.object({
@@ -118,7 +124,7 @@ const projects = defineCollection({
         .boolean()
         .refine((v) => v === true, 'لا يُنشر مشروع بلا موافقة موثقة من العميل: فعّل حقل consent بعد الحصول على الموافقة'),
       // اختياري: كيف وُثّقت الموافقة (رسالة واتساب، تاريخ…) — لا يُعرض في الموقع
-      consentNote: z.string().optional(),
+      consentNote: optStr(),
       order: z.number().default(0),
       draft: z.boolean().default(false),
     }),
