@@ -2,18 +2,81 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>لوحة إدارة المحتوى — عالم ستائر الكويت</title>
+    <meta name="theme-color" content="#1d1914" />
+    <title>لوحة التحكم — عالم ستائر الكويت</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/cairo-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <style>
-      body, #nc-root { direction: rtl; }
+      /* خط الموقع نفسه (Cairo) مستضاف محلياً */
+      @font-face { font-family: "Cairo"; font-weight: 400; font-display: swap; src: url("/fonts/cairo-arabic-400-normal.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF; }
+      @font-face { font-family: "Cairo"; font-weight: 600; font-display: swap; src: url("/fonts/cairo-arabic-600-normal.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF; }
+      @font-face { font-family: "Cairo"; font-weight: 700; font-display: swap; src: url("/fonts/cairo-arabic-700-normal.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF; }
+      @font-face { font-family: "Cairo"; font-weight: 400; font-display: swap; src: url("/fonts/cairo-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F; }
+      @font-face { font-family: "Cairo"; font-weight: 600; font-display: swap; src: url("/fonts/cairo-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F; }
+      @font-face { font-family: "Cairo"; font-weight: 700; font-display: swap; src: url("/fonts/cairo-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F; }
+
+      /* هوية الموقع: درجة ذهبية دافئة بدل الأزرق الافتراضي، وخط Cairo بأحجام أوضح على الجوال.
+         المحدد :root:root يتغلب على متغيرات Sveltia الافتراضية دون !important. */
+      :root:root {
+        --sui-base-hue: 36;
+        --sui-font-family-default: "Cairo", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --sui-font-size-default: 16px;
+        --sui-font-size-large: 18px;
+        --sui-control-medium-border-radius: 10px;
+        --sui-textbox-border-radius: 10px;
+      }
+      /* الثيم الفاتح: خلفيات عاجية دافئة وذهبي الموقع الغامق (تباين نص ≥ 4.5) */
+      :root:root[data-theme=light],
+      :root:root:not([data-theme]) {
+        --sui-background-color-1-hsl: 40 60% 99.5%;
+        --sui-background-color-2-hsl: 38 55% 97%;
+        --sui-background-color-3-hsl: 38 45% 94%;
+        --sui-background-color-4-hsl: 37 38% 90%;
+        --sui-background-color-5-hsl: 36 30% 82%;
+        --sui-border-color-1-hsl: 34 14% 58%;
+        --sui-border-color-2-hsl: 34 18% 74%;
+        --sui-border-color-3-hsl: 34 22% 84%;
+        --sui-foreground-color-1-hsl: 30 18% 10%;
+        --sui-foreground-color-2-hsl: 30 14% 16%;
+        --sui-primary-accent-color: hsl(38 52% 34%);
+        --sui-primary-accent-color-light: hsl(38 52% 40%);
+        --sui-primary-accent-color-dark: hsl(38 55% 28%);
+        --sui-primary-accent-color-text: hsl(38 55% 32%);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:root:not([data-theme]) {
+          --sui-background-color-1-hsl: 32 18% 8%; --sui-background-color-2-hsl: 32 16% 10%;
+          --sui-background-color-3-hsl: 32 14% 13%; --sui-background-color-4-hsl: 32 12% 17%;
+          --sui-primary-accent-color: hsl(38 45% 52%); --sui-primary-accent-color-text: hsl(38 55% 62%);
+        }
+      }
+      :root:root[data-theme=dark] {
+        --sui-primary-accent-color: hsl(38 45% 52%); --sui-primary-accent-color-text: hsl(38 55% 62%);
+      }
+      html, body { margin: 0; background: #faf6ef; }
+      /* شاشة تحميل بهوية الموقع حتى تظهر اللوحة */
+      #boot { position: fixed; inset: 0; display: grid; place-content: center; gap: 14px; text-align: center;
+              font-family: "Cairo", system-ui, sans-serif; color: #2b2620; background: #faf6ef; }
+      #boot img { width: 56px; height: 56px; margin: 0 auto; }
+      #boot b { font-size: 20px; } #boot span { color: #86652f; font-size: 14px; }
+      @media (prefers-color-scheme: dark) { html, body, #boot { background: #1d1914; color: #faf6ef; } #boot span { color: #b08d57; } }
     </style>
   </head>
   <body>
-    <script
-      src="https://unpkg.com/decap-cms@3.6.2/dist/decap-cms.js"
-      integrity="sha384-1hvX8PC5VhQOlHqBG8JXI41MQZQRzX9rq7OBaXLASzH6ppzXdQrpcUD8DZtKhBuw"
-      crossorigin="anonymous"
-    ></script>
+    <div id="boot" aria-live="polite">
+      <img src="/favicon.svg" alt="" />
+      <b>عالم ستائر الكويت</b>
+      <span>جارٍ تحميل لوحة التحكم…</span>
+    </div>
+    <!-- Sveltia CMS مستضاف محلياً (نفس النطاق، إصدار مثبّت: انظر sveltia/VERSION.txt) فلا حاجة لـ SRI ولا لـ CDN خارجي -->
+    <script src="/admin/sveltia/sveltia-cms.js"></script>
+    <script>
+      // إخفاء شاشة التحميل حين تُرسم واجهة اللوحة
+      new MutationObserver(function (_, o) {
+        if (document.querySelector("body > :not(#boot):not(script)")) { var b = document.getElementById("boot"); if (b) b.remove(); o.disconnect(); }
+      }).observe(document.body, { childList: true });
+    </script>
   </body>
 </html>

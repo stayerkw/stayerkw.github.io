@@ -1,0 +1,2 @@
+Sveltia CMS 0.227.2 — نسخة مستضافة محلياً من حزمة npm الرسمية @sveltia/cms (بلا ملفات .map).
+للتحديث: npm pack @sveltia/cms@<الإصدار> ثم انسخ dist/sveltia-cms.js وdist/chunks/*.js هنا.

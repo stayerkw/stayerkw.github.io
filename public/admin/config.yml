@@ -1,4 +1,7 @@
-# لوحة إدارة المحتوى (Decap CMS) — تكتب مباشرة إلى GitHub، بدون قاعدة بيانات أو سيرفر
+# لوحة التحكم (Sveltia CMS) — تكتب مباشرة إلى GitHub، بلا قاعدة بيانات ولا خادم.
+# ترتيب الحقول: ما يُستعمل يومياً أولاً، ثم «🔎 جوجل» ثم «⚙️ إعدادات» في آخر النموذج.
+# أسماء الحقول (name) مطابقة لـ src/content.config.ts — لا تغيّرها وإلا يفشل البناء.
+
 backend:
   name: github
   repo: stayerkw/stayerkw.github.io
@@ -6,37 +9,44 @@ backend:
   base_url: https://stayerkw-cms-oauth.nqshatcarpet.workers.dev  # خادم OAuth (Cloudflare Worker، admin-oauth-worker/)
   auth_endpoint: auth
 
+app_title: "لوحة عالم ستائر الكويت"
+logo_url: /favicon.svg
 site_url: https://stayerkw.github.io
 display_url: https://stayerkw.github.io
-locale: ar
-publish_mode: editorial_workflow
+publish_mode: editorial_workflow   # كل تعديل يصير طلب دمج يمر بفحص الجودة قبل النشر
+editor:
+  preview: false                   # نموذج كامل العرض (أوضح على الجوال)
 
-# مهم: Astro يتطلب مسار الصورة نسبياً للملف (./images/...) ليُحسّنها تلقائياً.
-# لذلك تُحفظ صور كل قسم بجانب ملفاته، وليس في public/ (المسار القديم كان سيكسر البناء).
-media_folder: "images"
-public_folder: "./images"
+# المكتبة العامة (Sveltia يشترط مساراً مطلقاً هنا). صور الأقسام نفسها تُحفظ بجانب ملفاتها
+# (media_folder: "images" + public_folder: "./images" داخل كل قسم) لأن Astro يحسّن الصور النسبية فقط.
+media_folder: "public/uploads"
+public_folder: "/uploads"
 
 collections:
+  # ───────────── الاستخدام اليومي ─────────────
   - name: "products"
     label: "المنتجات"
     label_singular: "منتج"
+    icon: "shopping_bag"
+    description: "منتجات المعرض. كل منتج يظهر في صفحته وفي صفحة نوعه."
     folder: "src/content/products"
     create: true
     slug: "{{fields.urlSlug}}"
     identifier_field: title
-    summary: "{{title}} — {{price}} د.ك"
+    summary: "{{title}} · {{price}} د.ك/م²"
+    thumbnail: image
     sortable_fields: ["title", "order", "price"]
     view_filters:
-      - { label: "المنشور فقط", field: draft, pattern: false }
+      - { label: "المنشور", field: draft, pattern: false }
       - { label: "المسودات", field: draft, pattern: true }
+    view_groups:
+      - { label: "النوع", field: curtainType }
     media_folder: "images"
     public_folder: "./images"
     fields:
-      - { label: "معرّف الرابط (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط، مثل: roll-ready-grey"], hint: "يحدد اسم الملف ورابط الصفحة (/المسار/المعرّف/). إنجليزي صغير بشرطات. لا تغيّره بعد النشر: تغييره لا يغيّر الرابط الفعلي." }
-      - { label: "العنوان", name: "title", widget: "string", hint: "مثال: ستائر رول رمادي — مكتب. يظهر في البطاقة وعنوان الصفحة." }
-      - { label: "الوصف (meta description)", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"], hint: "110–160 حرفاً: النوع والمنطقة وما يميز الصفحة، وبلا ادعاءات غير مثبتة." }
-      - { label: "عنوان SEO (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"], hint: "يُستعمل عنواناً لنتائج جوجل بدل العنوان العادي. حتى 42 حرفاً لأن اسم النشاط يُضاف تلقائياً فيبقى الإجمالي ضمن 60. اتركه فارغاً لاستعمال العنوان العادي." }
-      - { label: "الترتيب", name: "order", widget: "number", default: 1, value_type: "int", hint: "الأصغر يظهر أولاً في الرئيسية." }
+      - { label: "اسم المنتج", name: "title", widget: "string", hint: "مثال: ستائر رول رمادي — مكتب" }
+      - { label: "الصورة الرئيسية", name: "image", widget: "image", required: false, choose_url: false, hint: "صورة طولية 3:4 تظهر كاملة بلا قص." }
+      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة لا تقل عن 15 حرفاً"], hint: "النوع واللون والمكان، مثل: ستارة رول رمادية في مكتب." }
       - label: "نوع الستارة"
         name: "curtainType"
         widget: "relation"
@@ -45,109 +55,51 @@ collections:
         value_field: "{{slug}}"
         display_fields: ["title"]
         required: false
-      - { label: "السعر (د.ك للمتر المربع)", name: "price", widget: "number", required: false, value_type: "float" }
+      - { label: "السعر (د.ك / م²)", name: "price", widget: "number", required: false, value_type: "float", min: 0, step: 0.5 }
       - { label: "ملاحظة السعر", name: "priceNote", widget: "string", required: false }
-      - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
-      - { label: "نص بديل للصورة (Alt)", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة وصفية لا تقل عن 15 حرفاً"], hint: "صف الصورة بجملة: النوع واللون والمكان." }
-      - { label: "صور إضافية (معرض)", name: "gallery", widget: "list", required: false, field: { label: "صورة", name: "img", widget: "image", choose_url: false }, hint: "اختياري: صور أخرى لنفس المنتج تظهر تحت الصورة الرئيسية." }
-      - { label: "نوع القماش", name: "fabricType", widget: "string", required: false, hint: "اكتبه فقط إن كنت متأكداً منه (مثل اسم الخامة كما تعرفه)." }
-      - { label: "الشفافية", name: "opacity", widget: "select", required: false, options: ["شفاف", "نصف معتم", "بلاك أوت"], hint: "اختر فقط إن كنت متأكداً من درجة القماش." }
+      - { label: "صور إضافية", name: "gallery", widget: "list", required: false, field: { label: "صورة", name: "img", widget: "image", choose_url: false } }
+      - { label: "الوصف التفصيلي", name: "body", widget: "markdown" }
+      - { label: "نوع القماش", name: "fabricType", widget: "string", required: false, hint: "فقط إن كنت متأكداً." }
+      - { label: "الشفافية", name: "opacity", widget: "select", required: false, options: ["شفاف", "نصف معتم", "بلاك أوت"] }
       - { label: "الألوان المتاحة", name: "colors", widget: "list", required: false, field: { label: "لون", name: "color", widget: "string" } }
-      - { label: "العناية والتنظيف", name: "care", widget: "text", required: false, hint: "اكتب فقط ما تأكدت منه لهذا القماش." }
-      - { label: "مسودة (غير منشور)", name: "draft", widget: "boolean", default: false }
-      - { label: "المحتوى", name: "body", widget: "markdown" }
-
-  - name: "areas"
-    label: "صفحات مناطق الخدمة"
-    label_singular: "صفحة منطقة"
-    folder: "src/content/areas"
-    create: true
-    slug: "{{fields.urlSlug}}"
-    identifier_field: title
-    summary: "{{title}}"
-    fields:
-      - { label: "معرّف الرابط (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط، مثل: roll-ready-grey"], hint: "يحدد اسم الملف ورابط الصفحة (/المسار/المعرّف/). إنجليزي صغير بشرطات. لا تغيّره بعد النشر: تغييره لا يغيّر الرابط الفعلي." }
-      - { label: "العنوان (title)", name: "title", widget: "string", hint: "الشكل المقترح: تركيب ستائر [المنطقة] — تفصيل بالمقاس (قصير كي لا يُقتطع في جوجل). الجزء قبل الشرطة (—) يصبح عنوان الصفحة H1." }
-      - { label: "الوصف (meta description)", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"], hint: "110–160 حرفاً: النوع والمنطقة وما يميز الصفحة، وبلا ادعاءات غير مثبتة." }
-      - { label: "عنوان SEO (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"], hint: "يُستعمل عنواناً لنتائج جوجل بدل العنوان العادي. حتى 42 حرفاً لأن اسم النشاط يُضاف تلقائياً فيبقى الإجمالي ضمن 60. اتركه فارغاً لاستعمال العنوان العادي." }
-      - label: "المحافظة"
-        name: "governorate"
-        widget: "select"
-        options: ["محافظة العاصمة", "محافظة حولي", "محافظة الفروانية", "محافظة مبارك الكبير", "محافظة الأحمدي", "محافظة الجهراء"]
-      - { label: "فقرة المقدمة", name: "intro", widget: "text" }
-      - { label: "الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
-      - { label: "قائمة المناطق (اختياري)", name: "areasList", widget: "list", required: false, field: { label: "منطقة", name: "area", widget: "string" }, hint: "اتركها فارغة لاستخدام القائمة الافتراضية للمحافظة." }
-      - label: "الأسئلة الشائعة"
-        name: "faqs"
-        widget: "list"
-        required: false
-        fields:
-          - { label: "السؤال", name: "question", widget: "string" }
-          - { label: "الجواب", name: "answer", widget: "text" }
-      - { label: "مسودة (غير منشور)", name: "draft", widget: "boolean", default: false }
-      - { label: "عدم الفهرسة (noindex)", name: "noindex", widget: "boolean", default: false, hint: "فعّله لصفحة لم يكتمل محتواها الفريد؛ تُنشر بـ noindex وتُستبعد من sitemap." }
-      - { label: "محتوى إضافي", name: "body", widget: "markdown", hint: "أضف هنا معلومات حقيقية عن عملك في هذه المنطقة. كلما اختلف النص عن باقي صفحات المناطق كان أفضل لجوجل." }
-
-  - name: "curtain-types"
-    label: "أنواع الستائر"
-    label_singular: "نوع"
-    folder: "src/content/curtain-types"
-    create: true
-    slug: "{{fields.urlSlug}}"
-    identifier_field: title
-    media_folder: "images"
-    public_folder: "./images"
-    fields:
-      - { label: "معرّف الرابط (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط، مثل: roll-ready-grey"], hint: "يحدد اسم الملف ورابط الصفحة (/المسار/المعرّف/). إنجليزي صغير بشرطات. لا تغيّره بعد النشر: تغييره لا يغيّر الرابط الفعلي." }
-      - { label: "العنوان", name: "title", widget: "string" }
-      - { label: "الوصف (meta description)", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"], hint: "110–160 حرفاً: النوع والمنطقة وما يميز الصفحة، وبلا ادعاءات غير مثبتة." }
-      - { label: "عنوان SEO (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"], hint: "يُستعمل عنواناً لنتائج جوجل بدل العنوان العادي. حتى 42 حرفاً لأن اسم النشاط يُضاف تلقائياً فيبقى الإجمالي ضمن 60. اتركه فارغاً لاستعمال العنوان العادي." }
-      - { label: "الترتيب", name: "order", widget: "number", default: 1, value_type: "float" }
-      - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
-      - { label: "نص بديل للصورة (Alt)", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة وصفية لا تقل عن 15 حرفاً"], hint: "صف الصورة بجملة: النوع واللون والمكان." }
-      - { label: "مسودة (غير منشور)", name: "draft", widget: "boolean", default: false }
-      - { label: "المحتوى", name: "body", widget: "markdown" }
-
-  - name: "services"
-    label: "الخدمات"
-    label_singular: "خدمة"
-    folder: "src/content/services"
-    create: true
-    slug: "{{fields.urlSlug}}"
-    identifier_field: title
-    media_folder: "images"
-    public_folder: "./images"
-    fields:
-      - { label: "معرّف الرابط (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط، مثل: roll-ready-grey"], hint: "يحدد اسم الملف ورابط الصفحة (/المسار/المعرّف/). إنجليزي صغير بشرطات. لا تغيّره بعد النشر: تغييره لا يغيّر الرابط الفعلي." }
-      - { label: "العنوان", name: "title", widget: "string" }
-      - { label: "الوصف (meta description)", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"], hint: "110–160 حرفاً: النوع والمنطقة وما يميز الصفحة، وبلا ادعاءات غير مثبتة." }
-      - { label: "عنوان SEO (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"], hint: "يُستعمل عنواناً لنتائج جوجل بدل العنوان العادي. حتى 42 حرفاً لأن اسم النشاط يُضاف تلقائياً فيبقى الإجمالي ضمن 60. اتركه فارغاً لاستعمال العنوان العادي." }
-      - { label: "الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
-      - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
-      - { label: "نص بديل للصورة (Alt)", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة وصفية لا تقل عن 15 حرفاً"], hint: "صف الصورة بجملة: النوع واللون والمكان." }
-      - { label: "مسودة (غير منشور)", name: "draft", widget: "boolean", default: false }
-      - { label: "المحتوى", name: "body", widget: "markdown" }
+      - { label: "العناية والتنظيف", name: "care", widget: "text", required: false }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"], hint: "110–160 حرفاً يظهر تحت العنوان في نتائج البحث." }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"], hint: "اتركه فارغاً لاستعمال اسم المنتج. اسم النشاط يُضاف تلقائياً." }
+      - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "مثل roll-ready-grey. لا تغيّره بعد النشر." }
+      - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int", hint: "الأصغر يظهر أولاً." }
+      - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
 
   - name: "projects"
-    label: "أعمالنا (المشاريع المنفذة)"
+    label: "أعمالنا"
     label_singular: "مشروع"
+    icon: "photo_library"
+    description: "مشاريع منفذة فعلاً بموافقة العميل. لا يُنشر مشروع بلا موافقة."
     folder: "src/content/projects"
     create: true
     slug: "{{fields.urlSlug}}"
     identifier_field: title
-    summary: "{{title}} — {{governorate}}"
+    summary: "{{title}} · {{governorate}}"
     sortable_fields: ["title", "order"]
     view_filters:
-      - { label: "المنشور فقط", field: draft, pattern: false }
+      - { label: "المنشور", field: draft, pattern: false }
       - { label: "المسودات", field: draft, pattern: true }
+    view_groups:
+      - { label: "المحافظة", field: governorate }
     media_folder: "images"
     public_folder: "./images"
     fields:
-      - { label: "معرّف الرابط (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط، مثل: roll-ready-grey"], hint: "يحدد اسم الملف ورابط الصفحة (/المسار/المعرّف/). إنجليزي صغير بشرطات. لا تغيّره بعد النشر: تغييره لا يغيّر الرابط الفعلي." }
-      - { label: "العنوان", name: "title", widget: "string", hint: "مثال: ستائر ويفي مع شيفون لصالة في الجهراء." }
-      - { label: "الوصف (meta description)", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"], hint: "110–160 حرفاً: النوع والمنطقة وما يميز الصفحة، وبلا ادعاءات غير مثبتة." }
-      - { label: "المحافظة", name: "governorate", widget: "select", options: ["الجهراء", "حولي", "مبارك الكبير", "العاصمة", "الفروانية", "الأحمدي"], hint: "يجب أن تطابق اسم محافظة صفحة منطقة موجودة ليظهر رابطها." }
-      - { label: "المنطقة/الحي", name: "area", widget: "string", required: false }
+      - { label: "عنوان المشروع", name: "title", widget: "string", hint: "مثال: ستائر ويفي مع شيفون لصالة في الجهراء" }
+      - label: "الصور"
+        name: "images"
+        widget: "list"
+        min: 1
+        summary: "{{fields.label}} — {{fields.alt}}"
+        fields:
+          - { label: "الصورة", name: "src", widget: "image", choose_url: false }
+          - { label: "نوع الصورة", name: "label", widget: "select", default: "gallery", options: [{ label: "قبل", value: "before" }, { label: "بعد", value: "after" }, { label: "من المشروع", value: "gallery" }] }
+          - { label: "وصف الصورة", name: "alt", widget: "string", hint: "النوع واللون والغرفة." }
+      - { label: "المحافظة", name: "governorate", widget: "select", options: ["الجهراء", "حولي", "مبارك الكبير", "العاصمة", "الفروانية", "الأحمدي"] }
+      - { label: "المنطقة / الحي", name: "area", widget: "string", required: false }
       - label: "نوع الستارة"
         name: "curtainType"
         widget: "relation"
@@ -157,79 +109,167 @@ collections:
         display_fields: ["title"]
         required: false
       - { label: "الغرفة", name: "room", widget: "select", options: [{ label: "صالة", value: "living" }, { label: "غرفة نوم", value: "bedroom" }, { label: "ديوانية", value: "diwaniya" }, { label: "مكتب", value: "office" }, { label: "مطبخ", value: "kitchen" }, { label: "مجلس", value: "majlis" }, { label: "غرفة أخرى", value: "other" }] }
-      - { label: "المشكلة التي أراد العميل حلها", name: "problem", widget: "text" }
-      - { label: "الحل المنفذ", name: "solution", widget: "text" }
-      - { label: "القماش/النظام", name: "fabric", widget: "string", required: false }
-      - { label: "مدة التنفيذ الفعلية", name: "duration", widget: "string", required: false, hint: "مثال: يومان. اكتب ما حدث فعلاً في هذا المشروع." }
+      - { label: "ما الذي أراده العميل؟", name: "problem", widget: "text" }
+      - { label: "ماذا نفّذنا؟", name: "solution", widget: "text" }
+      - { label: "القماش / النظام", name: "fabric", widget: "string", required: false }
+      - { label: "مدة التنفيذ الفعلية", name: "duration", widget: "string", required: false, hint: "مثال: يومان" }
       - { label: "نصيحة قصيرة", name: "tip", widget: "text", required: false }
-      - label: "الصور (قبل/بعد/معرض)"
-        name: "images"
-        widget: "list"
-        min: 1
-        fields:
-          - { label: "الصورة", name: "src", widget: "image", choose_url: false }
-          - { label: "نص بديل (Alt)", name: "alt", widget: "string", hint: "صف الصورة بجملة: النوع واللون والغرفة." }
-          - { label: "نوع الصورة", name: "label", widget: "select", default: "gallery", options: [{ label: "قبل", value: "before" }, { label: "بعد", value: "after" }, { label: "من المشروع", value: "gallery" }] }
-      - { label: "موافقة العميل على النشر (إلزامي)", name: "consent", widget: "boolean", default: false, hint: "فعّله فقط بعد الحصول على موافقة العميل على نشر الصور والتفاصيل. إن بقي مغلقاً يفشل بناء الموقع ولا يُنشر المشروع." }
-      - { label: "كيف وُثّقت الموافقة (داخلي)", name: "consentNote", widget: "string", required: false, hint: "مثال: رسالة واتساب بتاريخ كذا. لا يظهر في الموقع." }
-      - { label: "الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
-      - { label: "مسودة (غير منشور)", name: "draft", widget: "boolean", default: false }
-      - { label: "محتوى إضافي", name: "body", widget: "markdown", required: false }
+      - { label: "تفاصيل إضافية", name: "body", widget: "markdown", required: false }
+      - { label: "✅ موافقة العميل على النشر", name: "consent", widget: "boolean", default: false, hint: "إلزامي. بدونها يفشل البناء ولا يُنشر المشروع." }
+      - { label: "كيف وُثّقت الموافقة؟ (داخلي)", name: "consentNote", widget: "string", required: false, hint: "مثال: رسالة واتساب بتاريخ كذا. لا يظهر في الموقع." }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
+      - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "مثل jahra-wave-living. لا تغيّره بعد النشر." }
+      - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
+      - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
 
   - name: "blog"
     label: "المقالات"
     label_singular: "مقال"
+    icon: "article"
+    description: "مقالات بوقائع مؤكدة فقط."
     folder: "src/content/blog"
     create: true
     slug: "{{fields.urlSlug}}"
     identifier_field: title
+    summary: "{{title}} · {{pubDate | date('YYYY-MM-DD')}}"
+    sortable_fields: ["title", "pubDate", "order"]
+    view_filters:
+      - { label: "المنشور", field: draft, pattern: false }
+      - { label: "المسودات", field: draft, pattern: true }
     media_folder: "images"
     public_folder: "./images"
     fields:
-      - { label: "معرّف الرابط (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط، مثل: roll-ready-grey"], hint: "يحدد اسم الملف ورابط الصفحة (/المسار/المعرّف/). إنجليزي صغير بشرطات. لا تغيّره بعد النشر: تغييره لا يغيّر الرابط الفعلي." }
-      - { label: "العنوان", name: "title", widget: "string" }
-      - { label: "عنوان SEO (اختياري، حتى 42 حرفاً)", name: "seoTitle", widget: "string", required: false, pattern: ["^.{1,42}$", "حتى 42 حرفاً لأن اسم النشاط يُضاف تلقائياً"] }
-      - { label: "الوصف", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
+      - { label: "عنوان المقال", name: "title", widget: "string" }
       - { label: "تاريخ النشر", name: "pubDate", widget: "datetime" }
-      - { label: "تاريخ آخر تحديث (اختياري)", name: "updatedDate", widget: "datetime", required: false }
-      - { label: "الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
       - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
-      - { label: "نص بديل للصورة (Alt)", name: "imageAlt", widget: "string", required: false }
-      - { label: "مسودة (غير منشور)", name: "draft", widget: "boolean", default: true }
-      - { label: "المحتوى", name: "body", widget: "markdown" }
+      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false }
+      - { label: "نص المقال", name: "body", widget: "markdown" }
+      - { label: "تاريخ آخر تحديث", name: "updatedDate", widget: "datetime", required: false }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ["^.{1,42}$", "حتى 42 حرفاً"] }
+      - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "مثل how-to-measure-window." }
+      - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
+      - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: true }
+
+  - divider: true
+
+  # ───────────── صفحات الموقع الثابتة ─────────────
+  - name: "curtain-types"
+    label: "أنواع الستائر"
+    label_singular: "نوع"
+    icon: "category"
+    description: "صفحة لكل نوع (رول، ويفي، بلاك أوت…)."
+    folder: "src/content/curtain-types"
+    create: true
+    slug: "{{fields.urlSlug}}"
+    identifier_field: title
+    thumbnail: image
+    sortable_fields: ["title", "order"]
+    media_folder: "images"
+    public_folder: "./images"
+    fields:
+      - { label: "اسم النوع", name: "title", widget: "string" }
+      - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
+      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة لا تقل عن 15 حرفاً"] }
+      - { label: "محتوى الصفحة", name: "body", widget: "markdown" }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"] }
+      - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "لا تغيّره بعد النشر." }
+      - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "float" }
+      - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
+
+  - name: "services"
+    label: "الخدمات"
+    label_singular: "خدمة"
+    icon: "handyman"
+    folder: "src/content/services"
+    create: true
+    slug: "{{fields.urlSlug}}"
+    identifier_field: title
+    thumbnail: image
+    media_folder: "images"
+    public_folder: "./images"
+    fields:
+      - { label: "اسم الخدمة", name: "title", widget: "string" }
+      - { label: "الصورة", name: "image", widget: "image", required: false, choose_url: false }
+      - { label: "وصف الصورة", name: "imageAlt", widget: "string", required: false, pattern: ['^.{15,}$', "جملة لا تقل عن 15 حرفاً"] }
+      - { label: "محتوى الصفحة", name: "body", widget: "markdown" }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"] }
+      - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "لا تغيّره بعد النشر." }
+      - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
+      - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
+
+  - name: "areas"
+    label: "مناطق الخدمة"
+    label_singular: "صفحة منطقة"
+    icon: "map"
+    description: "صفحة لكل محافظة. اترك «عدم الفهرسة» مفعّلاً حتى يكتمل محتوى حقيقي للمنطقة."
+    folder: "src/content/areas"
+    create: true
+    slug: "{{fields.urlSlug}}"
+    identifier_field: title
+    summary: "{{title}}"
+    fields:
+      - { label: "العنوان", name: "title", widget: "string", hint: "مثل: تركيب ستائر الجهراء — تفصيل بالمقاس. ما قبل الشرطة يصير عنوان الصفحة." }
+      - label: "المحافظة"
+        name: "governorate"
+        widget: "select"
+        options: ["محافظة العاصمة", "محافظة حولي", "محافظة الفروانية", "محافظة مبارك الكبير", "محافظة الأحمدي", "محافظة الجهراء"]
+      - { label: "فقرة المقدمة", name: "intro", widget: "text" }
+      - { label: "المناطق المخدومة", name: "areasList", widget: "list", required: false, field: { label: "منطقة", name: "area", widget: "string" }, hint: "اتركها فارغة لاستعمال القائمة الافتراضية للمحافظة." }
+      - label: "الأسئلة الشائعة"
+        name: "faqs"
+        widget: "list"
+        required: false
+        summary: "{{fields.question}}"
+        fields:
+          - { label: "السؤال", name: "question", widget: "string" }
+          - { label: "الجواب", name: "answer", widget: "text" }
+      - { label: "محتوى إضافي", name: "body", widget: "markdown", hint: "معلومات حقيقية عن عملك في المنطقة؛ كلما اختلف عن بقية المناطق كان أفضل." }
+      - { label: "🔎 وصف جوجل", name: "description", widget: "text", pattern: ['^[\s\S]{110,160}$', "بين 110 و160 حرفاً"] }
+      - { label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, pattern: ['^.{0,42}$', "حتى 42 حرفاً"] }
+      - { label: "🔎 عدم الفهرسة (noindex)", name: "noindex", widget: "boolean", default: false, hint: "مفعّل = لا تظهر في جوجل ولا في sitemap." }
+      - { label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "لا تغيّره بعد النشر." }
+      - { label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int" }
+      - { label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false }
 
   - name: "landing-pages"
-    label: "صفحات الهبوط"
+    label: "صفحات المعارض"
+    icon: "web"
+    description: "صفحتا الرول الجاهز والويفي مع شيفون."
     files:
       - name: "ready-roll"
         label: "ستائر رول جاهزة"
         file: "src/data/pages/ready-roll.md"
         fields:
-          - { label: "العنوان (title)", name: "title", widget: "string" }
-          - { label: "الوصف (meta description)", name: "description", widget: "text" }
-          - { label: "عنوان الصفحة (H1)", name: "h1", widget: "string" }
+          - { label: "عنوان الصفحة الظاهر", name: "h1", widget: "string" }
           - { label: "المقدمة", name: "intro", widget: "text" }
-          - { label: "ارتفاع الرول الجاهز (سم)", name: "sizeHeight", widget: "number", value_type: "int", required: false }
-          - { label: "عروض الرول الجاهز المتوفرة (سم)", name: "sizeWidths", widget: "list", required: false, field: { label: "العرض (سم)", name: "w", widget: "number", value_type: "int" } }
+          - { label: "الارتفاع المتوفر (سم)", name: "sizeHeight", widget: "number", value_type: "int", required: false }
+          - { label: "العروض المتوفرة (سم)", name: "sizeWidths", widget: "list", required: false, field: { label: "العرض (سم)", name: "w", widget: "number", value_type: "int" } }
           - label: "الأسئلة الشائعة"
             name: "faqs"
             widget: "list"
+            summary: "{{fields.question}}"
             fields:
               - { label: "السؤال", name: "question", widget: "string" }
               - { label: "الجواب", name: "answer", widget: "text" }
           - { label: "المحتوى", name: "body", widget: "markdown" }
+          - { label: "🔎 عنوان جوجل", name: "title", widget: "string" }
+          - { label: "🔎 وصف جوجل", name: "description", widget: "text" }
       - name: "wave"
         label: "ستائر ويفي مع شيفون"
         file: "src/data/pages/wave.md"
         fields:
-          - { label: "العنوان (title)", name: "title", widget: "string" }
-          - { label: "الوصف (meta description)", name: "description", widget: "text" }
-          - { label: "عنوان الصفحة (H1)", name: "h1", widget: "string" }
+          - { label: "عنوان الصفحة الظاهر", name: "h1", widget: "string" }
           - { label: "المقدمة", name: "intro", widget: "text" }
           - label: "الأسئلة الشائعة"
             name: "faqs"
             widget: "list"
+            summary: "{{fields.question}}"
             fields:
               - { label: "السؤال", name: "question", widget: "string" }
               - { label: "الجواب", name: "answer", widget: "text" }
           - { label: "المحتوى", name: "body", widget: "markdown" }
+          - { label: "🔎 عنوان جوجل", name: "title", widget: "string" }
+          - { label: "🔎 وصف جوجل", name: "description", widget: "text" }
