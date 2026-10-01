@@ -14,6 +14,8 @@ logo_url: /favicon.svg
 site_url: https://stayerkw.github.io
 display_url: https://stayerkw.github.io
 publish_mode: editorial_workflow   # كل تعديل يصير طلب دمج يمر بفحص الجودة قبل النشر
+output:
+  omit_empty_optional_fields: true   # لا تُكتب الحقول الاختيارية الفارغة (opacity: '' كان يُفشل البناء)
 editor:
   preview: false                   # نموذج كامل العرض (أوضح على الجوال)
 
