@@ -3,7 +3,7 @@ backend:
   name: github
   repo: stayerkw/stayerkw.github.io
   branch: main
-  base_url: https://YOUR-OAUTH-WORKER.workers.dev  # ⚠️ رابط الـ Worker بعد نشره (راجع admin-oauth-worker/README.md)
+  base_url: https://stayerkw-cms-oauth.nqshatcarpet.workers.dev  # خادم OAuth (Cloudflare Worker، admin-oauth-worker/)
   auth_endpoint: auth
 
 site_url: https://stayerkw.github.io
