@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
-<BaseLayout title={entry.data.title} description={entry.data.description} schemaType="Service">
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} schemaType="Service" waTopic="service" waProduct={entry.data.title}>
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[
@@ -22,11 +22,11 @@ const { Content } = await render(entry);
       ]}
     />
     <h1 class="text-3xl font-bold text-charcoal mb-6">{entry.data.title}</h1>
-    <div class="prose prose-neutral max-w-none prose-headings:text-charcoal">
+    <div class="prose prose-neutral max-w-none prose-headings:text-charcoal prose-img:mx-auto prose-img:max-w-xs prose-img:rounded-xl">
       <Content />
     </div>
     <div class="mt-10">
-      <WhatsAppButton label="اطلب هذه الخدمة الآن" />
+      <WhatsAppButton label="اطلب هذه الخدمة الآن" topic="service" product={entry.data.title} />
     </div>
   </article>
 </BaseLayout>

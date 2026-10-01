@@ -9,7 +9,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint:seo": "node scripts/seo-lint.mjs",
+    "lint:links": "node scripts/check-links.mjs",
+    "lint": "npm run lint:seo && npm run lint:links"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

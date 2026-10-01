@@ -1,0 +1,172 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import FAQ from "../../components/FAQ.astro";
+import { frontmatter, Content } from "../../data/pages/ready-roll.md";
+import { priceList } from "../../data/pricing";
+
+const fm = frontmatter as {
+  title: string; description: string; h1: string; intro: string;
+  faqs: { question: string; answer: string }[];
+  sizeHeight?: number; sizeWidths?: number[];
+};
+const fmM = (cm: number) => (cm / 100).toFixed(2);
+
+const rollTypes = new Set(["roll", "blackout", "office"]);
+const rollProducts = (await getCollection("products", ({ data }) => !data.draft))
+  .filter((p) => p.data.curtainType && rollTypes.has(p.data.curtainType))
+  .sort((a, b) => a.data.order - b.data.order);
+const products = rollProducts.slice(0, 9);
+
+// سعر الرول من مصدر الأسعار الواحد (د.ك للمتر المربع، شامل)
+const minPrice = priceList.find((r) => r.id === "roll")?.price;
+---
+<BaseLayout
+  title={fm.title}
+  description={fm.description}
+  schemaType="Service"
+  serviceType="تفصيل وتركيب ستائر رول"
+  faqs={fm.faqs}
+>
+  <div class="mx-auto max-w-4xl px-4 py-16">
+    <Breadcrumbs
+      items={[
+        { label: "الرئيسية", href: "/" },
+        { label: "أنواع الستائر", href: "/curtains/" },
+        { label: "ستائر رول جاهزة" },
+      ]}
+    />
+    <h1 class="text-3xl md:text-4xl font-bold leading-tight text-charcoal mb-4">{fm.h1}</h1>
+    <p class="text-lg text-charcoal/80 leading-8 mb-6">{fm.intro}</p>
+    <WhatsAppButton label="اطلب عرض سعر لستائر الرول" class="mb-12" />
+
+    <div class="prose prose-lg max-w-none prose-a:text-gold-deep mb-12">
+      <Content />
+    </div>
+
+    {fm.sizeHeight && fm.sizeWidths?.length && (
+      <>
+        <h2 class="text-2xl font-bold text-charcoal mb-4">مقاسات الرول الجاهز المتوفرة</h2>
+        <div class="overflow-x-auto mb-4">
+          <table class="w-full min-w-[20rem] border-collapse text-sm">
+            <thead>
+              <tr class="bg-sand text-right"><th class="p-3 font-bold">العرض</th><th class="p-3 font-bold">الارتفاع</th></tr>
+            </thead>
+            <tbody class="bg-white">
+              {fm.sizeWidths.map((w) => (
+                <tr class="border-t border-sand"><td class="p-3 font-semibold">{fmM(w)} م</td><td class="p-3">{fmM(fm.sizeHeight!)} م</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="leading-8 text-charcoal/80 mb-12">
+          الارتفاع موحّد لكل المقاسات. إن لم يطابق أحدها نافذتك فنفصّل الرول بمقاسها بعد القياس.
+        </p>
+      </>
+    )}
+
+    <h2 class="text-2xl font-bold text-charcoal mb-4">أنواع ستائر الرول</h2>
+    <div class="grid gap-4 sm:grid-cols-3 mb-12">
+      <div class="rounded-2xl bg-white p-5 ring-1 ring-sand">
+        <h3 class="font-bold text-charcoal mb-2">رول شفاف</h3>
+        <p class="text-sm leading-7 text-charcoal/75">يسمح بمرور الضوء الناعم مع خصوصية جزئية، مناسب للصالات والمكاتب.</p>
+      </div>
+      <div class="rounded-2xl bg-white p-5 ring-1 ring-sand">
+        <h3 class="font-bold text-charcoal mb-2"><a href="/curtains/blackout/" class="hover:text-gold-deep">ستائر رول بلاك أوت</a></h3>
+        <p class="text-sm leading-7 text-charcoal/75">يحجب الضوء بالكامل تقريباً، الأنسب لغرف النوم وقاعات العرض.</p>
+      </div>
+      <div class="rounded-2xl bg-white p-5 ring-1 ring-sand">
+        <h3 class="font-bold text-charcoal mb-2"><a href="/curtains/office/" class="hover:text-gold-deep">رول للمكاتب</a></h3>
+        <p class="text-sm leading-7 text-charcoal/75">عملي ومرتب، يتحكم بالإضاءة أمام الشاشات ويناسب البيئة الإدارية.</p>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-bold text-charcoal mb-4">رول جاهز أم مفصّل؟</h2>
+    <div class="overflow-x-auto mb-12">
+      <table class="w-full min-w-[32rem] border-collapse text-sm">
+        <thead>
+          <tr class="bg-sand text-right">
+            <th class="p-3 font-bold"> </th>
+            <th class="p-3 font-bold">رول جاهز</th>
+            <th class="p-3 font-bold">رول مفصّل</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
+          <tr class="border-t border-sand"><td class="p-3 font-semibold">المقاس</td><td class="p-3">ارتفاع 2.30 م، وعرض 1.50 أو 1.80 أو 2.00 م</td><td class="p-3">بمقاس نافذتك</td></tr>
+          <tr class="border-t border-sand"><td class="p-3 font-semibold">يناسب</td><td class="p-3">نافذة تطابق المقاس القياسي</td><td class="p-3">نوافذ غير قياسية أو كبيرة</td></tr>
+          <tr class="border-t border-sand"><td class="p-3 font-semibold">المظهر</td><td class="p-3">جيد عند تطابق المقاس</td><td class="p-3">مرتب بلا فراغات</td></tr>
+          <tr class="border-t border-sand"><td class="p-3 font-semibold">الطلب</td><td class="p-3">صورة ومقاس تقريبي</td><td class="p-3">قياس دقيق قبل التنفيذ</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="text-2xl font-bold text-charcoal mb-4">كيف تقيس نافذتك قبل الطلب</h2>
+    <ol class="list-decimal pr-6 space-y-2 leading-8 text-charcoal/80 mb-12">
+      <li>قس العرض من ثلاث نقاط: أعلى النافذة ووسطها وأسفلها.</li>
+      <li>للتركيب داخل فتحة النافذة، اعتمد أصغر عرض من القياسات الثلاثة.</li>
+      <li>للتركيب خارج الفتحة، أضف زيادة على الجانبين لتغطية الإطار.</li>
+      <li>قس الارتفاع، وأرسل المقاسات مع صورة للنافذة عبر واتساب.</li>
+    </ol>
+
+    {minPrice !== undefined && (
+      <>
+        <h2 class="text-2xl font-bold text-charcoal mb-3">كم سعر ستائر الرول؟</h2>
+        <p class="leading-8 text-charcoal/80 mb-12">
+          تبدأ أسعار ستائر الرول من {minPrice} د.ك للمتر المربع، والجاهز بنفس سعر المفصّل، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند طلب 5 ستائر فأكثر، وأقل من ذلك يُضاف 5 د.ك لتركيب كل ستارة. أرسل مقاس نافذتك عبر واتساب لعرض سعر مبدئي، أو قدّره من
+          <a href="/prices/" class="text-gold-deep underline">حاسبة الأسعار</a>.
+        </p>
+      </>
+    )}
+
+    {products.length > 0 && (
+      <>
+        <h2 class="text-2xl font-bold text-charcoal mb-4">نماذج من ستائر الرول</h2>
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-3 mb-12">
+          {products.map((product) => (
+            <a href={`/products/${product.id}/`} class="group block overflow-hidden rounded-2xl bg-white ring-1 ring-sand hover:shadow-lg transition-shadow">
+              {product.data.image && (
+                <Image
+                  src={product.data.image}
+                  alt={product.data.imageAlt ?? product.data.title}
+                  width={600}
+                  height={800}
+                  widths={[300, 600]}
+                  sizes="(min-width: 768px) 260px, 46vw"
+                  loading="lazy"
+                  class="aspect-[3/4] w-full object-cover"
+                />
+              )}
+              <div class="p-4">
+                <h3 class="font-bold text-charcoal">{product.data.title}</h3>
+                <p class="mt-1 text-sm text-charcoal/75 line-clamp-2">{product.data.description}</p>
+                {product.data.price !== undefined && (
+                  <p class="mt-2 text-sm font-semibold text-olive">من {product.data.price} د.ك للمتر المربع</p>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </>
+    )}
+
+    <h2 class="text-2xl font-bold text-charcoal mb-3">تركيب ستائر رول في كل المحافظات</h2>
+    <p class="leading-8 text-charcoal/80 mb-12">
+      نركّب ستائر الرول في العاصمة وحولي والفروانية ومبارك الكبير والأحمدي والجهراء. راجع
+      <a href="/services/installation/" class="text-gold-deep underline">خدمة التركيب</a>،
+      و<a href="/services/tailoring/" class="text-gold-deep underline">خدمة التفصيل</a>،
+      و<a href="/areas/" class="text-gold-deep underline">مناطق التغطية</a>،
+      و<a href="/prices/" class="text-gold-deep underline">دليل أسعار الستائر</a>.
+      وللمزيد عن النوع: <a href="/curtains/roll/" class="text-gold-deep underline">ستائر رول الكويت</a>.
+    </p>
+
+    <h2 class="text-2xl font-bold text-charcoal mb-4">أسئلة شائعة عن ستائر الرول</h2>
+    <FAQ faqs={fm.faqs} />
+
+    <div class="mt-12 text-center">
+      <WhatsAppButton label="أرسل مقاس نافذتك واحصل على عرض سعر" />
+    </div>
+  </div>
+</BaseLayout>

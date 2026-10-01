@@ -19,7 +19,7 @@ const relatedProducts = (await getCollection("products", ({ data }) => !data.dra
   (p) => p.data.curtainType === entry.id
 );
 ---
-<BaseLayout title={entry.data.title} description={entry.data.description} schemaType="Product">
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} schemaType="CollectionPage" itemList={relatedProducts.map((p) => ({ name: p.data.title, url: `/products/${p.id}/` }))} waTopic="type" waProduct={entry.data.title}>
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[
@@ -33,7 +33,7 @@ const relatedProducts = (await getCollection("products", ({ data }) => !data.dra
       <Content />
     </div>
     <div class="mt-10">
-      <WhatsAppButton label={`اطلب ${entry.data.title} الآن`} />
+      <WhatsAppButton label={`اطلب ${entry.data.title} الآن`} topic="type" product={entry.data.title} />
     </div>
 
     {relatedProducts.length > 0 && (

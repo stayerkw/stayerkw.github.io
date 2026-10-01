@@ -2,8 +2,11 @@
 import { business } from "../data/business";
 import { kuwaitAreas } from "../data/areas";
 
+// B1: كل صفحة تُخرج كتلة JSON-LD واحدة بصيغة @graph. كيان النشاط (#business) يُعرَّف مرة واحدة
+// وتشير إليه بقية العقد بـ @id بدل تكرار بياناته. لا تُكتب هنا حقول غير مؤكدة (ساعات، عنوان، sameAs،
+// priceRange، logo) — تُضاف من business.ts بعد تأكيدها. الساعات والأيام مؤكدة وتُصدَّر من business.ts.
 export interface Props {
-  type?: "WebSite" | "LocalBusiness" | "Service" | "Product" | "Article" | "FAQPage";
+  type?: "WebSite" | "Service" | "Product" | "Article" | "FAQPage" | "CollectionPage";
   title?: string;
   description?: string;
   url?: string;
@@ -11,96 +14,142 @@ export interface Props {
   price?: number;
   image?: string;
   pubDate?: Date;
+  updatedDate?: Date;
+  areaServed?: { type: string; name: string }[];
+  serviceType?: string;
+  // قائمة عناصر لصفحات التجميع (صفحات الأنواع): المنتجات المرتبطة
+  itemList?: { name: string; url: string }[];
 }
 
-const { type = "WebSite", title, description, url, faqs, price, image, pubDate } = Astro.props;
+const { type = "WebSite", title, description, url, faqs, price, image, pubDate, updatedDate, areaServed, serviceType, itemList } = Astro.props;
 const pageUrl = url ?? Astro.url.href;
 const absoluteImage = image ? new URL(image, business.domain).href : undefined;
+const origin = business.domain.replace(/\/$/, "");
+const ids = { business: `${origin}/#business`, website: `${origin}/#website` };
+const isHome = new URL(pageUrl).pathname === "/";
 
-// النشاط يخدم كل محافظات الكويت الست — تُستخدم كقيمة areaServed في LocalBusiness/Service/Product
-// بدل نص "الكويت" العام فقط، لأن قوائم الأماكن الصريحة أوضح لمحركات البحث.
-const areaServedList = kuwaitAreas.map((g) => ({
-  "@type": "AdministrativeArea",
-  name: g.governorate,
-}));
+const areaServedList = kuwaitAreas.map((g) => ({ "@type": "AdministrativeArea", name: g.governorate }));
+const pageAreaServed = areaServed?.length ? areaServed.map((a) => ({ "@type": a.type, name: a.name })) : areaServedList;
 
-let data: Record<string, unknown> = {};
-
-if (type === "WebSite") {
-  data = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
+const graph: Record<string, unknown>[] = [
+  {
+    "@type": "HomeAndConstructionBusiness",
+    "@id": ids.business,
     name: business.name,
     alternateName: business.alternateName,
-    url: business.domain,
-    inLanguage: business.language,
-  };
-} else if (type === "LocalBusiness") {
-  data = {
-    "@context": "https://schema.org",
-    "@type": "HomeAndConstructionBusiness",
-    name: business.name,
-    url: business.domain,
+    url: `${origin}/`,
     telephone: business.phone,
     areaServed: areaServedList,
     address: { "@type": "PostalAddress", addressCountry: business.country },
-    // ⚠️ عدّل هذه القائمة من src/data/business.ts فقط — لا تكتب هنا كلمات لا تعكس نشاطك الفعلي
     knowsAbout: business.knowsAbout,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "خدمات الستائر في الكويت",
-      itemListElement: business.offerCatalog.map((name) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name },
-      })),
+      itemListElement: business.offerCatalog.map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
     },
-  };
-} else if (type === "Service" || type === "Product") {
-  data = {
-    "@context": "https://schema.org",
-    "@type": type,
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: business.hoursDays, opens: business.hoursOpen, closes: business.hoursClose },
+    ],
+    ...(business.sameAs.length ? { sameAs: business.sameAs } : {}),
+  },
+  {
+    "@type": "WebSite",
+    "@id": ids.website,
+    url: `${origin}/`,
+    name: business.name,
+    alternateName: business.alternateName,
+    inLanguage: business.language,
+    publisher: { "@id": ids.business },
+  },
+];
+
+const faqEntities = faqs?.length
+  ? faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } }))
+  : [];
+
+// عقدة الصفحة نفسها (ليست للرئيسية: هناك يكفي WebSite + النشاط)
+if (!isHome) {
+  const pageType =
+    type === "FAQPage" && faqEntities.length ? "FAQPage" : type === "CollectionPage" ? "CollectionPage" : type === "Article" ? "WebPage" : "WebPage";
+  graph.push({
+    "@type": pageType,
+    "@id": `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: title,
+    description,
+    inLanguage: business.language,
+    isPartOf: { "@id": ids.website },
+    about: { "@id": ids.business },
+    ...(absoluteImage ? { primaryImageOfPage: { "@type": "ImageObject", url: absoluteImage } } : {}),
+    ...(pageType === "FAQPage" ? { mainEntity: faqEntities } : {}),
+  });
+}
+
+// صفحات أخرى تحمل أسئلة شائعة (غير صفحة FAQ نفسها)
+if (faqEntities.length && type !== "FAQPage") {
+  graph.push({ "@type": "FAQPage", "@id": `${pageUrl}#faq`, isPartOf: { "@id": `${pageUrl}#webpage` }, mainEntity: faqEntities });
+}
+
+if (type === "Service") {
+  graph.push({
+    "@type": "Service",
+    "@id": `${pageUrl}#service`,
     name: title,
     description,
     url: pageUrl,
     ...(absoluteImage ? { image: absoluteImage } : {}),
-    provider: { "@type": "Organization", name: business.name },
-    areaServed: areaServedList,
-    // "offers" لا يُضاف إلا عند وجود سعر فعلي في المحتوى (product.price) — لا نخترع سعراً
-    // لأن Google قد يعاقب أسعاراً وهمية في نتائج المنتجات (Merchant listing issues).
-    ...(type === "Product" && price
-      ? {
-          offers: {
-            "@type": "Offer",
-            price,
-            priceCurrency: business.currency,
-            availability: "https://schema.org/InStock",
-            url: pageUrl,
-          },
-        }
-      : {}),
-  };
+    provider: { "@id": ids.business },
+    ...(serviceType ? { serviceType } : {}),
+    areaServed: pageAreaServed,
+  });
+} else if (type === "Product" && price) {
+  // "offers" لا تُضاف إلا عند وجود سعر فعلي — المنتج بلا سعر لا يُعلَن Product (تحذيرات Search Console)
+  graph.push({
+    "@type": "Product",
+    "@id": `${pageUrl}#product`,
+    name: title,
+    description,
+    url: pageUrl,
+    ...(absoluteImage ? { image: absoluteImage } : {}),
+    offers: {
+      "@type": "Offer",
+      price,
+      priceCurrency: business.currency,
+      // أسعار المنتجات مُدخلة «د.ك للمتر المربع» (مؤكد من المالك) — نصرّح بالوحدة (MTK) كي لا يُقرأ الرقم سعراً للقطعة
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price,
+        priceCurrency: business.currency,
+        referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MTK" },
+      },
+      availability: "https://schema.org/InStock",
+      url: pageUrl,
+      seller: { "@id": ids.business },
+    },
+  });
+} else if (type === "CollectionPage" && itemList?.length) {
+  graph.push({
+    "@type": "ItemList",
+    "@id": `${pageUrl}#items`,
+    itemListElement: itemList.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, url: new URL(it.url, origin).href })),
+  });
 } else if (type === "Article") {
-  data = {
-    "@context": "https://schema.org",
+  graph.push({
     "@type": "Article",
+    "@id": `${pageUrl}#article`,
     headline: title,
     description,
     url: pageUrl,
     inLanguage: business.language,
+    mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
     ...(absoluteImage ? { image: absoluteImage } : {}),
     ...(pubDate ? { datePublished: pubDate.toISOString() } : {}),
-    publisher: { "@type": "Organization", name: business.name },
-  };
-} else if (type === "FAQPage" && faqs?.length) {
-  data = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-      "@type": "Question",
-      name: f.question,
-      acceptedAnswer: { "@type": "Answer", text: f.answer },
-    })),
-  };
+    ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+    author: { "@id": ids.business },
+    publisher: { "@id": ids.business },
+  });
 }
+
+const data = { "@context": "https://schema.org", "@graph": graph };
 ---
 <script type="application/ld+json" set:html={JSON.stringify(data)} />

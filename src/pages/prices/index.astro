@@ -1,0 +1,151 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { business } from "../../data/business";
+import { waTrackingAttrs } from "../../data/whatsapp";
+import { priceList, installRule } from "../../data/pricing";
+
+const pageUrl = new URL("/prices/", Astro.site).href;
+const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
+---
+<BaseLayout
+  title="أسعار الستائر في الكويت"
+  description="أسعار الستائر في الكويت للمتر المربع: رول وويفي وبلاك أوت وأطفال ومكتبي 6 د.ك، شيفون 5، ويفي مع شيفون 7، وخشبية 17."
+>
+  <div class="mx-auto max-w-3xl px-4 py-16">
+    <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الأسعار" }]} />
+    <h1 class="text-3xl font-bold text-charcoal mb-6">أسعار الستائر في الكويت</h1>
+    <p class="text-charcoal/70 mb-6">
+      أسعارنا تُحسب بالمتر المربع، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند 5 ستائر فأكثر، وأقل من ذلك يُضاف 5 د.ك لكل ستارة. والزيارة المنزلية وأخذ المقاسات مجانية.
+    </p>
+
+    <div class="overflow-x-auto mb-8">
+      <table class="w-full text-right border border-sand rounded-xl overflow-hidden">
+        <thead class="bg-sand/40 text-charcoal">
+          <tr>
+            <th class="px-4 py-3 font-bold">نوع الستارة</th>
+            <th class="px-4 py-3 font-bold">السعر</th>
+          </tr>
+        </thead>
+        <tbody class="text-charcoal/80">
+          {priceList.map((row) => (
+            <tr class="border-t border-sand">
+              <td class="px-4 py-3"><a href={row.href} class="text-olive underline hover:text-charcoal">{row.name}</a></td>
+              <td class="px-4 py-3">تبدأ من {row.price} د.ك للمتر المربع</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="text-charcoal/70 mb-6">
+      ستائر «الخام» هي قماش أمامي مع شيفون: الويفي مع الشيفون 7 د.ك، وبقماش بلاك أوت مع الشيفون 9 د.ك. والتركيب في كل الأنواع مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
+    </p>
+
+    <section id="calculator" class="rounded-2xl border border-sand bg-white p-5 mb-10" aria-labelledby="calc-title">
+      <h2 id="calc-title" class="text-xl font-bold text-charcoal mb-2">حاسبة تقدير السعر</h2>
+      <p class="text-sm text-charcoal/70 mb-4">
+        أدخل مقاس النافذة بالمتر لتحصل على تقدير مبدئي. المساحة = العرض × الارتفاع، والسعر النهائي يُؤكَّد بعد القياس.
+      </p>
+      <form id="calc" class="grid gap-4 sm:grid-cols-2" novalidate>
+        <label class="sm:col-span-2 block text-sm font-semibold text-charcoal">
+          نوع الستارة
+          <select name="type" class="mt-1 w-full rounded-lg border border-sand bg-white px-3 py-2 font-normal">
+            {priceList.map((row) => (
+              <option value={row.id} data-price={row.price} data-install="1">{row.name} — {row.price} د.ك/م²</option>
+            ))}
+          </select>
+        </label>
+        <label class="block text-sm font-semibold text-charcoal">
+          العرض (م)
+          <input name="width" type="number" inputmode="decimal" min="0.1" max="20" step="0.01" placeholder="مثال: 2.5" class="mt-1 w-full rounded-lg border border-sand px-3 py-2 font-normal" />
+        </label>
+        <label class="block text-sm font-semibold text-charcoal">
+          الارتفاع (م)
+          <input name="height" type="number" inputmode="decimal" min="0.1" max="10" step="0.01" placeholder="مثال: 2.6" class="mt-1 w-full rounded-lg border border-sand px-3 py-2 font-normal" />
+        </label>
+        <label class="sm:col-span-2 block text-sm font-semibold text-charcoal">
+          عدد النوافذ بنفس المقاس
+          <input name="count" type="number" inputmode="numeric" min="1" max="50" step="1" value="1" class="mt-1 w-full rounded-lg border border-sand px-3 py-2 font-normal" />
+        </label>
+      </form>
+      <p id="calc-result" class="mt-4 rounded-lg bg-sand/40 px-4 py-3 text-charcoal" aria-live="polite">أدخل العرض والارتفاع لعرض التقدير.</p>
+      <a
+        id="calc-wa"
+        href={business.whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-wa-link={business.whatsappLink}
+        data-wa-page={pageUrl}
+        {...calcTrack}
+        class="mt-4 inline-flex items-center gap-2 rounded-full bg-whatsapp px-6 py-3 font-semibold text-white hover:bg-[#0d6e36] transition-colors"
+      >
+        أرسل التقدير عبر واتساب
+      </a>
+    </section>
+
+    <p class="text-charcoal/70 mb-3">أهم ما يؤثر على السعر النهائي:</p>
+    <ul class="space-y-3 text-charcoal/80 mb-10 list-disc pr-5">
+      <li>نوع الستارة والقماش المختار.</li>
+      <li>مقاس النافذة ومساحة القماش المطلوبة.</li>
+    </ul>
+    <p class="text-charcoal/70 mb-8">
+      لمعرفة السعر الدقيق، أرسل لنا صورة النافذة والمقاس التقريبي عبر واتساب وسنرد عليك بعرض سعر مبدئي.
+    </p>
+    <WhatsAppButton label="احصل على عرض سعر الآن" />
+    <p class="mt-6 text-sm text-charcoal/60">
+      القياس والتركيب متاحان في
+      <a href="/areas/" class="text-olive underline hover:text-charcoal">جميع مناطق الكويت</a>.
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  import { estimate, formatNumber, installRule } from "../../data/pricing";
+
+  const form = document.getElementById("calc") as HTMLFormElement | null;
+  const out = document.getElementById("calc-result");
+  const wa = document.getElementById("calc-wa") as HTMLAnchorElement | null;
+
+  if (form && out && wa) {
+    const waLink = wa.dataset.waLink ?? "";
+    const waPage = wa.dataset.waPage ?? "";
+    const field = (n: string) => form.elements.namedItem(n) as HTMLInputElement | HTMLSelectElement;
+
+    const update = () => {
+      const sel = field("type") as HTMLSelectElement;
+      const opt = sel.options[sel.selectedIndex];
+      const price = Number(opt.dataset.price);
+      const width = Number(field("width").value);
+      const height = Number(field("height").value);
+      const count = Number(field("count").value);
+      const name = (opt.textContent ?? "").split(" — ")[0].trim();
+      const res = estimate({ price, width, height, count, install: opt.dataset.install === "1" ? installRule : undefined });
+
+      if (!res) {
+        out.textContent = "أدخل العرض والارتفاع لعرض التقدير.";
+        wa.href = waLink;
+        wa.removeAttribute("data-wa-product");
+        return;
+      }
+      out.textContent = res.installFee > 0
+        ? `المساحة ${formatNumber(res.area)} م² × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك + تركيب ${count} × ${installRule.fee} = ${formatNumber(res.installFee)} د.ك، الإجمالي ≈ ${formatNumber(res.grand)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`
+        : `المساحة ${formatNumber(res.area)} م² × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`;
+      const text = [
+        "السلام عليكم، أرغب بعرض سعر مبدئي للستائر.",
+        `الصفحة التي زرتها: ${waPage}`,
+        `النوع: ${name}`,
+        `المقاس لكل نافذة: ${width} × ${height} م`,
+        `عدد النوافذ: ${count}`,
+        `تقدير الحاسبة: ${formatNumber(res.grand)} د.ك${res.installFee > 0 ? ` (يشمل تركيب ${formatNumber(res.installFee)} د.ك)` : ""}`,
+        "المنطقة:",
+      ].join("\n");
+      wa.href = `${waLink}?text=${encodeURIComponent(text)}`;
+      wa.setAttribute("data-wa-product", name);
+    };
+
+    form.addEventListener("input", update);
+    update();
+  }
+</script>
