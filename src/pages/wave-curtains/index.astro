@@ -6,7 +6,7 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import FAQ from "../../components/FAQ.astro";
 import { frontmatter, Content } from "../../data/pages/wave.md";
-import { priceList } from "../../data/pricing";
+import { priceList, installRule } from "../../data/pricing";
 
 const fm = frontmatter as {
   title: string; description: string; h1: string; intro: string;
@@ -51,7 +51,7 @@ const khaamBlackoutPrice = priceOf("khaam-blackout");
       <>
         <h2 class="text-2xl font-bold text-charcoal mb-3">كم سعر ستائر الويفي؟</h2>
         <p class="leading-8 text-charcoal/80 mb-12">
-          تبدأ ستائر الويفي من {wavePrice} د.ك للمتر المربع، وعند دمجها مع الشيفون («الخام») {khaamPrice} د.ك، والويفي مع بلاك أوت بطبقة واحدة {waveBlackoutPrice} د.ك، والخام بلاك أوت مع شيفون {khaamBlackoutPrice} د.ك. والتركيب مجاني عند طلب 5 ستائر فأكثر، وأقل من ذلك يُضاف 5 د.ك لتركيب كل ستارة.
+          تبدأ ستائر الويفي من {wavePrice} د.ك للمتر المربع، وعند دمجها مع الشيفون («الخام») {khaamPrice} د.ك، والويفي مع بلاك أوت بطبقة واحدة {waveBlackoutPrice} د.ك، والخام بلاك أوت مع شيفون {khaamBlackoutPrice} د.ك. والتركيب مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
           أرسل مقاس نافذتك عبر واتساب لعرض سعر مبدئي، أو قدّره من
           <a href="/prices/" class="text-gold-deep underline">حاسبة الأسعار</a>.
         </p>

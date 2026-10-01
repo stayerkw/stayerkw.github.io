@@ -4,6 +4,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import Card from "../../components/Card.astro";
+import FAQ from "../../components/FAQ.astro";
+import RelatedLinks from "../../components/RelatedLinks.astro";
 
 export async function getStaticPaths() {
   const types = await getCollection("curtainTypes", ({ data }) => !data.draft);
@@ -19,7 +21,7 @@ const relatedProducts = (await getCollection("products", ({ data }) => !data.dra
   (p) => p.data.curtainType === entry.id
 );
 ---
-<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} schemaType="CollectionPage" itemList={relatedProducts.map((p) => ({ name: p.data.title, url: `/products/${p.id}/` }))} waTopic="type" waProduct={entry.data.title}>
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} noindex={entry.data.noindex} faqs={entry.data.faqs.length ? entry.data.faqs : undefined} schemaType="CollectionPage" itemList={relatedProducts.map((p) => ({ name: p.data.title, url: `/products/${p.id}/` }))} waTopic="type" waProduct={entry.data.title}>
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[
@@ -35,6 +37,14 @@ const relatedProducts = (await getCollection("products", ({ data }) => !data.dra
     <div class="mt-10">
       <WhatsAppButton label={`اطلب ${entry.data.title} الآن`} topic="type" product={entry.data.title} />
     </div>
+
+    {entry.data.faqs.length > 0 && (
+      <section class="mt-12" aria-labelledby="faq-heading">
+        <h2 id="faq-heading" class="text-xl font-bold text-charcoal mb-4">أسئلة شائعة</h2>
+        <FAQ faqs={entry.data.faqs} />
+      </section>
+    )}
+    <RelatedLinks productIds={entry.data.relatedProducts} postIds={entry.data.relatedPosts} exclude={relatedProducts.map((p) => p.id)} />
 
     {relatedProducts.length > 0 && (
       <div class="mt-16">

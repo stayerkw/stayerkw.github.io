@@ -35,7 +35,7 @@ const curtainType = entry.data.curtainType
   ? (await getCollection("curtainTypes", ({ id }) => id === entry.data.curtainType))[0]
   : undefined;
 ---
-<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} schemaType="Product" price={entry.data.price} ogImage={ogImage} waTopic="product" waProduct={entry.data.title}>
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} noindex={entry.data.noindex} schemaType="Product" price={entry.data.price} ogImage={ogImage} waTopic="product" waProduct={entry.data.title}>
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[

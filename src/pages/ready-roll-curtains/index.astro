@@ -6,7 +6,7 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import FAQ from "../../components/FAQ.astro";
 import { frontmatter, Content } from "../../data/pages/ready-roll.md";
-import { priceList } from "../../data/pricing";
+import { priceList, installRule } from "../../data/pricing";
 
 const fm = frontmatter as {
   title: string; description: string; h1: string; intro: string;
@@ -115,7 +115,7 @@ const minPrice = priceList.find((r) => r.id === "roll")?.price;
       <>
         <h2 class="text-2xl font-bold text-charcoal mb-3">كم سعر ستائر الرول؟</h2>
         <p class="leading-8 text-charcoal/80 mb-12">
-          تبدأ أسعار ستائر الرول من {minPrice} د.ك للمتر المربع، والجاهز بنفس سعر المفصّل، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند طلب 5 ستائر فأكثر، وأقل من ذلك يُضاف 5 د.ك لتركيب كل ستارة. أرسل مقاس نافذتك عبر واتساب لعرض سعر مبدئي، أو قدّره من
+          تبدأ أسعار ستائر الرول من {minPrice} د.ك للمتر المربع، والجاهز بنفس سعر المفصّل، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة. أرسل مقاس نافذتك عبر واتساب لعرض سعر مبدئي، أو قدّره من
           <a href="/prices/" class="text-gold-deep underline">حاسبة الأسعار</a>.
         </p>
       </>

@@ -4,20 +4,21 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import { business } from "../../data/business";
 import { waTrackingAttrs } from "../../data/whatsapp";
-import { priceList, installRule } from "../../data/pricing";
+import { priceList, installRule, priceOf, priceSummary } from "../../data/pricing";
 
 const pageUrl = new URL("/prices/", Astro.site).href;
+const metaDescription = `أسعار الستائر في الكويت للمتر المربع: ${priceSummary(["roll", "wave", "blackout", "kids", "office", "sheer", "wave-sheer", "wooden"])}.`;
 const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
 ---
 <BaseLayout
   title="أسعار الستائر في الكويت"
-  description="أسعار الستائر في الكويت للمتر المربع: رول وويفي وبلاك أوت وأطفال ومكتبي 6 د.ك، شيفون 5، ويفي مع شيفون 7، وخشبية 17."
+  description={metaDescription}
 >
   <div class="mx-auto max-w-3xl px-4 py-16">
     <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الأسعار" }]} />
     <h1 class="text-3xl font-bold text-charcoal mb-6">أسعار الستائر في الكويت</h1>
     <p class="text-charcoal/70 mb-6">
-      أسعارنا تُحسب بالمتر المربع، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند 5 ستائر فأكثر، وأقل من ذلك يُضاف 5 د.ك لكل ستارة. والزيارة المنزلية وأخذ المقاسات مجانية.
+      أسعارنا تُحسب بالمتر المربع، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة. والزيارة المنزلية وأخذ المقاسات مجانية.
     </p>
 
     <div class="overflow-x-auto mb-8">
@@ -40,7 +41,7 @@ const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
     </div>
 
     <p class="text-charcoal/70 mb-6">
-      ستائر «الخام» هي قماش أمامي مع شيفون: الويفي مع الشيفون 7 د.ك، وبقماش بلاك أوت مع الشيفون 9 د.ك. والتركيب في كل الأنواع مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
+      ستائر «الخام» هي قماش أمامي مع شيفون: الويفي مع الشيفون {priceOf("wave-sheer")} د.ك، وبقماش بلاك أوت مع الشيفون {priceOf("khaam-blackout")} د.ك. والتركيب في كل الأنواع مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
     </p>
 
     <section id="calculator" class="rounded-2xl border border-sand bg-white p-5 mb-10" aria-labelledby="calc-title">

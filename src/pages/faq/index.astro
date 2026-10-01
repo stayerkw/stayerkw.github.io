@@ -1,4 +1,5 @@
 ---
+import { priceList, priceSummary, installRule } from "../../data/pricing";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import FAQ from "../../components/FAQ.astro";
@@ -18,7 +19,7 @@ const faqs = [
   },
   {
     question: "ماذا يشمل سعر الستارة؟",
-    answer: "السعر شامل القماش والسكة والتفصيل. وتُحسب الأسعار بالمتر المربع: تبدأ الرول والويفي (وبينها الويفي مع بلاك أوت بطبقة واحدة) والبلاك أوت والأطفال والمكتبي من 6 د.ك، والشيفون 5 د.ك، والويفي مع الشيفون (الخام) 7 د.ك، والخام بلاك أوت مع شيفون 9 د.ك، والخشبية 17 د.ك. والتركيب لكل الأنواع مجاني عند 5 ستائر فأكثر، وأقل من ذلك 5 د.ك لكل ستارة.",
+    answer: `السعر شامل القماش والسكة والتفصيل. وتُحسب الأسعار بالمتر المربع وتبدأ من: ${priceSummary(priceList.map((r) => r.id))}. والتركيب لكل الأنواع مجاني عند ${installRule.freeFrom} ستائر فأكثر، وأقل من ذلك ${installRule.fee} د.ك لكل ستارة.`,
   },
   {
     question: "ما مصدر الأقمشة؟",

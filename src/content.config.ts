@@ -12,17 +12,25 @@ const withImage = (image: ReturnType<typeof z.string>) =>
     imageAlt: z.string().optional(),
     // I1: عنوان SEO اختياري يُستعمل في <title> بدل title (اسم النشاط يُضاف تلقائياً)
     seoTitle: z.string().optional(),
+    // الكلمة المستهدفة من seo/keyword-master.csv — يفحصها scripts/keyword-check.mjs (تكرار/ظهور/الصفحة المستهدفة)
+    focusKeyword: z.string().optional(),
+    // true = تُنشر الصفحة بـ noindex وتُستبعد من sitemap (لصفحة رفيعة لم يكتمل محتواها)
+    noindex: z.boolean().default(false),
     draft: z.boolean().default(false),
   });
 
+const faqList = z.array(z.object({ question: z.string(), answer: z.string() })).default([]);
+// روابط داخلية مختارة يدوياً من اللوحة (معرّفات ملفات المنتجات/المقالات)
+const related = { relatedProducts: z.array(z.string()).default([]), relatedPosts: z.array(z.string()).default([]) };
+
 const curtainTypes = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/curtain-types' }),
-  schema: ({ image }) => withImage(image()),
+  schema: ({ image }) => withImage(image()).extend({ faqs: faqList, ...related }),
 });
 
 const services = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/services' }),
-  schema: ({ image }) => withImage(image()),
+  schema: ({ image }) => withImage(image()).extend({ faqs: faqList, ...related }),
 });
 
 const uses = defineCollection({
@@ -50,7 +58,7 @@ const products = defineCollection({
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: ({ image }) => withImage(image()).extend({ pubDate: z.date(), updatedDate: z.date().optional() }),
+  schema: ({ image }) => withImage(image()).extend({ pubDate: z.date(), updatedDate: z.date().optional(), ...related }),
 });
 
 // صفحات مناطق الخدمة — تُنشأ فقط للمناطق التي لها حجم بحث فعلي (حسب Google Keyword Planner)
@@ -59,6 +67,7 @@ const areas = defineCollection({
   schema: z.object({
     title: z.string(),
     seoTitle: z.string().optional(),
+    focusKeyword: z.string().optional(),
     description: z.string(),
     governorate: z.string(),
     intro: z.string(),
@@ -81,6 +90,7 @@ const projects = defineCollection({
     z.object({
       title: z.string(),
       description: z.string(),
+      focusKeyword: z.string().optional(),
       governorate: z.string(),
       // اختياري: الحي/المنطقة داخل المحافظة
       area: z.string().optional(),

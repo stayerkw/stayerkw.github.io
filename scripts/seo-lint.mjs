@@ -4,6 +4,7 @@
 //   مع --strict: التحذيرات تُفشل أيضاً (لفحص طلبات الدمج PR).
 import fs from "node:fs";
 import path from "node:path";
+import { checkKeywords } from "./keyword-check.mjs";
 
 const DIST = "dist";
 const strict = process.argv.includes("--strict");
@@ -103,6 +104,11 @@ else {
   for (const c of indexable) if (!locs.has(c)) err("sitemap", `صفحة مفهرسة غير موجودة في sitemap: ${c}`);
   for (const l of locs) if (!indexable.has(l)) err("sitemap", `رابط في sitemap ليس صفحة مفهرسة: ${l}`);
 }
+
+// الكلمات المستهدفة (focusKeyword) في ملفات المحتوى — تنافس الصفحات خطأ جسيم، وغياب الكلمة عن العنوان/الوصف تحذير
+const kw = checkKeywords();
+errors.push(...kw.errors);
+warnings.push(...kw.warnings);
 
 console.log(`فُحصت ${pages.length} صفحة — أخطاء: ${errors.length}، تحذيرات: ${warnings.length}${strict ? " (وضع صارم)" : ""}`);
 if (warnings.length) console.log(warnings.join("\n"));
