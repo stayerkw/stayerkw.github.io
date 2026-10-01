@@ -71,6 +71,13 @@
       <span>جارٍ تحميل لوحة التحكم…</span>
     </div>
     <!-- Sveltia CMS مستضاف محلياً (نفس النطاق، إصدار مثبّت: انظر sveltia/VERSION.txt) فلا حاجة لـ SRI ولا لـ CDN خارجي -->
+    <script>
+      // العربية لغة افتراضية للوحة مهما كانت لغة المتصفح (يمكن تغييرها من الإعدادات وتُحفظ)
+      try {
+        var k = "sveltia-cms.prefs", p = JSON.parse(localStorage.getItem(k) || "{}") || {};
+        if (!p.locale) { p.locale = "ar"; localStorage.setItem(k, JSON.stringify(p)); }
+      } catch (e) {}
+    </script>
     <script src="/admin/sveltia/sveltia-cms.js"></script>
     <script>
       // إخفاء شاشة التحميل حين تُرسم واجهة اللوحة

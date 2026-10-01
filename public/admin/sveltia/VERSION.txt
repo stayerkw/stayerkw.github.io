@@ -1,2 +1,12 @@
 Sveltia CMS 0.227.2 — نسخة مستضافة محلياً من حزمة npm الرسمية @sveltia/cms (بلا ملفات .map).
-للتحديث: npm pack @sveltia/cms@<الإصدار> ثم انسخ dist/sveltia-cms.js وdist/chunks/*.js هنا.
+
+تعديلات محلية (أعد تطبيقها عند كل تحديث):
+1) sveltia-cms.js: مسار الترجمات صار محلياً
+   Twe=`${DM}@${EM}/locales`  →  Twe=`/admin/sveltia/locales`
+   (مرة واحدة في الملف؛ بدونه تُحمَّل الترجمة من unpkg).
+2) locales/ar.json: ترجمة الحزمة العربية + 93 نصاً كان ناقصاً (مجلدات، تعارض الحفظ، الحذف، الصور…)،
+   وإصلاح المفتاح المعطوب «heading_ 1». تبقى 49 رسالة أخطاء إعداد تقنية بالإنجليزية.
+   locales/en-US.json: نسخة الحزمة كما هي.
+
+للتحديث: npm pack @sveltia/cms@<الإصدار>، انسخ dist/sveltia-cms.js وdist/chunks/*.js،
+ثم أعد التعديل (1) وادمج ar.json الجديد مع النصوص المحلية.
