@@ -2,6 +2,8 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { business } from "../../data/business";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -10,22 +12,26 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const fmt = (d: Date) => d.toLocaleDateString("ar-KW", { year: "numeric", month: "long", day: "numeric" });
 ---
-<BaseLayout title={entry.data.title} description={entry.data.description} schemaType="Article" pubDate={entry.data.pubDate}>
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} schemaType="Article" pubDate={entry.data.pubDate} updatedDate={entry.data.updatedDate} waTopic="general">
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[
         { label: "الرئيسية", href: "/" },
-        { label: "أعمالنا", href: "/blog/" },
+        { label: "المقالات", href: "/blog/" },
         { label: entry.data.title },
       ]}
     />
     <h1 class="text-3xl font-bold text-charcoal mb-2">{entry.data.title}</h1>
     <p class="text-sm text-charcoal/50 mb-6">
-      {entry.data.pubDate.toLocaleDateString("ar-KW", { year: "numeric", month: "long", day: "numeric" })}
+      بقلم {business.name} · نُشر {fmt(entry.data.pubDate)}{entry.data.updatedDate ? ` · آخر تحديث ${fmt(entry.data.updatedDate)}` : ""}
     </p>
-    <div class="prose prose-neutral max-w-none prose-headings:text-charcoal">
+    <div class="prose prose-neutral max-w-none prose-headings:text-charcoal prose-img:mx-auto prose-img:max-w-xs prose-img:rounded-xl">
       <Content />
+    </div>
+    <div class="mt-10">
+      <WhatsAppButton label="أرسل صورة نافذتك عبر واتساب" topic="general" />
     </div>
   </article>
 </BaseLayout>

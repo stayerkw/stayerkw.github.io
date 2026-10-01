@@ -54,16 +54,18 @@
 @theme {
   --font-arabic: "Cairo", "Noto Kufi Arabic", sans-serif;
 
-  --color-charcoal: #232323;
-  --color-olive: #4b5320;
-  --color-sand: #efe6d8;
+  /* لوحة موحّدة دافئة: كل الدرجات من عائلة البني/الرملي بدل مزج الأزرق الرمادي مع الزيتوني */
+  --color-charcoal: #2b2620;
   --color-ivory: #faf6ef;
-  --color-gold: #b08d57;
-  --color-whatsapp: #25d366;
+  --color-sand: #efe6d8;
+  --color-gold: #b08d57;       /* للحدود والعناصر على الخلفيات الداكنة فقط */
+  --color-gold-deep: #86652f;  /* للنصوص والروابط على الخلفيات الفاتحة (تباين 4.98) */
+  --color-olive: #86652f;      /* توافق مع أي استخدام قديم — نفس الذهبي الغامق */
+  --color-whatsapp: #0f7a3c;   /* أخضر أغمق ليصل تباين النص الأبيض إلى معيار WCAG */
 
-  /* لمسة "فخامة داكنة" — تُستخدم فقط لقسم الهيرو وبطاقات المنتجات بالرئيسية */
-  --color-ink: #111827;
-  --color-ink-light: #1f2937;
+  /* خلفية الهيرو الداكنة بنفس الدفء */
+  --color-ink: #1d1914;
+  --color-ink-light: #2c251d;
 }
 
 html {
@@ -74,4 +76,15 @@ body {
   font-family: var(--font-arabic);
   background-color: var(--color-ivory);
   color: var(--color-charcoal);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-gold-deep);
+  outline-offset: 3px;
+  border-radius: 0.375rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }

@@ -1,17 +1,40 @@
 ---
-import { business } from "../data/business";
+// زر واتساب بسياق الصفحة: الرسالة تحمل رابط الصفحة ونوع الطلب،
+// والنقرة تُسجَّل كحدث whatsapp_click عبر سكربت التتبع العام في BaseLayout.
+import { buildWhatsAppHref, inferArea, inferTopic, waTrackingAttrs, type WaTopic } from "../data/whatsapp";
+
 export interface Props {
   label?: string;
   class?: string;
+  topic?: WaTopic; // إن لم يُحدَّد يُستنتج من مسار الصفحة
+  product?: string; // اسم المنتج/النوع/الخدمة
+  area?: string; // اسم المحافظة/المنطقة
+  placement?: string; // موضع الزر للتتبع: content | header | footer | floating
 }
-const { label = "اطلب عرض سعر عبر واتساب", class: className = "" } = Astro.props;
+
+const {
+  label = "اطلب عرض سعر عبر واتساب",
+  class: className = "",
+  topic,
+  product,
+  area,
+  placement = "content",
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const pageUrl = new URL(pathname, Astro.site).href;
+const resolvedTopic = topic ?? inferTopic(pathname);
+const resolvedArea = area ?? inferArea(pathname);
+const href = buildWhatsAppHref({ topic: resolvedTopic, product, area: resolvedArea, pageUrl });
+const track = waTrackingAttrs({ topic: resolvedTopic, product, area: resolvedArea, placement });
 ---
 <a
-  href={business.whatsappLink}
+  href={href}
   target="_blank"
   rel="noopener noreferrer"
+  {...track}
   class:list={[
-    "inline-flex items-center gap-2 rounded-full bg-whatsapp px-6 py-3 font-semibold text-white shadow-md hover:opacity-90 transition-opacity",
+    "inline-flex items-center gap-2 rounded-full bg-whatsapp px-6 py-3 font-semibold text-white hover:bg-[#0d6e36] transition-colors",
     className,
   ]}
 >

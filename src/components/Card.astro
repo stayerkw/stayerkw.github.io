@@ -21,14 +21,14 @@ const { title, description, href, image, imageAlt, priority = false } = Astro.pr
       src={image}
       alt={imageAlt ?? title}
       width={600}
-      height={450}
+      height={800}
       loading={priority ? "eager" : "lazy"}
       fetchpriority={priority ? "high" : "auto"}
-      class="h-48 w-full object-cover"
+      class="aspect-[3/4] w-full object-cover"
     />
   )}
   <div class="p-5">
     <h3 class="text-lg font-bold text-charcoal group-hover:text-olive transition-colors">{title}</h3>
-    <p class="mt-2 text-sm text-charcoal/70 line-clamp-2">{description}</p>
+    <p class="mt-2 text-sm text-charcoal/75 line-clamp-2">{description}</p>
   </div>
 </a>

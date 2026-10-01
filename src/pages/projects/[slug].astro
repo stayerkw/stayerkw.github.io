@@ -1,0 +1,104 @@
+---
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { roomLabels, imageLabels } from "../../data/projects";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects", ({ data }) => !data.draft);
+  return projects.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+
+// روابط داخلية: صفحة النوع وصفحة المحافظة (فقط إن كانت منشورة وموجودة)
+const type = d.curtainType
+  ? (await getCollection("curtainTypes", ({ data }) => !data.draft)).find((t) => t.id === d.curtainType)
+  : undefined;
+const areaPage = (await getCollection("areas", ({ data }) => !data.draft)).find(
+  (a) => a.data.governorate === d.governorate
+);
+
+const facts = [
+  ["المنطقة", `${d.governorate}${d.area ? ` — ${d.area}` : ""}`],
+  ["الغرفة", roomLabels[d.room]],
+  type ? ["نوع الستارة", type.data.title] : null,
+  d.fabric ? ["القماش/النظام", d.fabric] : null,
+  d.duration ? ["مدة التنفيذ", d.duration] : null,
+].filter(Boolean) as string[][];
+---
+<BaseLayout title={d.title} description={d.description} waTopic="project" waProduct={d.title} waArea={d.governorate} ogImage="/og/default.jpg">
+  <article class="mx-auto max-w-3xl px-4 py-10">
+    <Breadcrumbs
+      items={[
+        { label: "الرئيسية", href: "/" },
+        { label: "أعمالنا", href: "/projects/" },
+        { label: d.title },
+      ]}
+    />
+    <h1 class="text-3xl font-bold text-charcoal mb-6">{d.title}</h1>
+
+    <dl class="mb-8 grid grid-cols-2 gap-3 rounded-2xl border border-sand bg-white p-5 text-sm sm:grid-cols-3">
+      {facts.map(([k, v]) => (
+        <div>
+          <dt class="text-charcoal/50">{k}</dt>
+          <dd class="font-semibold text-charcoal">{v}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      {d.images.map((img, i) => (
+        <figure class="overflow-hidden rounded-2xl border border-sand bg-white">
+          <Image
+            src={img.src}
+            alt={img.alt}
+            width={900}
+            height={1200}
+            loading={i === 0 ? "eager" : "lazy"}
+            fetchpriority={i === 0 ? "high" : "auto"}
+            class="aspect-[3/4] w-full object-cover"
+          />
+          <figcaption class="px-3 py-2 text-xs text-charcoal/60">{imageLabels[img.label]}</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold text-charcoal mb-2">المشكلة</h2>
+      <p class="text-charcoal/80">{d.problem}</p>
+    </section>
+    <section class="mt-6">
+      <h2 class="text-xl font-bold text-charcoal mb-2">الحل المنفذ</h2>
+      <p class="text-charcoal/80">{d.solution}</p>
+    </section>
+    {d.tip && (
+      <section class="mt-6">
+        <h2 class="text-xl font-bold text-charcoal mb-2">نصيحة</h2>
+        <p class="text-charcoal/80">{d.tip}</p>
+      </section>
+    )}
+
+    <div class="prose prose-neutral mt-8 max-w-none prose-headings:text-charcoal">
+      <Content />
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <WhatsAppButton label="اطلب عرض سعر لعمل مشابه" topic="project" product={d.title} area={d.governorate} />
+      {type && (
+        <a href={`/curtains/${type.id}/`} class="inline-flex items-center rounded-full border border-sand px-6 py-3 font-semibold text-charcoal hover:bg-sand/40">
+          {type.data.title}
+        </a>
+      )}
+      {areaPage && (
+        <a href={`/areas/${areaPage.id}/`} class="inline-flex items-center rounded-full border border-sand px-6 py-3 font-semibold text-charcoal hover:bg-sand/40">
+          خدمتنا في {d.governorate}
+        </a>
+      )}
+    </div>
+  </article>
+</BaseLayout>

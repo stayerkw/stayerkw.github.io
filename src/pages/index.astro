@@ -3,212 +3,190 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
-import { business } from "../data/business";
+import FAQ from "../components/FAQ.astro";
+import { priceList } from "../data/pricing";
 
-const products = (await getCollection("products", ({ data }) => !data.draft))
+import imgRoll from "../content/products/images/roll-ready-white-living.jpg";
+import imgWave from "../content/products/images/wave-grey-brown-cream-sheer.jpg";
+import imgBlackout from "../content/products/images/roller-dark-living.jpg";
+import imgSheer from "../content/curtain-types/images/sheer-white-kitchen.jpg";
+import imgKids from "../content/curtain-types/images/kids-astronaut-room.jpg";
+import imgWooden from "../content/products/images/wooden-white-bedroom.jpg";
+
+// الأنواع المعروضة في أول شاشة: السعر يأتي من مصدر الأسعار الواحد
+const price = (id: string) => priceList.find((r) => r.id === id)!.price;
+const types = [
+  { id: "roll", name: "ستائر رول", href: "/curtains/roll/", img: imgRoll, alt: "ستارة رول رمادية في صالة معيشة" },
+  { id: "wave", name: "ستائر ويفي", href: "/curtains/wave/", img: imgWave, alt: "ستائر ويفي رمادية مع شيفون كريمي ورباط جانبي" },
+  { id: "blackout", name: "ستائر بلاك أوت", href: "/curtains/blackout/", img: imgBlackout, alt: "ستارة رول داكنة أمام نافذة طويلة" },
+  { id: "sheer", name: "ستائر شيفون", href: "/curtains/sheer/", img: imgSheer, alt: "ستائر شيفون بيضاء بطيات ناعمة في غرفة" },
+  { id: "kids", name: "ستائر أطفال", href: "/curtains/kids/", img: imgKids, alt: "غرفة أطفال بسريرين وتصميم رائد فضاء مطبوع" },
+  { id: "wooden", name: "ستائر خشبية", href: "/curtains/wooden/", img: imgWooden, alt: "ستائر خشبية بيضاء في غرفة نوم" },
+].map((t) => ({ ...t, price: price(t.id) }));
+
+const works = (await getCollection("products", ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 9);
+  .slice(0, 6);
 
-const typesAll = (await getCollection("curtainTypes", ({ data }) => !data.draft))
-  .sort((a, b) => a.data.order - b.data.order);
-const typeTitle = Object.fromEntries(typesAll.map((t) => [t.id, t.data.title]));
+const steps = [
+  { t: "القياس", d: "نزور منزلك لأخذ المقاسات وعرض العينات، أو ترسل صورة النافذة والمقاس التقريبي عبر واتساب لعرض مبدئي." },
+  { t: "التفصيل", d: "تختار النوع والقماش واللون، ونفصّل الستارة على مقاس نافذتك في ورشتنا بالضجيج." },
+  { t: "التركيب", d: "نركّب السكة أو الرول في موقعك ونراجع الحركة معك قبل أن نغادر." },
+];
 
-// تبويبات الفرز تُبنى من التصنيفات الموجودة فعلياً بالمنتجات، بدل قائمة ثابتة
-// قد تحتوي منتجات غير موجودة بعد — بهالشكل التبويب ما يظهر إلا إذا فيه منتج فعلي بداخله
-const activeCategories = [...new Set(products.map((p) => p.data.curtainType).filter(Boolean))] as string[];
-
-const types = typesAll.slice(0, 4);
-const services = (await getCollection("services", ({ data }) => !data.draft))
-  .sort((a, b) => a.data.order - b.data.order);
+const faqs = [
+  {
+    question: "ما الفرق بين ستائر الرول الجاهزة والمفصلة حسب المقاس؟",
+    answer: "الجاهزة تأتي بمقاسات ثابتة وقد تترك فراغات أو تزيد عن النافذة، أما المفصلة فتُقاس على النافذة الفعلية وتُصنع بمقاسها، فتحصل على شكل أنظف وتغطية أفضل.",
+  },
+  {
+    question: "أي ستائر أنسب لغرفة النوم؟",
+    answer: "البلاك أوت هو الخيار الأنسب لمن يريد عتمة شبه كاملة نهاراً، ويمكن جمعه مع طبقة شيفون أمامية للمظهر الأنعم.",
+  },
+  {
+    question: "ما أنواع الستائر المناسبة للمجالس والصالات؟",
+    answer: "الويفي من الخيارات الشائعة لمظهره المرتب، ويمكن الجمع بين بلاك أوت وشيفون على نفس السكة لتحكم أفضل بالضوء.",
+  },
+  {
+    question: "هل تركيب الستائر متوفر في الجهراء وباقي المحافظات؟",
+    answer: "نعم، نخدم جميع مناطق الكويت دون استثناء، في المحافظات الست: العاصمة وحولي والفروانية ومبارك الكبير والأحمدي والجهراء.",
+  },
+  {
+    question: "كيف أحصل على عرض سعر لتفصيل ستائر؟",
+    answer: "أرسل صورة النافذة والمقاس التقريبي عبر واتساب، وسنرد بعرض سعر مبدئي ثم نحدد موعد القياس الدقيق.",
+  },
+];
 ---
-<BaseLayout title={business.name} description={business.description}>
-  <section class="relative overflow-hidden bg-gradient-to-br from-ink to-ink-light">
-    <div
-      class="pointer-events-none absolute -top-1/2 -right-1/4 h-[140%] w-[80%] rounded-full bg-gold/10 blur-3xl"
-      aria-hidden="true"
-    ></div>
-    <div class="relative mx-auto max-w-4xl px-4 pt-16 md:pt-20 pb-28 md:pb-32 text-center">
-      <span class="inline-block rounded-full border border-gold/30 bg-gold/15 px-4 py-1.5 text-sm font-bold text-gold">
-        عالم ستائر الكويت • جودة وفخامة
-      </span>
-      <h1 class="mt-5 text-3xl md:text-5xl font-extrabold leading-tight text-white">
-        تفصيل وتركيب ستائر <span class="text-gold">حسب المقاس</span> بالمليمتر
-      </h1>
-      <p class="mt-5 text-lg text-white/60 max-w-2xl mx-auto">
-        تصاميم عصرية تناسب المجالس، المكاتب، والفلل. دقة عالية في المواعيد والتركيب في كافة مناطق الكويت.
-      </p>
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-        <WhatsAppButton label="اطلب أخذ المقاسات مجاناً (واتساب)" class="shadow-lg shadow-whatsapp/30" />
-        <a
-          href="#catalog"
-          class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur hover:bg-white/15 transition-colors"
-        >
-          تصفح الكتالوج
-        </a>
+<BaseLayout
+  title="تفصيل وتركيب ستائر في الكويت"
+  description="تفصيل وتركيب ستائر في الكويت حسب المقاس: ستائر رول وبلاك أوت وويفي، مع زيارة منزلية لأخذ المقاسات وعرض العينات في جميع المحافظات. اطلب عرض سعر عبر واتساب."
+>
+  <section class="mx-auto max-w-6xl px-4 pt-10 md:pt-16">
+    <div class="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+      <div>
+        <h1 class="text-4xl md:text-6xl font-bold leading-[1.35] text-charcoal">
+          تفصيل وتركيب ستائر في الكويت بأسعار واضحة
+        </h1>
+        <p class="mt-5 max-w-xl text-lg leading-8 text-charcoal/75">
+          ستائر ويفي ورول وبلاك أوت لمنزلك ومجلسك ومكتبك. أرسل صورة النافذة والمقاس عبر واتساب ونرد عليك بعرض مبدئي.
+        </p>
+        <div class="mt-7 flex flex-wrap items-center gap-3">
+          <WhatsAppButton label="أرسل مقاس نافذتك عبر واتساب" placement="hero" class="px-7 py-3.5 text-lg" />
+          <a href="/prices/" class="inline-flex items-center rounded-full border border-charcoal/25 px-6 py-3.5 font-semibold text-charcoal hover:bg-sand transition-colors">
+            الأسعار والحاسبة
+          </a>
+        </div>
       </div>
+      <dl class="grid grid-cols-3 gap-4 border-t border-charcoal/15 pt-5 text-sm lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-charcoal/15 lg:border-t-0 lg:border-s lg:ps-8 lg:pt-0">
+        <div class="lg:py-3">
+          <dt class="text-charcoal/60">الأسعار</dt>
+          <dd class="mt-1 font-bold text-charcoal">من {price("sheer")} د.ك للمتر المربع</dd>
+        </div>
+        <div class="lg:py-3">
+          <dt class="text-charcoal/60">الزيارة المنزلية</dt>
+          <dd class="mt-1 font-bold text-charcoal">مجانية لأخذ المقاسات</dd>
+        </div>
+        <div class="lg:py-3">
+          <dt class="text-charcoal/60">مدة التنفيذ</dt>
+          <dd class="mt-1 font-bold text-charcoal">يومان إلى 3 أيام</dd>
+        </div>
+      </dl>
     </div>
   </section>
 
-  {products.length > 0 && (
-    <section id="catalog" class="relative -mt-16 md:-mt-20 mx-auto max-w-6xl px-4 pb-16 md:pb-20">
-      <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
-        <div>
-          <h2 class="text-2xl font-bold text-charcoal mb-1">من منتجاتنا</h2>
-          <p class="text-charcoal/60 text-sm">نماذج حقيقية من تنفيذاتنا — ألوان وخامات متعددة متوفرة</p>
-        </div>
-        <a href="/products/" class="shrink-0 text-sm font-semibold text-gold hover:underline">
-          عرض كل المنتجات ←
-        </a>
-      </div>
-
-      {activeCategories.length > 1 && (
-        <div
-          class="filter-tabs mb-6 flex gap-2 overflow-x-auto rounded-2xl bg-white p-2 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
-          role="tablist"
-          aria-label="فرز المنتجات حسب النوع"
-        >
-          <button type="button" class="tab-btn active" data-filter="all">الكل</button>
-          {activeCategories.map((cat) => (
-            <button type="button" class="tab-btn" data-filter={cat}>{typeTitle[cat] ?? cat}</button>
-          ))}
-        </div>
-      )}
-
-      <div class="product-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product) => (
-          <a
-            href={`/products/${product.id}/`}
-            data-category={product.data.curtainType ?? ""}
-            class="product-card group block overflow-hidden rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all"
-          >
-            <div class="relative aspect-[4/3] overflow-hidden bg-sand">
-              {product.data.price && (
-                <span class="absolute top-3 right-3 z-10 rounded-lg bg-ink/85 px-3 py-1.5 text-sm font-extrabold text-gold backdrop-blur">
-                  {product.data.price} د.ك / متر
-                </span>
-              )}
-              {product.data.image && (
-                <Image
-                  src={product.data.image}
-                  alt={product.data.imageAlt ?? product.data.title}
-                  width={600}
-                  height={450}
-                  loading="lazy"
-                  fetchpriority="auto"
-                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              )}
+  <section class="mt-10 md:mt-14" aria-labelledby="types-title">
+    <div class="mx-auto max-w-6xl px-4 mb-5 flex items-end justify-between gap-4">
+      <h2 id="types-title" class="text-2xl md:text-3xl font-bold text-charcoal">اختر نوع الستائر</h2>
+      <a href="/curtains/" class="shrink-0 text-sm font-semibold text-gold-deep hover:underline">كل الأنواع</a>
+    </div>
+    <ul class="flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 lg:mx-auto lg:grid lg:max-w-6xl lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10 lg:overflow-visible">
+      {types.map((t, i) => (
+        <li class="w-[72%] shrink-0 snap-start sm:w-[44%] lg:w-auto">
+          <a href={t.href} class="group block">
+            <div class="aspect-[3/4] overflow-hidden rounded-t-full bg-sand">
+              <Image src={t.img} alt={t.alt} width={600} height={800} widths={[360, 600, 800]} sizes="(min-width: 1024px) 380px, 72vw" loading={i === 0 ? "eager" : "lazy"} fetchpriority={i === 0 ? "high" : "auto"} decoding={i === 0 ? "sync" : "async"} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
             </div>
-            <div class="p-5">
-              {product.data.curtainType && typeTitle[product.data.curtainType] && (
-                <p class="mb-1 text-xs font-bold uppercase tracking-wide text-gold">
-                  {typeTitle[product.data.curtainType]}
-                </p>
-              )}
-              <h3 class="text-lg font-bold text-charcoal">{product.data.title}</h3>
-              <p class="mt-1.5 text-sm text-charcoal/60 line-clamp-2">{product.data.description}</p>
-              <span class="mt-4 flex items-center justify-center gap-1.5 rounded-lg border border-sand py-2.5 text-sm font-bold text-charcoal group-hover:bg-gold group-hover:border-gold group-hover:text-white transition-colors">
-                طلب هذا الموديل ←
-              </span>
-            </div>
+            <h3 class="mt-4 text-xl font-bold text-charcoal">{t.name}</h3>
+            <p class="text-sm text-charcoal/65">من {t.price} د.ك للمتر المربع</p>
           </a>
-        ))}
+          <WhatsAppButton label="اطلب هذا النوع عبر واتساب" product={t.name} placement="type-tile" class="mt-3 px-5! py-2! text-sm" />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {works.length > 0 && (
+    <section class="mt-14 md:mt-20 bg-sand/60 border-y border-sand" aria-labelledby="works-title">
+      <div class="mx-auto max-w-6xl px-4 py-12 md:py-16">
+        <div class="mb-6 flex items-end justify-between gap-4">
+          <h2 id="works-title" class="text-2xl md:text-3xl font-bold text-charcoal">نماذج من منتجاتنا</h2>
+          <a href="/products/" class="shrink-0 text-sm font-semibold text-gold-deep hover:underline">كل المنتجات</a>
+        </div>
+        <ul class="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3">
+          {works.map((p) => (
+            <li>
+              <a href={`/products/${p.id}/`} class="group block">
+                <div class="aspect-[3/4] overflow-hidden bg-sand">
+                  {p.data.image && (
+                    <Image src={p.data.image} alt={p.data.imageAlt ?? p.data.title} width={600} height={800} widths={[300, 600]} sizes="(min-width: 768px) 360px, 46vw" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                  )}
+                </div>
+                <h3 class="mt-3 font-bold text-charcoal">{p.data.title}</h3>
+                {p.data.price && <p class="text-sm text-charcoal/65">{p.data.price} د.ك للمتر المربع</p>}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )}
 
-  <script>
-    const tabs = document.querySelectorAll<HTMLButtonElement>(".tab-btn");
-    const cards = document.querySelectorAll<HTMLElement>(".product-card");
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        tabs.forEach((t) => t.classList.remove("active"));
-        tab.classList.add("active");
-        const filter = tab.dataset.filter;
-        cards.forEach((card) => {
-          const show = filter === "all" || card.dataset.category === filter;
-          card.style.display = show ? "" : "none";
-        });
-      });
-    });
-  </script>
-
-  <style>
-    .tab-btn {
-      white-space: nowrap;
-      border-radius: 0.625rem;
-      padding: 0.5rem 1.1rem;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--color-charcoal);
-      opacity: 0.6;
-      transition: all 0.2s ease;
-    }
-    .tab-btn.active,
-    .tab-btn:hover {
-      background: var(--color-ink);
-      color: #fff;
-      opacity: 1;
-    }
-  </style>
+  <section class="mx-auto max-w-6xl px-4 py-14 md:py-20" aria-labelledby="steps-title">
+    <h2 id="steps-title" class="text-2xl md:text-3xl font-bold text-charcoal mb-8">من الطلب إلى التركيب</h2>
+    <ol class="grid gap-8 md:grid-cols-3 md:gap-10">
+      {steps.map((s, i) => (
+        <li class="border-t-2 border-charcoal pt-4">
+          <p class="text-sm font-bold text-gold-deep">الخطوة {i + 1}</p>
+          <h3 class="mt-1 text-xl font-bold text-charcoal">{s.t}</h3>
+          <p class="mt-2 leading-8 text-charcoal/75">{s.d}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
 
   <section class="bg-white border-y border-sand">
-    <div class="mx-auto max-w-6xl px-4 py-14 md:py-16 grid gap-12 md:grid-cols-2">
-      <div>
-        <h2 class="text-2xl font-bold text-charcoal mb-1">أنواع الستائر</h2>
-        <p class="text-charcoal/60 text-sm mb-4">اختر النوع المناسب لمساحتك</p>
-        <ul class="divide-y divide-sand">
-          {types.map((type) => (
-            <li>
-              <a href={`/curtains/${type.id}/`} class="group flex items-center justify-between gap-4 py-3.5">
-                <span>
-                  <span class="block font-semibold text-charcoal group-hover:text-gold transition-colors">
-                    {type.data.title}
-                  </span>
-                  <span class="block text-sm text-charcoal/55 mt-0.5 line-clamp-1">{type.data.description}</span>
-                </span>
-                <span class="shrink-0 text-charcoal/30 group-hover:text-gold group-hover:-translate-x-1 transition-all" aria-hidden="true">←</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <a href="/curtains/" class="mt-4 inline-block text-sm font-semibold text-gold hover:underline">
-          عرض كل الأنواع ←
-        </a>
-      </div>
-
-      <div>
-        <h2 class="text-2xl font-bold text-charcoal mb-1">خدماتنا</h2>
-        <p class="text-charcoal/60 text-sm mb-4">من القياس إلى التركيب النهائي</p>
-        <ul class="divide-y divide-sand">
-          {services.map((service) => (
-            <li>
-              <a href={`/services/${service.id}/`} class="group flex items-center justify-between gap-4 py-3.5">
-                <span>
-                  <span class="block font-semibold text-charcoal group-hover:text-gold transition-colors">
-                    {service.data.title}
-                  </span>
-                  <span class="block text-sm text-charcoal/55 mt-0.5 line-clamp-1">{service.data.description}</span>
-                </span>
-                <span class="shrink-0 text-charcoal/30 group-hover:text-gold group-hover:-translate-x-1 transition-all" aria-hidden="true">←</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <a href="/services/" class="mt-4 inline-block text-sm font-semibold text-gold hover:underline">
-          عرض كل الخدمات ←
-        </a>
+    <div class="mx-auto max-w-3xl px-4 py-14 md:py-16">
+      <h2 class="text-2xl font-bold text-charcoal mb-4">ستائر في الكويت: تفصيل حسب المقاس وتركيب في كل المحافظات</h2>
+      <div class="space-y-4 leading-8 text-charcoal/80">
+        <p>
+          إذا كنت تبحث عن <a href="/services/tailoring/" class="text-gold-deep underline">تفصيل ستائر في الكويت</a>،
+          فالمقاس هو الأساس: نقيس النافذة على الطبيعة ثم نفصّل الستارة على مقاسها.
+        </p>
+        <p>
+          نوفر <a href="/curtains/roll/" class="text-gold-deep underline">ستائر الرول</a> (وكذلك <a href="/ready-roll-curtains/" class="text-gold-deep underline">ستائر رول جاهزة</a>) للمكاتب والمطابخ وغرف المعيشة،
+          و<a href="/curtains/blackout/" class="text-gold-deep underline">ستائر البلاك أوت</a> لغرف النوم،
+          و<a href="/curtains/wave/" class="text-gold-deep underline">ستائر الويفي</a> (وراجع <a href="/wave-curtains/" class="text-gold-deep underline">ستائر ويفي مع شيفون</a> بصور من أعمالنا) للصالات والمجالس.
+        </p>
+        <p>
+          أما <a href="/services/installation/" class="text-gold-deep underline">تركيب الستائر</a> فيتم في جميع المحافظات: العاصمة وحولي والفروانية ومبارك الكبير والأحمدي والجهراء.
+          راجع <a href="/prices/" class="text-gold-deep underline">دليل أسعار الستائر</a> لمعرفة ما يحدد السعر، أو أرسل المقاس عبر واتساب لعرض مبدئي.
+        </p>
       </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 py-16 text-center">
-    <h2 class="text-2xl font-bold text-charcoal mb-3">جاهز لتجديد نوافذك؟</h2>
-    <p class="text-charcoal/60 mb-8 max-w-xl mx-auto">
-      تواصل معنا الآن واحصل على عرض سعر مبدئي خلال دقائق. نخدم
-      <a href="/مناطق-الخدمة/" class="text-gold underline hover:text-charcoal">جميع محافظات الكويت الست</a>،
-      من العاصمة إلى الجهراء.
-    </p>
-    <WhatsAppButton />
+  <section class="mx-auto max-w-3xl px-4 py-14 md:py-16">
+    <h2 class="text-2xl font-bold text-charcoal mb-6">أسئلة عن ستائر الكويت</h2>
+    <FAQ faqs={faqs} />
+  </section>
+
+  <section class="bg-ink text-center">
+    <div class="mx-auto max-w-3xl px-4 py-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-white">أرسل لنا مقاس نافذتك</h2>
+      <p class="mx-auto mt-3 max-w-xl text-white/75 leading-8">
+        نخدم <a href="/areas/" class="underline text-gold">جميع محافظات الكويت الست</a>، من العاصمة إلى الجهراء.
+      </p>
+      <WhatsAppButton label="تواصل معنا عبر واتساب" placement="footer-cta" class="mt-7 px-8 py-3.5 text-lg" />
+    </div>
   </section>
 </BaseLayout>

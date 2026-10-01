@@ -8,7 +8,7 @@ const products = (await getCollection("products", ({ data }) => !data.draft)).so
   (a, b) => a.data.order - b.data.order
 );
 ---
-<BaseLayout title="منتجات الستائر" description="تصفح منتجات الستائر المتوفرة لدينا في الكويت بجميع الأنواع والمقاسات.">
+<BaseLayout title="منتجات الستائر" description="تصفح منتجات الستائر: رول جاهز وويفي وبليندات خشبية بصور حقيقية من أعمالنا في الكويت، مع تفاصيل المقاسات لكل منتج. اطلب عرض سعر عبر واتساب.">
   <div class="mx-auto max-w-6xl px-4 py-10">
     <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "المنتجات" }]} />
     <h1 class="text-3xl font-bold text-charcoal mb-8">منتجاتنا</h1>

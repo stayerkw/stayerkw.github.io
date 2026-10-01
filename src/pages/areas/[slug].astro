@@ -1,0 +1,89 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import FAQ from "../../components/FAQ.astro";
+import { kuwaitAreas } from "../../data/areas";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("areas", ({ data }) => !data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const fallback = kuwaitAreas.find((g) => g.governorate === entry.data.governorate)?.areas ?? [];
+const areas = entry.data.areasList?.length ? entry.data.areasList : fallback;
+const faqs = entry.data.faqs;
+const h1 = entry.data.title.split("—")[0].trim();
+const govShort = entry.data.governorate.replace("محافظة ", "");
+const areaServed = [
+  { type: "AdministrativeArea", name: entry.data.governorate },
+  ...areas.map((name) => ({ type: "Place", name })),
+];
+const others = (await getCollection("areas", ({ data }) => !data.draft)).filter((e) => e.id !== entry.id);
+---
+<BaseLayout
+  title={entry.data.seoTitle ?? entry.data.title}
+  description={entry.data.description}
+  schemaType="Service"
+  waTopic="area"
+  noindex={entry.data.noindex}
+  waArea={govShort}
+  serviceType={`تفصيل وتركيب ستائر في ${govShort}`}
+  areaServed={areaServed}
+  faqs={faqs}
+>
+  <div class="mx-auto max-w-4xl px-4 py-16">
+    <Breadcrumbs
+      items={[
+        { label: "الرئيسية", href: "/" },
+        { label: "مناطق الخدمة", href: "/areas/" },
+        { label: h1 },
+      ]}
+    />
+    <h1 class="text-3xl font-bold text-charcoal mb-4">{h1}</h1>
+    <p class="text-charcoal/75 leading-8 mb-8">{entry.data.intro}</p>
+
+    <h2 class="text-xl font-bold text-charcoal mb-3">المناطق التي نخدمها في {govShort}</h2>
+    <ul class="flex flex-wrap gap-2 mb-10">
+      {areas.map((area) => (
+        <li class="rounded-full bg-sand px-3 py-1 text-sm text-charcoal/85">{area}</li>
+      ))}
+    </ul>
+
+    <div class="prose prose-lg max-w-none prose-a:text-gold-deep mb-10">
+      <Content />
+    </div>
+
+    <h2 class="text-xl font-bold text-charcoal mb-3">الخدمات والأنواع</h2>
+    <p class="text-charcoal/75 leading-8 mb-10">
+      راجع <a href="/services/tailoring/" class="text-gold-deep underline">تفصيل الستائر</a> و<a href="/services/installation/" class="text-gold-deep underline">تركيب الستائر</a>،
+      واختر من <a href="/curtains/roll/" class="text-gold-deep underline">الرول</a> (<a href="/ready-roll-curtains/" class="text-gold-deep underline">ستائر رول جاهزة</a>) أو <a href="/curtains/blackout/" class="text-gold-deep underline">البلاك أوت</a> أو <a href="/curtains/wave/" class="text-gold-deep underline">الويفي</a> (<a href="/wave-curtains/" class="text-gold-deep underline">ستائر ويفي مع شيفون</a>).
+      وللتعرف على ما يحدد السعر: <a href="/prices/" class="text-gold-deep underline">أسعار الستائر في الكويت</a>.
+    </p>
+
+    {others.length > 0 && (
+      <>
+        <h2 class="text-xl font-bold text-charcoal mb-3">نخدم أيضاً</h2>
+        <ul class="mb-10 flex flex-wrap gap-2">
+          {others.map((o) => (
+            <li><a href={`/areas/${o.id}/`} class="inline-block rounded-full border border-sand px-4 py-1.5 text-sm text-charcoal hover:border-gold-deep hover:text-gold-deep">{o.data.title.split("—")[0].trim()}</a></li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {faqs.length > 0 && (
+      <>
+        <h2 class="text-xl font-bold text-charcoal mb-4">أسئلة شائعة</h2>
+        <FAQ faqs={faqs} />
+      </>
+    )}
+
+    <div class="mt-12 text-center">
+      <WhatsAppButton label={`اطلب عرض سعر — ${h1}`} topic="area" area={govShort} />
+    </div>
+  </div>
+</BaseLayout>

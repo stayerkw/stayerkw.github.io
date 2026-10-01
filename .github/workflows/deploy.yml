@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # لازم لـ lastmod الحقيقي في sitemap (تاريخ آخر commit لكل ملف)
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -29,6 +31,10 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: فحص السيو (أخطاء جسيمة تمنع النشر)
+        run: npm run lint:seo
+      - name: فحص الروابط الداخلية
+        run: npm run lint:links
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -1,12 +1,19 @@
 ---
 import { mainNav } from "../data/navigation";
 import { business } from "../data/business";
+import { buildWhatsAppHref, inferArea, inferTopic, waTrackingAttrs } from "../data/whatsapp";
+
+const pathname = Astro.url.pathname;
+const topic = inferTopic(pathname);
+const area = inferArea(pathname);
+const waHref = buildWhatsAppHref({ topic, area, pageUrl: new URL(pathname, Astro.site).href });
+const waTrack = waTrackingAttrs({ topic, area, placement: "header" });
 ---
-<header class="sticky top-0 z-50 bg-ivory/95 backdrop-blur border-b border-sand shadow-sm">
+<header class="sticky top-0 z-50 bg-ivory border-b border-sand">
   <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-4">
     <a href="/" class="text-lg font-bold text-charcoal">{business.name}</a>
 
-    <nav class="hidden md:flex items-center gap-6 text-sm">
+    <nav aria-label="القائمة الرئيسية" class="hidden md:flex items-center gap-6 text-sm">
       {mainNav.map((item) => (
         <a href={item.href} class="text-charcoal/80 hover:text-olive transition-colors">
           {item.label}
@@ -15,20 +22,27 @@ import { business } from "../data/business";
     </nav>
 
     <a
-      href={business.whatsappLink}
+      href={waHref}
       target="_blank"
       rel="noopener noreferrer"
-      class="rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+      {...waTrack}
+      class="rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-white hover:bg-[#0d6e36] transition-colors"
     >
       واتساب
     </a>
   </div>
 
-  <nav class="md:hidden flex overflow-x-auto gap-4 px-4 pb-3 text-sm">
-    {mainNav.map((item) => (
-      <a href={item.href} class="whitespace-nowrap text-charcoal/80 hover:text-olive">
-        {item.label}
-      </a>
-    ))}
-  </nav>
+  <details class="md:hidden border-t border-sand group">
+    <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-semibold text-charcoal">
+      <span>القائمة</span>
+      <span aria-hidden="true" class="transition-transform group-open:rotate-180">▾</span>
+    </summary>
+    <nav aria-label="قائمة الجوال" class="grid grid-cols-2 gap-x-4 gap-y-1 px-4 pb-4 text-sm">
+      {mainNav.map((item) => (
+        <a href={item.href} class="rounded-lg px-2 py-2 text-charcoal/80 hover:bg-sand/40 hover:text-olive">
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </details>
 </header>

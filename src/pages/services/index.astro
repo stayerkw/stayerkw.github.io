@@ -8,7 +8,7 @@ const services = (await getCollection("services", ({ data }) => !data.draft)).so
   (a, b) => a.data.order - b.data.order
 );
 ---
-<BaseLayout title="خدمات الستائر في الكويت" description="تفصيل وتركيب الستائر حسب المقاس بخدمة احترافية في جميع مناطق الكويت.">
+<BaseLayout title="خدمات الستائر في الكويت" description="تفصيل وتركيب الستائر حسب المقاس في جميع مناطق الكويت، مع زيارة منزلية لأخذ المقاسات وعرض العينات. اطلب عبر واتساب.">
   <div class="mx-auto max-w-6xl px-4 py-10">
     <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الخدمات" }]} />
     <h1 class="text-3xl font-bold text-charcoal mb-8">خدماتنا</h1>

@@ -1,0 +1,46 @@
+name: فحص الجودة (طلبات الدمج)
+
+# يعمل على كل طلب دمج (ومنها طلبات لوحة Decap في editorial_workflow) قبل أن يصل المحتوى إلى main.
+# الصارم: يفشل عند أي تحذير (طول عنوان/وصف، تكرار) كي يُصلَح المحتوى قبل النشر.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: seo-lint (صارم)
+        run: node scripts/seo-lint.mjs --strict
+      - name: فحص الروابط
+        run: npm run lint:links
+
+  lighthouse:
+    # استشاري: لا يمنع الدمج (continue-on-error) حتى تُضبط العتبات على بيانات النشر الفعلية.
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
