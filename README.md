@@ -44,7 +44,7 @@ npm run preview   # معاينة نسخة الإنتاج محلياً
 
 ## لوحة إدارة المنتجات (/admin)
 
-لوحة Sveltia CMS (بديل Decap الحديث، يدعم الجوال) مجانية بلا سيرفر أو قاعدة بيانات: `/admin/`. مستضافة محلياً في `public/admin/sveltia/` (الإصدار في `VERSION.txt`)، والإعدادات في `public/admin/config.yml`، وتسجيل الدخول عبر `admin-oauth-worker`. كل تعديل يصير طلب دمج (editorial workflow) يمر بفحص الجودة قبل النشر. تدير منها: المنتجات، أعمالنا، المقالات، أنواع الستائر، الخدمات، المناطق، وصفحتي المعرض، والأسعار (`src/data/pricing.json`). فحص «الكلمة المستهدفة» جزء من `npm run lint:seo` (`scripts/keyword-check.mjs`)، وبعد تعديل `seo/keyword-master.csv` شغّل `npm run cms:keywords` لتحديث قائمتها في اللوحة.
+لوحة Sveltia CMS (بديل Decap الحديث، يدعم الجوال) مجانية بلا سيرفر أو قاعدة بيانات: `/admin/`. مستضافة محلياً في `public/admin/sveltia/` (الإصدار في `VERSION.txt`)، والإعدادات في `public/admin/config.yml`، وتسجيل الدخول عبر `admin-oauth-worker`. الحفظ من اللوحة يُنشر مباشرة، وفحوص الجودة (seo-lint والروابط وLighthouse) تُظهر تنبيهات في GitHub ولا تمنع النشر. تدير منها: المنتجات، أعمالنا، المقالات، أنواع الستائر، الخدمات، المناطق، وصفحتي المعرض، والأسعار (`src/data/pricing.json`). فحص «الكلمة المستهدفة» جزء من `npm run lint:seo` (`scripts/keyword-check.mjs`)، وبعد تعديل `seo/keyword-master.csv` شغّل `npm run cms:keywords` لتحديث قائمتها في اللوحة.
 
 **تحتاج إعداد لمرة واحدة فقط** (خطوات كاملة في مجلد `admin-oauth-worker/README.md` داخل هذه الحزمة):
 1. إنشاء GitHub OAuth App.

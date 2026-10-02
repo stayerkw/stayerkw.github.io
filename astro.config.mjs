@@ -17,11 +17,15 @@ const noindexPaths = Object.entries(noindexDirs).flatMap(([route, dir]) => {
     .map((f) => `/${route}/${f.replace(/\.md$/, '')}`);
 });
 
-// P-WORKS: صفحة /projects/ تُنشر noindex ما دام لا يوجد مشروع منشور (غير مسودة)، فتُستبعد من sitemap أيضاً
+// P-WORKS: صفحة /projects/ تُنشر noindex ما دام لا يوجد مشروع قابل للنشر، فتُستبعد من sitemap أيضاً
 const projectsDir = fileURLToPath(new URL('./src/content/projects/', import.meta.url));
 const hasPublishedProjects = existsSync(projectsDir) && readdirSync(projectsDir)
   .filter((f) => f.endsWith('.md'))
-  .some((f) => !/^draft:\s*true\s*$/m.test(readFileSync(projectsDir + f, 'utf8').split(/^---\s*$/m)[1] ?? ''));
+  .some((f) => {
+    // نفس قاعدة src/lib/projects.ts: غير مسودة + موافقة + صورة + محافظة + غرفة
+    const fm = readFileSync(projectsDir + f, 'utf8').split(/^---\s*$/m)[1] ?? '';
+    return !/^draft:\s*true\s*$/m.test(fm) && /^consent:\s*true\s*$/m.test(fm) && /^images:\s*\n\s*-/m.test(fm) && /^governorate:\s*\S/m.test(fm) && /^room:\s*\S/m.test(fm);
+  });
 
 // B5: lastmod حقيقي من تاريخ آخر commit للملف المصدر (لا تواريخ مختلقة). الصفحات التي لا نجد لها
 // مصدراً أو لا يوجد git (مثلاً داخل zip) تُترك بلا lastmod بدل تخمينه. يتطلب في CI: fetch-depth: 0.

@@ -7,12 +7,14 @@ import { glob } from 'astro/loaders';
 // كي لا يفشل البناء (مثل opacity: '') ولا يصير العنوان فارغاً (seoTitle: '').
 const blank = (v: unknown) => (v === '' || v === null ? undefined : v);
 const optStr = () => z.preprocess(blank, z.string().optional());
+// نص يُقبل فارغاً: الوصف الفارغ لا يُفشل البناء (يُولَّد وصف احتياطي في BaseLayout، وseo-lint ينبّه فقط)
+const textOrEmpty = () => z.preprocess(blank, z.string().default(''));
 const opt = <T extends z.ZodTypeAny>(t: T) => z.preprocess(blank, t.optional());
 
 const withImage = (image: ReturnType<typeof z.string>) =>
   z.object({
     title: z.string(),
-    description: z.string(),
+    description: textOrEmpty(),
     order: z.number().default(0),
     image: opt(image),
     imageAlt: optStr(),
@@ -64,7 +66,7 @@ const products = defineCollection({
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: ({ image }) => withImage(image()).extend({ pubDate: z.date(), updatedDate: opt(z.date()), ...related }),
+  schema: ({ image }) => withImage(image()).extend({ pubDate: z.preprocess(blank, z.date().default(() => new Date())), updatedDate: opt(z.date()), ...related }),
 });
 
 // صفحات مناطق الخدمة — تُنشأ فقط للمناطق التي لها حجم بحث فعلي (حسب Google Keyword Planner)
@@ -74,9 +76,9 @@ const areas = defineCollection({
     title: z.string(),
     seoTitle: optStr(),
     focusKeyword: optStr(),
-    description: z.string(),
+    description: textOrEmpty(),
     governorate: z.string(),
-    intro: z.string(),
+    intro: textOrEmpty(),
     // اختياري: إن تُرك فارغاً تُؤخذ المناطق تلقائياً من src/data/areas.ts
     areasList: z.array(z.string()).optional(),
     faqs: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
@@ -95,17 +97,17 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      description: z.string(),
+      description: textOrEmpty(),
       focusKeyword: optStr(),
-      governorate: z.string(),
+      governorate: optStr(),
       // اختياري: الحي/المنطقة داخل المحافظة
       area: optStr(),
       // يطابق اسم ملف في src/content/curtain-types (مثل wave أو roll)
       curtainType: optStr(),
-      room: z.enum(['living', 'bedroom', 'diwaniya', 'office', 'kitchen', 'majlis', 'other']),
+      room: opt(z.enum(['living', 'bedroom', 'diwaniya', 'office', 'kitchen', 'majlis', 'other'])),
       // المشكلة التي أراد العميل حلها، والحل المنفذ
-      problem: z.string(),
-      solution: z.string(),
+      problem: textOrEmpty(),
+      solution: textOrEmpty(),
       fabric: optStr(),
       // مدة التنفيذ الفعلية لهذا المشروع (نص حر، مثل «يومان»)
       duration: optStr(),
@@ -118,11 +120,10 @@ const projects = defineCollection({
             label: z.enum(['before', 'after', 'gallery']).default('gallery'),
           })
         )
-        .min(1),
-      // موافقة العميل الموثقة على النشر — إلزامية
-      consent: z
-        .boolean()
-        .refine((v) => v === true, 'لا يُنشر مشروع بلا موافقة موثقة من العميل: فعّل حقل consent بعد الحصول على الموافقة'),
+        .default([]),
+      // موافقة العميل الموثقة على النشر: بدونها (أو بلا صور/محافظة/غرفة) يُحفظ المشروع ولا يُنشر،
+      // ولا يفشل البناء — scripts/seo-lint.mjs ينبّه بسبب عدم النشر (publishableProject في src/lib/projects.ts)
+      consent: z.preprocess(blank, z.boolean().default(false)),
       // اختياري: كيف وُثّقت الموافقة (رسالة واتساب، تاريخ…) — لا يُعرض في الموقع
       consentNote: optStr(),
       order: z.number().default(0),

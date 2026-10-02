@@ -1,13 +1,16 @@
 // فحص السيو الآلي على مخرجات البناء (dist) — يفحص ما سيُنشر فعلاً لا ملفات المصدر.
 // الاستعمال: npm run build && node scripts/seo-lint.mjs [--strict]
 //   بدون --strict: الأخطاء الجسيمة تُفشل الأمر (خروج 1)، والتحذيرات تُطبع فقط.
-//   مع --strict: التحذيرات تُفشل أيضاً (لفحص طلبات الدمج PR).
+//   مع --strict: التحذيرات تُفشل أيضاً.
+//   مع --report-only: لا يُفشل أبداً (خروج 0) ويطبع كل ملاحظة كتنبيه GitHub (::warning::) — المستعمل في CI والنشر
+//   بقرار المالك (2 أكتوبر): الفحص يُنبّه ولا يمنع النشر.
 import fs from "node:fs";
 import path from "node:path";
 import { checkKeywords } from "./keyword-check.mjs";
 
 const DIST = "dist";
 const strict = process.argv.includes("--strict");
+const reportOnly = process.argv.includes("--report-only");
 const errors = [];
 const warnings = [];
 const err = (page, msg) => errors.push(`✗ ${page}: ${msg}`);
@@ -105,12 +108,32 @@ else {
   for (const l of locs) if (!indexable.has(l)) err("sitemap", `رابط في sitemap ليس صفحة مفهرسة: ${l}`);
 }
 
+// مشاريع محفوظة لن تُنشر لنقص ما لا يجوز نشره بدونه (انظر src/lib/projects.ts)
+{
+  const dir = "src/content/projects";
+  if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).filter((x) => x.endsWith(".md"))) {
+    const fm = (fs.readFileSync(path.join(dir, f), "utf8").match(/^---\r?\n([\s\S]*?)\r?\n---/) || [, ""])[1];
+    if (/^draft:\s*true\s*$/m.test(fm)) continue;
+    const miss = [];
+    if (!/^consent:\s*true\s*$/m.test(fm)) miss.push("موافقة العميل");
+    if (!/^images:\s*\n\s*-/m.test(fm)) miss.push("صورة");
+    if (!/^governorate:\s*\S/m.test(fm)) miss.push("المحافظة");
+    if (!/^room:\s*\S/m.test(fm)) miss.push("الغرفة");
+    if (miss.length) warn(`/projects/${f.replace(/\.md$/, "")}/`, `محفوظ لكنه لا يُنشر حتى يُكمل: ${miss.join("، ")}`);
+  }
+}
+
 // الكلمات المستهدفة (focusKeyword) في ملفات المحتوى — تنافس الصفحات خطأ جسيم، وغياب الكلمة عن العنوان/الوصف تحذير
 const kw = checkKeywords();
 errors.push(...kw.errors);
 warnings.push(...kw.warnings);
 
 console.log(`فُحصت ${pages.length} صفحة — أخطاء: ${errors.length}، تحذيرات: ${warnings.length}${strict ? " (وضع صارم)" : ""}`);
+if (reportOnly) {
+  // تنبيهات تظهر في صفحة الفحص على GitHub دون إفشاله
+  for (const l of [...errors, ...warnings]) console.log(`::warning title=SEO::${l.replace(/\n/g, " ")}`);
+  process.exit(0);
+}
 if (warnings.length) console.log(warnings.join("\n"));
 if (errors.length) console.error(errors.join("\n"));
 process.exit(errors.length || (strict && warnings.length) ? 1 : 0);
