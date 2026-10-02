@@ -11,8 +11,8 @@ backend:
 
 app_title: "لوحة عالم ستائر الكويت"
 logo_url: /favicon.svg
-site_url: https://stayerkw.github.io
-display_url: https://stayerkw.github.io
+site_url: https://alamcurtainskw.com
+display_url: https://alamcurtainskw.com
 publish_mode: editorial_workflow   # كل تعديل يصير طلب دمج يمر بفحص الجودة قبل النشر
 output:
   omit_empty_optional_fields: true   # لا تُكتب الحقول الاختيارية الفارغة (opacity: '' كان يُفشل البناء)

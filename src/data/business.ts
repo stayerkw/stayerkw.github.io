@@ -3,7 +3,7 @@
 export const business = {
   name: "عالم ستائر الكويت",
   alternateName: "Alam Stayer Kuwait",
-  domain: "https://stayerkw.github.io",
+  domain: "https://alamcurtainskw.com",
   phone: "+96565061072",
   whatsapp: "96565061072",
   whatsappLink: "https://wa.me/96565061072",

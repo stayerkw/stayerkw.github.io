@@ -47,7 +47,7 @@ const lastmodFor = (pathname) => {
 
 // موقع GitHub Pages من نوع <username>.github.io يُنشر على الجذر مباشرة (بدون base path)
 export default defineConfig({
-  site: 'https://stayerkw.github.io',
+  site: 'https://alamcurtainskw.com',
   integrations: [
     sitemap({
       filter: (page) => {

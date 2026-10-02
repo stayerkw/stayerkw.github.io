@@ -22,7 +22,7 @@ npm run preview   # معاينة نسخة الإنتاج محلياً
 1. أنشئ مستودعاً باسم `stayerkw.github.io` بالضبط (اسم المستودع = اسم النطاق لمواقع المستخدم على GitHub Pages).
 2. ارفع كل هذه الملفات إلى فرع `main`.
 3. من إعدادات المستودع → Pages → Build and deployment → Source، اختر **GitHub Actions** (الـ workflow جاهز في `.github/workflows/deploy.yml` وينشر تلقائياً عند كل push).
-4. بعد أول نشر ناجح، الموقع يكون متاحاً على `https://stayerkw.github.io`.
+4. بعد أول نشر ناجح، الموقع يكون متاحاً على النطاق الخاص `https://alamcurtainskw.com` (ملف `public/CNAME`)، و`https://stayerkw.github.io` يحوّل إليه تلقائياً.
 
 ## إضافة محتوى جديد
 
@@ -51,7 +51,7 @@ npm run preview   # معاينة نسخة الإنتاج محلياً
 2. نشر Worker صغير على Cloudflare (مجاني) يتوسط عملية تسجيل الدخول فقط — لا يخزن بياناتك.
 3. تعديل رابطين في `public/admin/config.yml` (اسم المستودع ورابط الـ Worker).
 
-بعدها تفتح `https://stayerkw.github.io/admin/` وتضيف منتجات بدون لمس الكود.
+بعدها تفتح `https://alamcurtainskw.com/admin/` وتضيف منتجات بدون لمس الكود.
 
 ## تدابير سرعة الصفحة وLCP
 

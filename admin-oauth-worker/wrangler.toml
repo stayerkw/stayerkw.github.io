@@ -6,7 +6,7 @@ compatibility_date = "2024-11-01"
 #   npx wrangler secret put GITHUB_CLIENT_ID
 #   npx wrangler secret put GITHUB_CLIENT_SECRET
 #   npx wrangler secret put ALLOWED_USERS   # مثال: myusername  (أو user1,user2)
-#   npx wrangler secret put SITE_ORIGIN     # مثال: https://stayerkw.github.io  (بلا / في النهاية)
+#   npx wrangler secret put SITE_ORIGIN     # القيمة الحالية: https://alamcurtainskw.com  (بلا / في النهاية)
 #
 # عند تفعيل النطاق الخاص أضفه إلى SITE_ORIGIN مفصولاً بفاصلة:
-#   https://stayerkw.github.io,https://your-domain.com
+#   https://alamcurtainskw.com,https://stayerkw.github.io   (الثاني مؤقت أثناء الانتقال؛ احذفه بعد التأكد)
