@@ -21,10 +21,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: seo-lint (صارم)
-        run: node scripts/seo-lint.mjs --strict
+      - name: seo-lint (تنبيهات فقط)
+        run: node scripts/seo-lint.mjs --report-only   # ينبّه ولا يُفشل (قرار المالك 2 أكتوبر)
       - name: فحص الروابط
-        run: npm run lint:links
+        run: node scripts/check-links.mjs --report-only
 
   lighthouse:
     # استشاري: لا يمنع الدمج (continue-on-error) حتى تُضبط العتبات على بيانات النشر الفعلية.

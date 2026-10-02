@@ -44,7 +44,7 @@ const others = (await getCollection("areas", ({ data }) => !data.draft)).filter(
       ]}
     />
     <h1 class="text-3xl font-bold text-charcoal mb-4">{h1}</h1>
-    <p class="text-charcoal/75 leading-8 mb-8">{entry.data.intro}</p>
+    {entry.data.intro && <p class="text-charcoal/75 leading-8 mb-8">{entry.data.intro}</p>}
 
     <h2 class="text-xl font-bold text-charcoal mb-3">المناطق التي نخدمها في {govShort}</h2>
     <ul class="flex flex-wrap gap-2 mb-10">

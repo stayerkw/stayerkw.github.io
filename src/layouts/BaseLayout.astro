@@ -9,7 +9,7 @@ import { business } from "../data/business";
 
 export interface Props {
   title: string;
-  description: string;
+  description?: string;
   schemaType?: "WebSite" | "Service" | "Product" | "Article" | "FAQPage" | "CollectionPage";
   faqs?: { question: string; answer: string }[];
   ogImage?: string;
@@ -43,6 +43,8 @@ const {
   waProduct,
   waArea,
 } = Astro.props;
+// وصف احتياطي إن تُرك «وصف جوجل» فارغاً من اللوحة: الصفحة تُنشر، وseo-lint ينبّه لكتابة وصف حقيقي
+const metaDescription = description?.trim() ? description : `${title} — ${business.name}: تفصيل وتركيب ستائر بالمقاس في الكويت.`;
 
 const fullTitle = title.includes(business.name) ? title : `${title} | ${business.name}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -64,7 +66,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="preload" href="/fonts/cairo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonicalURL} />
     {noindex
       ? <meta name="robots" content="noindex, nofollow" />
@@ -73,7 +75,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={new URL(ogImage, Astro.site)} />
     <meta property="og:locale" content={business.locale} />
@@ -81,10 +83,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
 
-    <Schema type={schemaType} title={fullTitle} description={description} faqs={faqs} image={ogImage} price={price} pubDate={pubDate} updatedDate={updatedDate} areaServed={areaServed} serviceType={serviceType} itemList={itemList} />
+    <Schema type={schemaType} title={fullTitle} description={metaDescription} faqs={faqs} image={ogImage} price={price} pubDate={pubDate} updatedDate={updatedDate} areaServed={areaServed} serviceType={serviceType} itemList={itemList} />
   </head>
   <body class="flex min-h-screen flex-col">
     <Header />

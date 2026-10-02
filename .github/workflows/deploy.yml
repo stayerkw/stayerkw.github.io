@@ -31,10 +31,10 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: فحص السيو (أخطاء جسيمة تمنع النشر)
-        run: npm run lint:seo
+      - name: فحص السيو (تنبيهات فقط)
+        run: node scripts/seo-lint.mjs --report-only   # ينبّه ولا يمنع النشر (قرار المالك 2 أكتوبر)
       - name: فحص الروابط الداخلية
-        run: npm run lint:links
+        run: node scripts/check-links.mjs --report-only
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
