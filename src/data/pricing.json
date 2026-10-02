@@ -66,6 +66,13 @@
       "short": "مكتبي"
     },
     {
+      "id": "roman",
+      "name": "ستائر رومانية",
+      "href": "/curtains/roman/",
+      "price": 7,
+      "short": "رومانية"
+    },
+    {
       "id": "wooden",
       "name": "ستائر خشبية (بليندات)",
       "href": "/curtains/wooden/",

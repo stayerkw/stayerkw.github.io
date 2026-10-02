@@ -2,6 +2,7 @@
 export const roomLabels: Record<string, string> = {
   living: "صالة",
   bedroom: "غرفة نوم",
+  room: "غرفة",
   diwaniya: "ديوانية",
   office: "مكتب",
   kitchen: "مطبخ",
