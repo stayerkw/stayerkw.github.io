@@ -25,14 +25,14 @@ const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
       <table class="w-full text-right border border-sand rounded-xl overflow-hidden">
         <thead class="bg-sand/40 text-charcoal">
           <tr>
-            <th class="px-4 py-3 font-bold">نوع الستارة</th>
-            <th class="px-4 py-3 font-bold">السعر</th>
+            <th scope="col" class="px-4 py-3 font-bold">نوع الستارة</th>
+            <th scope="col" class="px-4 py-3 font-bold">السعر</th>
           </tr>
         </thead>
         <tbody class="text-charcoal/80">
           {priceList.map((row) => (
             <tr class="border-t border-sand">
-              <td class="px-4 py-3"><a href={row.href} class="text-olive underline hover:text-charcoal">{row.name}</a></td>
+              <th scope="row" class="px-4 py-3 text-right font-normal"><a href={row.href} class="text-olive underline hover:text-charcoal">{row.name}</a></th>
               <td class="px-4 py-3">تبدأ من {row.price} د.ك للمتر المربع</td>
             </tr>
           ))}

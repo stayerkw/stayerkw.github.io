@@ -53,11 +53,11 @@ const minPrice = priceList.find((r) => r.id === "roll")?.price;
         <div class="overflow-x-auto mb-4">
           <table class="w-full min-w-[20rem] border-collapse text-sm">
             <thead>
-              <tr class="bg-sand text-right"><th class="p-3 font-bold">العرض</th><th class="p-3 font-bold">الارتفاع</th></tr>
+              <tr class="bg-sand text-right"><th scope="col" class="p-3 font-bold">العرض</th><th scope="col" class="p-3 font-bold">الارتفاع</th></tr>
             </thead>
             <tbody class="bg-white">
               {fm.sizeWidths.map((w) => (
-                <tr class="border-t border-sand"><td class="p-3 font-semibold">{fmM(w)} م</td><td class="p-3">{fmM(fm.sizeHeight!)} م</td></tr>
+                <tr class="border-t border-sand"><th scope="row" class="p-3 text-right font-semibold">{fmM(w)} م</th><td class="p-3">{fmM(fm.sizeHeight!)} م</td></tr>
               ))}
             </tbody>
           </table>
@@ -89,16 +89,16 @@ const minPrice = priceList.find((r) => r.id === "roll")?.price;
       <table class="w-full min-w-[32rem] border-collapse text-sm">
         <thead>
           <tr class="bg-sand text-right">
-            <th class="p-3 font-bold"> </th>
-            <th class="p-3 font-bold">رول جاهز</th>
-            <th class="p-3 font-bold">رول مفصّل</th>
+            <th scope="col" class="p-3 font-bold">المقارنة</th>
+            <th scope="col" class="p-3 font-bold">رول جاهز</th>
+            <th scope="col" class="p-3 font-bold">رول مفصّل</th>
           </tr>
         </thead>
         <tbody class="bg-white">
-          <tr class="border-t border-sand"><td class="p-3 font-semibold">المقاس</td><td class="p-3">ارتفاع 2.30 م، وعرض 1.50 أو 1.80 أو 2.00 م</td><td class="p-3">بمقاس نافذتك</td></tr>
-          <tr class="border-t border-sand"><td class="p-3 font-semibold">يناسب</td><td class="p-3">نافذة تطابق المقاس القياسي</td><td class="p-3">نوافذ غير قياسية أو كبيرة</td></tr>
-          <tr class="border-t border-sand"><td class="p-3 font-semibold">المظهر</td><td class="p-3">جيد عند تطابق المقاس</td><td class="p-3">مرتب بلا فراغات</td></tr>
-          <tr class="border-t border-sand"><td class="p-3 font-semibold">الطلب</td><td class="p-3">صورة ومقاس تقريبي</td><td class="p-3">قياس دقيق قبل التنفيذ</td></tr>
+          <tr class="border-t border-sand"><th scope="row" class="p-3 text-right font-semibold">المقاس</th><td class="p-3">ارتفاع 2.30 م، وعرض 1.50 أو 1.80 أو 2.00 م</td><td class="p-3">بمقاس نافذتك</td></tr>
+          <tr class="border-t border-sand"><th scope="row" class="p-3 text-right font-semibold">يناسب</th><td class="p-3">نافذة تطابق المقاس القياسي</td><td class="p-3">نوافذ غير قياسية أو كبيرة</td></tr>
+          <tr class="border-t border-sand"><th scope="row" class="p-3 text-right font-semibold">المظهر</th><td class="p-3">جيد عند تطابق المقاس</td><td class="p-3">مرتب بلا فراغات</td></tr>
+          <tr class="border-t border-sand"><th scope="row" class="p-3 text-right font-semibold">الطلب</th><td class="p-3">صورة ومقاس تقريبي</td><td class="p-3">قياس دقيق قبل التنفيذ</td></tr>
         </tbody>
       </table>
     </div>
