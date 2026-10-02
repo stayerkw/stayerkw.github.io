@@ -47,8 +47,6 @@ const lastmodFor = (pathname) => {
 
 // موقع GitHub Pages من نوع <username>.github.io يُنشر على الجذر مباشرة (بدون base path)
 export default defineConfig({
-  // CSS (~9 ك.ب مضغوطاً) يُضمَّن في كل صفحة بدل ملف منفصل: يلغي رحلة طلب تحجب أول رسم (LCP) — N-33
-  build: { inlineStylesheets: 'always' },
   site: 'https://alamcurtainskw.com',
   integrations: [
     sitemap({
