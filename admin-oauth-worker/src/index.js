@@ -6,7 +6,7 @@
 //   GITHUB_CLIENT_SECRET  سر التطبيق
 //   ALLOWED_USERS         أسماء مستخدمي GitHub المسموح لهم، مفصولة بفاصلة: "user1,user2"
 //   SITE_ORIGIN           أصل/أصول اللوحة المسموحة، مفصولة بفاصلة (بلا / في النهاية):
-//                         "https://stayerkw.github.io" ثم يُضاف النطاق الخاص لاحقاً
+//                         "https://alamcurtainskw.com" (ويمكن إضافة "https://stayerkw.github.io" مؤقتاً بفاصلة)
 // اختياري:
 //   GITHUB_SCOPE          الافتراضي "public_repo" (للمستودع العام). استعمل "repo" فقط لمستودع خاص.
 

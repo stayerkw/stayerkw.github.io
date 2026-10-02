@@ -13,7 +13,7 @@
 
 ### 1) أنشئ GitHub OAuth App
 GitHub → Settings → Developer settings → OAuth Apps → New OAuth App
-- **Homepage URL**: `https://stayerkw.github.io`
+- **Homepage URL**: `https://alamcurtainskw.com`
 - **Authorization callback URL**: `https://<اسم-الـ-worker>.<حسابك>.workers.dev/callback`
 
 احفظ `Client ID` و`Client Secret`. (إن سبق أن استخدمت سراً قديماً، ولّد سراً جديداً: Generate a new client secret ثم احذف القديم.)
@@ -26,7 +26,7 @@ npx wrangler deploy
 npx wrangler secret put GITHUB_CLIENT_ID
 npx wrangler secret put GITHUB_CLIENT_SECRET
 npx wrangler secret put ALLOWED_USERS   # اسم مستخدمك في GitHub (أو عدة أسماء بفاصلة)
-npx wrangler secret put SITE_ORIGIN     # https://stayerkw.github.io
+npx wrangler secret put SITE_ORIGIN     # https://alamcurtainskw.com  (أثناء الانتقال: https://alamcurtainskw.com,https://stayerkw.github.io)
 ```
 عند تفعيل النطاق الخاص: أعد تشغيل `wrangler secret put SITE_ORIGIN` بالقيمتين مفصولتين بفاصلة.
 
@@ -43,7 +43,7 @@ backend:
 ```
 
 ### 4) اختبر
-افتح `https://stayerkw.github.io/admin/` وسجّل الدخول، ثم عدّل صفحة واحفظ وتأكد من ظهور commit. جرّب أيضاً الدخول بحساب غير مسموح: يجب أن ترى `Forbidden`.
+افتح `https://alamcurtainskw.com/admin/` وسجّل الدخول، ثم عدّل صفحة واحفظ وتأكد من ظهور commit. جرّب أيضاً الدخول بحساب غير مسموح: يجب أن ترى `Forbidden`.
 
 ## إجراءات يدوية على حساب GitHub (لا يمكن تنفيذها من الكود)
 - فعّل المصادقة الثنائية (2FA) على حسابك.
