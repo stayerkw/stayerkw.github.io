@@ -1,0 +1,27 @@
+# قياس Lighthouse على الموقع الحي (نفس ظروف PageSpeed Insights تقريباً) — يدوي أو عند الدفع إلى perf-live
+name: قياس الأداء على الموقع الحي
+on:
+  workflow_dispatch:
+  push:
+    branches: [perf-live]
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Lighthouse (حي)
+        id: lh
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://alamcurtainskw.com/
+            https://alamcurtainskw.com/curtains/wooden/
+          runs: 3
+          uploadArtifacts: false
+          temporaryPublicStorage: false
+      - name: ملخص
+        if: always()
+        run: node scripts/lh-summary.mjs "${{ steps.lh.outputs.resultsPath }}"
