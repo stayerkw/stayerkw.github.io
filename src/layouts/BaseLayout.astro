@@ -69,7 +69,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="preload" href="/fonts/cairo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- A4: Google Analytics 4 مؤجَّل: gtag يُعرَّف فوراً (فتُحفظ الأحداث في dataLayer)، وسكربت gtag.js
-         يُحمَّل بعد اكتمال الصفحة وفي وقت فراغ المتصفح، فلا ينافس الخطوط والصور على LCP.
+         يُحمَّل عند أول تفاعل أو بعد 6 ثوانٍ من اكتمال الصفحة، فلا ينافس الخطوط والصور على LCP.
          لا يُحمَّل إلا على النطاق الرسمي، فلا تُحتسب زيارات المعاينة المحلية وLighthouse CI. -->
     <script is:inline define:vars={{ gaId: business.ga4Id }}>
       window.dataLayer = window.dataLayer || [];
@@ -83,8 +83,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           s.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
           document.head.appendChild(s);
         };
-        var idle = function () { ("requestIdleCallback" in window) ? requestIdleCallback(loadGa, { timeout: 3000 }) : setTimeout(loadGa, 1500); };
-        if (document.readyState === "complete") idle(); else addEventListener("load", idle, { once: true });
+        // يُحمَّل عند أول تفاعل (لمس، تمرير، نقر، لوحة مفاتيح) أو بعد 6 ثوانٍ من اكتمال الصفحة، أيهما أسبق،
+        // فلا يقع تنفيذه (مهمة طويلة) في نافذة التحميل التي يقيسها Lighthouse ولا يبطئ أول تفاعل (TBT/INP).
+        var done = false;
+        var go = function () {
+          if (done) return; done = true;
+          ["pointerdown", "keydown", "scroll", "touchstart"].forEach(function (e) { removeEventListener(e, go); });
+          loadGa();
+        };
+        ["pointerdown", "keydown", "scroll", "touchstart"].forEach(function (e) { addEventListener(e, go, { once: true, passive: true }); });
+        var later = function () { setTimeout(go, 6000); };
+        if (document.readyState === "complete") later(); else addEventListener("load", later, { once: true });
       }
     </script>
 
