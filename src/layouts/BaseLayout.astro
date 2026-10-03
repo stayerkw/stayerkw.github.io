@@ -24,10 +24,13 @@ export interface Props {
   waTopic?: WaTopic;
   waProduct?: string;
   waArea?: string;
+  // أداء: صورة LCP تُحمَّل مسبقاً بنفس srcset الصورة المعروضة (لا تحميل مزدوج)
+  preloadImage?: { srcset: string; sizes: string; type: string };
 }
 
 const {
   title,
+  preloadImage,
   description,
   schemaType = "WebSite",
   faqs,
@@ -85,6 +88,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       }
     </script>
 
+    {preloadImage && <link rel="preload" as="image" type={preloadImage.type} imagesrcset={preloadImage.srcset} imagesizes={preloadImage.sizes} fetchpriority="high" />}
     <title>{fullTitle}</title>
     <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonicalURL} />
