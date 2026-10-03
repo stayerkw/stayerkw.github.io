@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
@@ -49,12 +49,44 @@ const lastmodFor = (pathname) => {
   return gitDate(`src/pages/${parts.join('/')}/index.astro`, `src/pages/${parts.join('/')}.astro`, `src/pages/${parts.join('/')}/[slug].astro`);
 };
 
+// أداء (LCP): أول صورة داخل محتوى Markdown (عنصر .prose) غالباً عنصر LCP في صفحات الأنواع والخدمات
+// والمقالات، وAstro يضع لها loading="lazy" افتراضياً فيتأخر تحميلها. بعد البناء نجعل الصورة الأولى
+// داخل .prose في كل صفحة loading="eager" + fetchpriority="high"، وتبقى بقية الصور كسولة.
+// (معالج Markdown الافتراضي في Astro 7 لا يقبل إضافات rehype دون تثبيت حزمة إضافية.)
+function firstContentImageEager() {
+  return {
+    name: 'first-content-image-eager',
+    hooks: {
+      'astro:build:done': ({ dir, logger }) => {
+        const root = fileURLToPath(dir);
+        const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(d + e.name + '/') : e.name.endsWith('.html') ? [d + e.name] : []));
+        let n = 0;
+        for (const file of walk(root)) {
+          const html = readFileSync(file, 'utf8');
+          const start = html.search(/class="[^"]*\bprose\b/);
+          if (start < 0) continue;
+          const i = html.indexOf('<img', start);
+          if (i < 0) continue;
+          const end = html.indexOf('>', i);
+          const tag = html.slice(i, end + 1);
+          if (!tag.includes('loading="lazy"')) continue;
+          const fixed = tag.replace('loading="lazy"', 'loading="eager" fetchpriority="high"');
+          writeFileSync(file, html.slice(0, i) + fixed + html.slice(end + 1));
+          n++;
+        }
+        logger.info(`first-content-image-eager: ${n} صفحة`);
+      },
+    },
+  };
+}
+
 // موقع GitHub Pages من نوع <username>.github.io يُنشر على الجذر مباشرة (بدون base path)
 export default defineConfig({
   site: 'https://alamcurtainskw.com',
   // أداء (LCP): CSS الموقع صغير (~9 ك.ب مضغوطاً) فيُضمَّن في كل صفحة بدل طلب يحجب العرض
   build: { inlineStylesheets: 'always' },
   integrations: [
+    firstContentImageEager(),
     sitemap({
       filter: (page) => {
         const path = decodeURIComponent(new URL(page).pathname).replace(/\/$/, '');
