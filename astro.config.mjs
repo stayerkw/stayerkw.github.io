@@ -51,7 +51,7 @@ const lastmodFor = (pathname) => {
 
 // أداء (LCP): أول صورة داخل محتوى Markdown (عنصر .prose) غالباً عنصر LCP في صفحات الأنواع والخدمات
 // والمقالات، وAstro يضع لها loading="lazy" افتراضياً فيتأخر تحميلها. بعد البناء نجعل الصورة الأولى
-// داخل .prose في كل صفحة loading="eager" + fetchpriority="high"، وتبقى بقية الصور كسولة.
+// داخل .prose في كل صفحة loading="eager" (بأولوية عادية كي لا تنافس نص LCP في الصفحات التي عنصرها نص)، وتبقى بقية الصور كسولة.
 // (معالج Markdown الافتراضي في Astro 7 لا يقبل إضافات rehype دون تثبيت حزمة إضافية.)
 function firstContentImageEager() {
   return {
@@ -70,7 +70,7 @@ function firstContentImageEager() {
           const end = html.indexOf('>', i);
           const tag = html.slice(i, end + 1);
           if (!tag.includes('loading="lazy"')) continue;
-          const fixed = tag.replace('loading="lazy"', 'loading="eager" fetchpriority="high"');
+          const fixed = tag.replace('loading="lazy"', 'loading="eager"');
           writeFileSync(file, html.slice(0, i) + fixed + html.slice(end + 1));
           n++;
         }
