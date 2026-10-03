@@ -21,7 +21,7 @@ const type = d.curtainType
   ? (await getCollection("curtainTypes", ({ data }) => !data.draft)).find((t) => t.id === d.curtainType)
   : undefined;
 const areaPage = (await getCollection("areas", ({ data }) => !data.draft)).find(
-  (a) => a.data.governorate === d.governorate
+  (a) => a.data.governorate.replace("محافظة ", "") === d.governorate?.replace("محافظة ", "")
 );
 
 const facts = [
@@ -59,24 +59,27 @@ const facts = [
             src={img.src}
             alt={img.alt}
             width={900}
-            height={1200}
             loading={i === 0 ? "eager" : "lazy"}
             fetchpriority={i === 0 ? "high" : "auto"}
-            class="aspect-[3/4] w-full object-cover"
+            class="h-auto w-full"
           />
           <figcaption class="px-3 py-2 text-xs text-charcoal/60">{imageLabels[img.label]}</figcaption>
         </figure>
       ))}
     </div>
 
-    <section class="mt-10">
-      <h2 class="text-xl font-bold text-charcoal mb-2">المشكلة</h2>
-      {d.problem && <p class="text-charcoal/80">{d.problem}</p>}
-    </section>
-    <section class="mt-6">
-      <h2 class="text-xl font-bold text-charcoal mb-2">الحل المنفذ</h2>
-      {d.solution && <p class="text-charcoal/80">{d.solution}</p>}
-    </section>
+    {d.problem && (
+      <section class="mt-10">
+        <h2 class="text-xl font-bold text-charcoal mb-2">ما أراده العميل</h2>
+        <p class="text-charcoal/80">{d.problem}</p>
+      </section>
+    )}
+    {d.solution && (
+      <section class="mt-6">
+        <h2 class="text-xl font-bold text-charcoal mb-2">ما نفّذناه</h2>
+        <p class="text-charcoal/80">{d.solution}</p>
+      </section>
+    )}
     {d.tip && (
       <section class="mt-6">
         <h2 class="text-xl font-bold text-charcoal mb-2">نصيحة</h2>

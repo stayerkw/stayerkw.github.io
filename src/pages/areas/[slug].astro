@@ -5,6 +5,7 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import FAQ from "../../components/FAQ.astro";
 import { kuwaitAreas } from "../../data/areas";
+import ProjectsStrip from "../../components/ProjectsStrip.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("areas", ({ data }) => !data.draft);
@@ -56,6 +57,8 @@ const others = (await getCollection("areas", ({ data }) => !data.draft)).filter(
     <div class="prose prose-lg max-w-none prose-a:text-gold-deep mb-10">
       <Content />
     </div>
+
+    <ProjectsStrip governorate={govShort} title={`من أعمالنا في ${govShort}`} />
 
     <h2 class="text-xl font-bold text-charcoal mb-3">الخدمات والأنواع</h2>
     <p class="text-charcoal/75 leading-8 mb-10">

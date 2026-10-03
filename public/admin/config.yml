@@ -121,7 +121,7 @@ collections:
           - { label: "ستائر خشبية · 30 بحث/شهر → /curtains/wooden/", value: "ستائر خشبية" }
           - { label: "ستائر شيفون · 29 بحث/شهر → /curtains/sheer/", value: "ستائر شيفون" }
           - { label: "ستائر حولي · 23 بحث/شهر → /areas/hawalli/", value: "ستائر حولي" }
-          - { label: "ستائر رومانية · 23 بحث/شهر", value: "ستائر رومانية" }
+          - { label: "ستائر رومانية · 23 بحث/شهر → /curtains/roman/", value: "ستائر رومانية" }
           - { label: "ستائر مكاتب · 20 بحث/شهر → /curtains/office/", value: "ستائر مكاتب" }
           - { label: "ستائر مكتبية · 17 بحث/شهر → /curtains/office/", value: "ستائر مكتبية" }
           - { label: "ستائر زيبرا · 12 بحث/شهر", value: "ستائر زيبرا" }
@@ -211,7 +211,7 @@ collections:
         value_field: "{{slug}}"
         display_fields: ["title"]
         required: false
-      - {label: "الغرفة", name: "room", widget: "select", options: [{label: "صالة", value: "living"}, {label: "غرفة نوم", value: "bedroom"}, {label: "ديوانية", value: "diwaniya"}, {label: "مكتب", value: "office"}, {label: "مطبخ", value: "kitchen"}, {label: "مجلس", value: "majlis"}, {label: "غرفة أخرى", value: "other"}], required: false}
+      - {label: "الغرفة", name: "room", widget: "select", options: [{label: "صالة", value: "living"}, {label: "غرفة نوم", value: "bedroom"}, {label: "غرفة", value: "room"}, {label: "ديوانية", value: "diwaniya"}, {label: "مكتب", value: "office"}, {label: "مطبخ", value: "kitchen"}, {label: "مجلس", value: "majlis"}, {label: "غرفة أخرى", value: "other"}], required: false}
       - {label: "ما الذي أراده العميل؟", name: "problem", widget: "text", required: false}
       - {label: "ماذا نفّذنا؟", name: "solution", widget: "text", required: false}
       - {label: "القماش / النظام", name: "fabric", widget: "string", required: false}

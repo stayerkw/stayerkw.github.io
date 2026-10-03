@@ -1,0 +1,40 @@
+---
+// «من أعمالنا»: مشاريع منشورة (بموافقة) تُفلتر بالمحافظة أو بنوع الستارة — دليل حقيقي وروابط داخلية للصفحة.
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import { publishableProject } from "../lib/projects";
+import { roomLabels } from "../data/projects";
+
+export interface Props {
+  governorate?: string;
+  curtainType?: string;
+  title?: string;
+  limit?: number;
+}
+const { governorate, curtainType, title = "من أعمالنا", limit = 6 } = Astro.props;
+const projects = (await getCollection("projects", publishableProject))
+  .filter((p) => (!governorate || p.data.governorate === governorate) && (!curtainType || p.data.curtainType === curtainType))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, limit);
+---
+{projects.length > 0 && (
+  <section class="mt-12" aria-labelledby="works-strip">
+    <h2 id="works-strip" class="text-xl font-bold text-charcoal mb-5">{title}</h2>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {projects.map((p) => {
+        const cover = p.data.images.find((i) => i.label === "after") ?? p.data.images[0];
+        return (
+          <a href={`/projects/${p.id}/`} class="group block overflow-hidden rounded-2xl border border-sand bg-white hover:shadow-lg transition-shadow">
+            <div class="aspect-[3/4] bg-sand/30">
+              <Image src={cover.src} alt={cover.alt} width={600} loading="lazy" class="h-full w-full object-contain" />
+            </div>
+            <div class="p-4">
+              <h3 class="font-bold text-charcoal group-hover:text-gold-deep">{p.data.title}</h3>
+              <p class="mt-1 text-sm text-charcoal/60">{p.data.area ?? p.data.governorate}{p.data.room ? ` · ${roomLabels[p.data.room]}` : ""}</p>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+)}

@@ -34,7 +34,7 @@ const hasProjects = projects.length > 0;
             const cover = p.data.images.find((i) => i.label === "after") ?? p.data.images[0];
             return (
               <a href={`/projects/${p.id}/`} class="group block overflow-hidden rounded-2xl border border-sand bg-white shadow-sm hover:shadow-lg transition-shadow">
-                <Image src={cover.src} alt={cover.alt} width={600} height={800} loading="lazy" class="aspect-[3/4] w-full object-cover" />
+                <div class="aspect-[3/4] bg-sand/30"><Image src={cover.src} alt={cover.alt} width={600} loading="lazy" class="h-full w-full object-contain" /></div>
                 <div class="p-5">
                   <h2 class="text-lg font-bold text-charcoal group-hover:text-olive transition-colors">{p.data.title}</h2>
                   <p class="mt-1 text-sm text-charcoal/60">
