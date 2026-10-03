@@ -83,8 +83,6 @@ function firstContentImageEager() {
 // موقع GitHub Pages من نوع <username>.github.io يُنشر على الجذر مباشرة (بدون base path)
 export default defineConfig({
   site: 'https://alamcurtainskw.com',
-  // أداء (LCP): CSS الموقع صغير (~9 ك.ب مضغوطاً) فيُضمَّن في كل صفحة بدل طلب يحجب العرض
-  build: { inlineStylesheets: 'always' },
   integrations: [
     firstContentImageEager(),
     sitemap({

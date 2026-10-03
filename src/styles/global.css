@@ -1,15 +1,12 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* أداء (LCP): font-display: optional — إن لم يصل الخط خلال ~100 مللي ثانية يُعرض النص بالخط الاحتياطي
-   لهذه الزيارة فقط دون إعادة رسم لاحقة (لا تأخير لـ LCP ولا CLS)، ويُخزَّن الخط للصفحات التالية.
-   الخطوط محمّلة مسبقاً من <head> فتصل غالباً في الوقت. */
 /* خط Cairo مستضاف محلياً (public/fonts) بدل تحميله من Google Fonts — يلغي رحلة DNS/TLS خارجية على المسار الحرج لعرض الصفحة */
 @font-face {
   font-family: "Cairo";
   font-style: normal;
   font-weight: 400;
-  font-display: optional;
+  font-display: swap;
   src: url("/fonts/cairo-arabic-400-normal.woff2") format("woff2");
   unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFC;
 }
@@ -17,7 +14,7 @@
   font-family: "Cairo";
   font-style: normal;
   font-weight: 400;
-  font-display: optional;
+  font-display: swap;
   src: url("/fonts/cairo-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F;
 }
@@ -25,7 +22,7 @@
   font-family: "Cairo";
   font-style: normal;
   font-weight: 600;
-  font-display: optional;
+  font-display: swap;
   src: url("/fonts/cairo-arabic-600-normal.woff2") format("woff2");
   unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFC;
 }
@@ -33,7 +30,7 @@
   font-family: "Cairo";
   font-style: normal;
   font-weight: 600;
-  font-display: optional;
+  font-display: swap;
   src: url("/fonts/cairo-latin-600-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F;
 }
@@ -41,7 +38,7 @@
   font-family: "Cairo";
   font-style: normal;
   font-weight: 700;
-  font-display: optional;
+  font-display: swap;
   src: url("/fonts/cairo-arabic-700-normal.woff2") format("woff2");
   unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFC;
 }
@@ -49,7 +46,7 @@
   font-family: "Cairo";
   font-style: normal;
   font-weight: 700;
-  font-display: optional;
+  font-display: swap;
   src: url("/fonts/cairo-latin-700-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F;
 }
