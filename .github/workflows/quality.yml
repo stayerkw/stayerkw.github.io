@@ -39,8 +39,12 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Lighthouse CI
+        id: lh
         uses: treosh/lighthouse-ci-action@v12
         with:
           configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
+      - name: ملخص Lighthouse (تنبيهات)
+        if: always()
+        run: node scripts/lh-summary.mjs "${{ steps.lh.outputs.resultsPath }}"

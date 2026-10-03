@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
+import { Picture, getImage } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
 import FAQ from "../components/FAQ.astro";
@@ -27,6 +27,13 @@ const types = [
 const works = (await getCollection("products", ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order)
   .slice(0, 6);
+
+// أداء (LCP): أول بطاقة نوع هي عنصر LCP على الجوال. نولّد لها AVIF وWebP بأحجام مناسبة لـ 72vw،
+// ونحمّل نسختها مسبقاً من <head> بنفس srcset/sizes المعروضة (فلا يحمّل المتصفح الصورة مرتين).
+const TILE_W = [320, 480, 640];
+const TILE_SIZES = "(min-width: 1024px) 380px, 72vw";
+// هذه الصورة تحديداً أصغر بصيغة WebP منها بـ AVIF (15 مقابل 19 ك.ب عند 640)، فتُعرض WebP فقط.
+const lcpWebp = await getImage({ src: imgRoll, format: "webp", width: 640, height: 853, widths: TILE_W, quality: 70 });
 
 const steps = [
   { t: "القياس", d: "نزور منزلك لأخذ المقاسات وعرض العينات، أو ترسل صورة النافذة والمقاس التقريبي عبر واتساب لعرض مبدئي." },
@@ -58,6 +65,7 @@ const faqs = [
 ];
 ---
 <BaseLayout
+  preloadImage={{ srcset: lcpWebp.srcSet.attribute, sizes: TILE_SIZES, type: "image/webp" }}
   title="تفصيل وتركيب ستائر في الكويت"
   description="تفصيل وتركيب ستائر في الكويت حسب المقاس: ستائر رول وبلاك أوت وويفي، مع زيارة منزلية لأخذ المقاسات وعرض العينات في جميع المحافظات. اطلب عرض سعر عبر واتساب."
 >
@@ -104,7 +112,13 @@ const faqs = [
         <li class="w-[72%] shrink-0 snap-start sm:w-[44%] lg:w-auto">
           <a href={t.href} class="group block">
             <div class="aspect-[3/4] overflow-hidden rounded-t-full bg-sand">
-              <Image src={t.img} alt={t.alt} width={600} height={800} widths={[360, 600, 800]} sizes="(min-width: 1024px) 380px, 72vw" loading={i === 0 ? "eager" : "lazy"} fetchpriority={i === 0 ? "high" : "auto"} decoding={i === 0 ? "sync" : "async"} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+              {i === 0 ? (
+                <picture>
+                  <img src={lcpWebp.src} srcset={lcpWebp.srcSet.attribute} sizes={TILE_SIZES} alt={t.alt} width="640" height="853" loading="eager" fetchpriority="high" decoding="async" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                </picture>
+              ) : (
+                <Picture src={t.img} alt={t.alt} formats={["avif", "webp"]} width={640} height={853} widths={TILE_W} sizes={TILE_SIZES} quality={65} loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+              )}
             </div>
             <h3 class="mt-4 text-xl font-bold text-charcoal">{t.name}</h3>
             <p class="text-sm text-charcoal/65">من {t.price} د.ك للمتر المربع</p>
@@ -128,7 +142,7 @@ const faqs = [
               <a href={`/products/${p.id}/`} class="group block">
                 <div class="aspect-[3/4] overflow-hidden bg-sand">
                   {p.data.image && (
-                    <Image src={p.data.image} alt={p.data.imageAlt ?? p.data.title} width={600} height={800} widths={[300, 600]} sizes="(min-width: 768px) 360px, 46vw" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                    <Picture src={p.data.image} alt={p.data.imageAlt ?? p.data.title} formats={["avif", "webp"]} width={600} height={800} widths={[240, 360, 480, 600]} sizes="(min-width: 768px) 360px, 46vw" quality={65} loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
                   )}
                 </div>
                 <h3 class="mt-3 font-bold text-charcoal">{p.data.title}</h3>
