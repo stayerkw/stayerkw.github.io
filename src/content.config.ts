@@ -104,7 +104,7 @@ const projects = defineCollection({
       area: optStr(),
       // يطابق اسم ملف في src/content/curtain-types (مثل wave أو roll)
       curtainType: optStr(),
-      room: opt(z.enum(['living', 'bedroom', 'room', 'diwaniya', 'office', 'kitchen', 'majlis', 'other'])),
+      room: opt(z.enum(['living', 'bedroom', 'room', 'diwaniya', 'office', 'kitchen', 'bathroom', 'majlis', 'other'])),
       // المشكلة التي أراد العميل حلها، والحل المنفذ
       problem: textOrEmpty(),
       solution: textOrEmpty(),

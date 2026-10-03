@@ -6,6 +6,7 @@ export const roomLabels: Record<string, string> = {
   diwaniya: "ديوانية",
   office: "مكتب",
   kitchen: "مطبخ",
+  bathroom: "حمّام",
   majlis: "مجلس",
   other: "غرفة أخرى",
 };
