@@ -38,7 +38,7 @@ const hasProjects = projects.length > 0;
                 <div class="p-5">
                   <h2 class="text-lg font-bold text-charcoal group-hover:text-olive transition-colors">{p.data.title}</h2>
                   <p class="mt-1 text-sm text-charcoal/60">
-                    {p.data.governorate}{p.data.area ? ` — ${p.data.area}` : ""} · {roomLabels[p.data.room!]}
+                    {p.data.governorate ?? "الكويت"}{p.data.area ? ` — ${p.data.area}` : ""}{p.data.room ? ` · ${roomLabels[p.data.room]}` : ""}
                   </p>
                   <p class="mt-2 text-sm text-charcoal/75 line-clamp-2">{p.data.description}</p>
                 </div>

@@ -30,7 +30,7 @@ const projects = (await getCollection("projects", publishableProject))
             </div>
             <div class="p-4">
               <h3 class="font-bold text-charcoal group-hover:text-gold-deep">{p.data.title}</h3>
-              <p class="mt-1 text-sm text-charcoal/60">{p.data.area ?? p.data.governorate}{p.data.room ? ` · ${roomLabels[p.data.room]}` : ""}</p>
+              <p class="mt-1 text-sm text-charcoal/60">{p.data.area ?? p.data.governorate ?? "الكويت"}{p.data.room ? ` · ${roomLabels[p.data.room]}` : ""}</p>
             </div>
           </a>
         );

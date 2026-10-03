@@ -117,8 +117,6 @@ else {
     const miss = [];
     if (!/^consent:\s*true\s*$/m.test(fm)) miss.push("موافقة العميل");
     if (!/^images:\s*\n\s*-/m.test(fm)) miss.push("صورة");
-    if (!/^governorate:\s*\S/m.test(fm)) miss.push("المحافظة");
-    if (!/^room:\s*\S/m.test(fm)) miss.push("الغرفة");
     if (miss.length) warn(`/projects/${f.replace(/\.md$/, "")}/`, `محفوظ لكنه لا يُنشر حتى يُكمل: ${miss.join("، ")}`);
   }
 }
