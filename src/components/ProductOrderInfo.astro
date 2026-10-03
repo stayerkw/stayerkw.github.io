@@ -14,7 +14,7 @@ const { price } = Astro.props;
   <ul class="space-y-2 text-charcoal/80">
     {price && <li><strong>السعر:</strong> من {price} {business.priceUnit}، والسعر شامل القماش والتفصيل.</li>}
     <li><strong>التركيب:</strong> مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة.</li>
-    {business.freeVisit && <li><strong>الزيارة والقياس:</strong> زيارة منزلية لأخذ المقاسات وعرض العينات، وهي مجانية.</li>}
+    {business.freeVisit && <li><strong>الزيارة والقياس:</strong> زيارة منزلية لأخذ المقاسات وعرض العينات، وهي مجانية (عدا العبدلي والصبية، فالمعاينة فيهما مدفوعة).</li>}
     <li><strong>مدة التنفيذ:</strong> {business.leadTime}.</li>
     <li><strong>الأقمشة:</strong> {business.fabricPhrase}.</li>
     <li><strong>الضمان:</strong> {business.warranty}.</li>
