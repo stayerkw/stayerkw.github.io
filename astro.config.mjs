@@ -24,7 +24,7 @@ const hasPublishedProjects = existsSync(projectsDir) && readdirSync(projectsDir)
   .some((f) => {
     // نفس قاعدة src/lib/projects.ts: غير مسودة + موافقة + صورة + محافظة + غرفة
     const fm = readFileSync(projectsDir + f, 'utf8').split(/^---\s*$/m)[1] ?? '';
-    return !/^draft:\s*true\s*$/m.test(fm) && /^consent:\s*true\s*$/m.test(fm) && /^images:\s*\n\s*-/m.test(fm) && /^governorate:\s*\S/m.test(fm) && /^room:\s*\S/m.test(fm);
+    return !/^draft:\s*true\s*$/m.test(fm) && /^consent:\s*true\s*$/m.test(fm) && /^images:\s*\n\s*-/m.test(fm);
   });
 
 // B5: lastmod حقيقي من تاريخ آخر commit للملف المصدر (لا تواريخ مختلقة). الصفحات التي لا نجد لها

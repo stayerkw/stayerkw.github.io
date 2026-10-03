@@ -20,13 +20,13 @@ const { Content } = await render(entry);
 const type = d.curtainType
   ? (await getCollection("curtainTypes", ({ data }) => !data.draft)).find((t) => t.id === d.curtainType)
   : undefined;
-const areaPage = (await getCollection("areas", ({ data }) => !data.draft)).find(
+const areaPage = d.governorate && (await getCollection("areas", ({ data }) => !data.draft)).find(
   (a) => a.data.governorate.replace("محافظة ", "") === d.governorate?.replace("محافظة ", "")
 );
 
 const facts = [
-  ["المنطقة", `${d.governorate}${d.area ? ` — ${d.area}` : ""}`],
-  ["الغرفة", roomLabels[d.room!]],
+  ["المنطقة", d.governorate ? `${d.governorate}${d.area ? ` — ${d.area}` : ""}` : "الكويت"],
+  ...(d.room ? [["الغرفة", roomLabels[d.room]]] : []),
   type ? ["نوع الستارة", type.data.title] : null,
   d.fabric ? ["القماش/النظام", d.fabric] : null,
   d.duration ? ["مدة التنفيذ", d.duration] : null,
