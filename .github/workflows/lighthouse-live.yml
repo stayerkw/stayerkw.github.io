@@ -1,4 +1,5 @@
-# قياس Lighthouse على الموقع الحي (نفس ظروف PageSpeed Insights تقريباً) — يدوي أو عند الدفع إلى perf-live
+# قياس Lighthouse على الموقع الحي (نفس إعدادات PageSpeed Insights للجوال: Moto G Power ومحاكاة 4G بطيء)
+# يدوي (Actions ← Run workflow) أو عند الدفع إلى perf-live. النتائج تظهر كتنبيهات في صفحة التشغيل.
 name: قياس الأداء على الموقع الحي
 on:
   workflow_dispatch:
@@ -6,22 +7,22 @@ on:
     branches: [perf-live]
 jobs:
   live:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: 22
-      - name: Lighthouse (حي)
-        id: lh
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: |
-            https://alamcurtainskw.com/
-            https://alamcurtainskw.com/curtains/wooden/
-          runs: 3
-          uploadArtifacts: false
-          temporaryPublicStorage: false
+      - name: Lighthouse (حي، 3 مرات لكل صفحة)
+        run: |
+          mkdir -p lh
+          for page in "" "curtains/wooden/"; do
+            for run in 1 2 3; do
+              name="lhr-$(echo "${page:-home}" | tr '/' '_')-$run.json"
+              npx --yes lighthouse@12 "https://alamcurtainskw.com/$page" --quiet --output=json --output-path="lh/$name" \
+                --only-categories=performance --chrome-flags="--headless=new --no-sandbox" || echo "::warning::فشل القياس $page $run"
+            done
+          done
       - name: ملخص
         if: always()
-        run: node scripts/lh-summary.mjs "${{ steps.lh.outputs.resultsPath }}"
+        run: node scripts/lh-summary.mjs lh
