@@ -4,6 +4,8 @@ export const business = {
   name: "عالم ستائر الكويت",
   alternateName: "Alam Stayer Kuwait",
   domain: "https://alamcurtainskw.com",
+  // A4: معرّف Google Analytics 4 (يُحمَّل مؤجَّلاً بعد اكتمال الصفحة — BaseLayout)
+  ga4Id: "G-PRK7V7K8BF",
   phone: "+96565061072",
   whatsapp: "96565061072",
   whatsappLink: "https://wa.me/96565061072",

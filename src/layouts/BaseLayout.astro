@@ -65,6 +65,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="preload" href="/fonts/cairo-arabic-600-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/cairo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 
+    <!-- A4: Google Analytics 4 مؤجَّل: gtag يُعرَّف فوراً (فتُحفظ الأحداث في dataLayer)، وسكربت gtag.js
+         يُحمَّل بعد اكتمال الصفحة وفي وقت فراغ المتصفح، فلا ينافس الخطوط والصور على LCP.
+         لا يُحمَّل إلا على النطاق الرسمي، فلا تُحتسب زيارات المعاينة المحلية وLighthouse CI. -->
+    <script is:inline define:vars={{ gaId: business.ga4Id }}>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag("js", new Date());
+      gtag("config", gaId);
+      if (/(^|\.)alamcurtainskw\.com$/.test(location.hostname)) {
+        var loadGa = function () {
+          var s = document.createElement("script");
+          s.async = true;
+          s.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
+          document.head.appendChild(s);
+        };
+        var idle = function () { ("requestIdleCallback" in window) ? requestIdleCallback(loadGa, { timeout: 3000 }) : setTimeout(loadGa, 1500); };
+        if (document.readyState === "complete") idle(); else addEventListener("load", idle, { once: true });
+      }
+    </script>
+
     <title>{fullTitle}</title>
     <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonicalURL} />
@@ -134,7 +154,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         };
         const w = window as any;
         if (typeof w.gtag === "function") {
-          w.gtag("event", "whatsapp_click", params);
+          w.gtag("event", "whatsapp_click", { ...params, transport_type: "beacon" });
         } else {
           (w.dataLayer = w.dataLayer || []).push({ event: "whatsapp_click", ...params });
         }
