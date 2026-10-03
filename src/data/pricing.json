@@ -31,6 +31,13 @@
       "short": "ويفي مع بلاك أوت"
     },
     {
+      "id": "eyelet",
+      "name": "ستائر حلقات",
+      "href": "/blog/wave-vs-eyelet-curtains/",
+      "price": 6,
+      "short": "حلقات"
+    },
+    {
       "id": "blackout",
       "name": "ستائر بلاك أوت",
       "href": "/curtains/blackout/",
