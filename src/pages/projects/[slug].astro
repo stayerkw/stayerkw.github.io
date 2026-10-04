@@ -1,7 +1,7 @@
 ---
 import { publishableProject } from "../../lib/projects";
 import { getCollection, render } from "astro:content";
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
@@ -55,7 +55,7 @@ const facts = [
     <div class="grid gap-4 sm:grid-cols-2">
       {d.images.map((img, i) => (
         <figure class="overflow-hidden rounded-2xl border border-sand bg-white">
-          <Image
+          <Picture formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={55}
             src={img.src}
             alt={img.alt}
             width={900}

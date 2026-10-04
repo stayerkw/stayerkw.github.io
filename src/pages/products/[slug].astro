@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import { Image, getImage } from "astro:assets";
+import { Picture, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
@@ -45,7 +45,7 @@ const curtainType = entry.data.curtainType
       ]}
     />
     {entry.data.image && (
-      <Image
+      <Picture formats={["avif"]} fallbackFormat="webp" widths={[400, 600, 900]} sizes="(min-width: 480px) 448px, 92vw" quality={55}
         src={entry.data.image}
         alt={entry.data.imageAlt ?? entry.data.title}
         width={900}
@@ -59,7 +59,7 @@ const curtainType = entry.data.curtainType
       <ul class="grid grid-cols-3 gap-3 mb-8">
         {gallery.map((img, i) => (
           <li>
-            <Image
+            <Picture formats={["avif"]} fallbackFormat="webp" widths={[200, 300, 400]} sizes="(min-width: 768px) 240px, 30vw" quality={55}
               src={img}
               alt={`${entry.data.imageAlt ?? entry.data.title} — صورة ${i + 2}`}
               width={400}

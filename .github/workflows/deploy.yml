@@ -35,6 +35,8 @@ jobs:
         run: node scripts/seo-lint.mjs --report-only   # ينبّه ولا يمنع النشر (قرار المالك 2 أكتوبر)
       - name: فحص الروابط الداخلية
         run: node scripts/check-links.mjs --report-only
+      - name: وزن الصور المنشورة (تنبيهات فقط)
+        run: node scripts/image-weight-check.mjs --report-only
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:

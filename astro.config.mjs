@@ -62,17 +62,23 @@ function firstContentImageEager() {
         const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(d + e.name + '/') : e.name.endsWith('.html') ? [d + e.name] : []));
         let n = 0;
         for (const file of walk(root)) {
-          const html = readFileSync(file, 'utf8');
+          let html = readFileSync(file, 'utf8');
+          // sizes لصور Markdown (تُعرف بغياب class): 320px في القوالب التي تحصر الصور بـ prose-img:max-w-xs،
+          // وإلا عرض عمود المحتوى. هكذا يختار الجوال نسخة 480–640 بكسل بدل الأصل.
+          const narrow = /prose-img:max-w-xs/.test(html);
+          html = html.replace(/<img\b(?![^>]*\bclass=)([^>]*\bdata-astro-image="constrained"[^>]*)>/g, (m) =>
+            m.replace(/\bsizes="[^"]*"/, `sizes="${narrow ? '(min-width: 400px) 320px, 80vw' : '(min-width: 800px) 736px, 92vw'}"`));
           const start = html.search(/class="[^"]*\bprose\b/);
-          if (start < 0) continue;
-          const i = html.indexOf('<img', start);
-          if (i < 0) continue;
-          const end = html.indexOf('>', i);
-          const tag = html.slice(i, end + 1);
-          if (!tag.includes('loading="lazy"')) continue;
-          const fixed = tag.replace('loading="lazy"', 'loading="eager"');
-          writeFileSync(file, html.slice(0, i) + fixed + html.slice(end + 1));
-          n++;
+          const i = start < 0 ? -1 : html.indexOf('<img', start);
+          if (i >= 0) {
+            const end = html.indexOf('>', i);
+            const tag = html.slice(i, end + 1);
+            if (tag.includes('loading="lazy"')) {
+              html = html.slice(0, i) + tag.replace('loading="lazy"', 'loading="eager"') + html.slice(end + 1);
+              n++;
+            }
+          }
+          writeFileSync(file, html);
         }
         logger.info(`first-content-image-eager: ${n} صفحة`);
       },
@@ -83,6 +89,10 @@ function firstContentImageEager() {
 // موقع GitHub Pages من نوع <username>.github.io يُنشر على الجذر مباشرة (بدون base path)
 export default defineConfig({
   site: 'https://alamcurtainskw.com',
+  // صور المحتوى (داخل نصوص Markdown): srcset تلقائي بهذه الأحجام بدل إرسال الأصل (حتى 2000 بكسل).
+  // قيمة sizes الصحيحة لها تُضبط بعد البناء في firstContentImageEager حسب عرض المحتوى في كل قالب.
+  // صور القوالب (البطاقات، المنتج، المشاريع، الرئيسية) تحدد widths وsizes بنفسها.
+  image: { layout: 'constrained', responsiveStyles: false, breakpoints: [320, 480, 640, 800, 1280] },
   integrations: [
     firstContentImageEager(),
     sitemap({
