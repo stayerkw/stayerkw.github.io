@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { business } from "../../data/business";
+// P-WARRANTY + P-RETURNS: مؤكد من المالك (4 أكتوبر 2026): ضمان 3 أيام يشمل التعديلات المطلوبة عند عيوب مصنعية،
+// ولا إرجاع (من business.warranty منذ A6). سياسة الإلغاء غير مؤكدة فلا تُكتب.
+const faqs = [
+  {
+    question: "كم مدة الضمان على الستائر؟",
+    answer: `${business.warrantyDays} أيام من التركيب، ويشمل التعديلات المطلوبة إذا ظهر عيب مصنعي.`,
+  },
+  {
+    question: "هل يمكن إرجاع الستائر؟",
+    answer: "لا، لأن كل ستارة تُفصَّل حسب مقاس نوافذك. وإذا ظهر عيب مصنعي خلال مدة الضمان نعدّل الستارة.",
+  },
+  {
+    question: "كيف أطلب تعديلاً ضمن الضمان؟",
+    answer: "أرسل لنا عبر واتساب صورة توضح المشكلة خلال مدة الضمان، ونرتب معك موعد التعديل.",
+  },
+];
+---
+<BaseLayout
+  title="الضمان والاسترجاع"
+  description={`سياسة الضمان والاسترجاع في ${business.name}: ضمان ${business.warrantyDays} أيام يشمل التعديلات المطلوبة عند وجود عيوب مصنعية، ولماذا لا تُرجع الستائر المفصّلة حسب المقاس.`}
+  schemaType="FAQPage"
+  faqs={faqs}
+>
+  <article class="mx-auto max-w-3xl px-4 py-10">
+    <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الضمان والاسترجاع" }]} />
+    <h1 class="text-3xl font-bold text-charcoal mb-6">الضمان والاسترجاع</h1>
+
+    <div class="prose prose-neutral max-w-none prose-headings:text-charcoal">
+      <p>
+        كل ستارة نفصّلها عليها <strong>ضمان {business.warrantyDays} أيام</strong> من التركيب، يشمل
+        <strong>التعديلات المطلوبة إذا ظهر عيب مصنعي</strong> في الستارة أو تركيبها.
+      </p>
+
+      <h2>ما يشمله الضمان</h2>
+      <ul>
+        <li>تعديل الستارة إذا ظهر فيها عيب مصنعي في التفصيل أو الخياطة.</li>
+        <li>تعديل التركيب إذا لم تعمل الستارة أو السكة كما يجب بسبب عيب مصنعي.</li>
+      </ul>
+
+      <h2>ما لا يشمله الضمان</h2>
+      <ul>
+        <li><strong>الإرجاع أو استرداد المبلغ:</strong> الستائر تُفصَّل حسب مقاس نوافذك، فلا تصلح لنافذة أخرى.</li>
+        <li>ما يحدث بعد انتهاء مدة الضمان ({business.warrantyDays} أيام من التركيب).</li>
+      </ul>
+
+      <h2>كيف أطلب تعديلاً؟</h2>
+      <p>
+        أرسل لنا عبر واتساب صورة توضح المشكلة خلال مدة الضمان، ونرتب معك موعد التعديل. ولتجنب أي خطأ في المقاس من البداية،
+        نزورك لأخذ المقاسات الدقيقة قبل التفصيل، والزيارة مجانية (عدا العبدلي والصبية).
+      </p>
+
+      <h2>أسئلة شائعة</h2>
+      {faqs.map((f) => (
+        <p><strong>{f.question}</strong> {f.answer}</p>
+      ))}
+
+      <p>
+        للمزيد اقرأ <a href="/about/">من نحن</a> و<a href="/faq/">الأسئلة الشائعة</a>، أو راجع <a href="/prices/">الأسعار</a>.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <WhatsAppButton label="تواصل معنا عبر واتساب" />
+    </div>
+  </article>
+</BaseLayout>
