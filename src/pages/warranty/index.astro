@@ -4,7 +4,8 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import { business } from "../../data/business";
 // P-WARRANTY + P-RETURNS: مؤكد من المالك (4 أكتوبر 2026): ضمان 3 أيام يشمل التعديلات المطلوبة عند عيوب مصنعية،
-// ولا إرجاع (من business.warranty منذ A6). سياسة الإلغاء غير مؤكدة فلا تُكتب.
+// ولا إرجاع (من business.warranty منذ A6). الإلغاء (المالك 4 أكتوبر): ممكن بعد العربون قبل بدء التفصيل فقط؛
+// استرداد العربون غير مؤكد فلا يُكتب.
 const faqs = [
   {
     question: "كم مدة الضمان على الستائر؟",
@@ -15,6 +16,10 @@ const faqs = [
     answer: "لا، لأن كل ستارة تُفصَّل حسب مقاس نوافذك. وإذا ظهر عيب مصنعي خلال مدة الضمان نعدّل الستارة.",
   },
   {
+    question: "هل يمكن إلغاء الطلب؟",
+    answer: "نعم، بعد دفع العربون ما دام التفصيل لم يبدأ. أما بعد البدء بتفصيل الستائر فلا يمكن إلغاء الطلب.",
+  },
+  {
     question: "كيف أطلب تعديلاً ضمن الضمان؟",
     answer: "أرسل لنا عبر واتساب صورة توضح المشكلة خلال مدة الضمان، ونرتب معك موعد التعديل.",
   },
@@ -22,13 +27,13 @@ const faqs = [
 ---
 <BaseLayout
   title="الضمان والاسترجاع"
-  description={`سياسة الضمان والاسترجاع في ${business.name}: ضمان ${business.warrantyDays} أيام يشمل التعديلات المطلوبة عند وجود عيوب مصنعية، ولماذا لا تُرجع الستائر المفصّلة حسب المقاس.`}
+  description={`سياسة الضمان والاسترجاع في ${business.name}: ضمان ${business.warrantyDays} أيام يشمل التعديلات المطلوبة عند وجود عيوب مصنعية، ومتى يمكن إلغاء الطلب، ولماذا لا تُرجع الستائر المفصّلة.`}
   schemaType="FAQPage"
   faqs={faqs}
 >
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الضمان والاسترجاع" }]} />
-    <h1 class="text-3xl font-bold text-charcoal mb-6">الضمان والاسترجاع</h1>
+    <h1 class="text-3xl font-bold text-charcoal mb-6">الضمان والاسترجاع والإلغاء</h1>
 
     <div class="prose prose-neutral max-w-none prose-headings:text-charcoal">
       <p>
@@ -47,6 +52,13 @@ const faqs = [
         <li><strong>الإرجاع أو استرداد المبلغ:</strong> الستائر تُفصَّل حسب مقاس نوافذك، فلا تصلح لنافذة أخرى.</li>
         <li>ما يحدث بعد انتهاء مدة الضمان ({business.warrantyDays} أيام من التركيب).</li>
       </ul>
+
+      <h2>إلغاء الطلب</h2>
+      <ul>
+        <li><strong>قبل البدء بالتفصيل:</strong> يمكنك إلغاء الطلب حتى بعد دفع العربون.</li>
+        <li><strong>بعد البدء بالتفصيل:</strong> لا يمكن إلغاء الطلب، لأن القماش يُقص ويُخاط حسب مقاس نوافذك.</li>
+      </ul>
+      <p>إن أردت الإلغاء فأخبرنا عبر واتساب في أقرب وقت، قبل أن يبدأ التفصيل.</p>
 
       <h2>كيف أطلب تعديلاً؟</h2>
       <p>
