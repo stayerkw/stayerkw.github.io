@@ -1,7 +1,7 @@
 ---
 import { publishableProject } from "../../lib/projects";
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
@@ -34,7 +34,7 @@ const hasProjects = projects.length > 0;
             const cover = p.data.images.find((i) => i.label === "after") ?? p.data.images[0];
             return (
               <a href={`/projects/${p.id}/`} class="group block overflow-hidden rounded-2xl border border-sand bg-white shadow-sm hover:shadow-lg transition-shadow">
-                <div class="aspect-[3/4] bg-sand/30"><Image src={cover.src} alt={cover.alt} width={600} loading="lazy" class="h-full w-full object-contain" /></div>
+                <div class="aspect-[3/4] bg-sand/30"><Picture formats={["avif"]} fallbackFormat="webp" widths={[360, 480, 600]} sizes="(min-width: 1024px) 360px, (min-width: 640px) 46vw, 92vw" quality={55} src={cover.src} alt={cover.alt} width={600} loading="lazy" class="h-full w-full object-contain" /></div>
                 <div class="p-5">
                   <h2 class="text-lg font-bold text-charcoal group-hover:text-olive transition-colors">{p.data.title}</h2>
                   <p class="mt-1 text-sm text-charcoal/60">
