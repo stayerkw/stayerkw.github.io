@@ -73,6 +73,13 @@
       "short": "أطفال"
     },
     {
+      "id": "kids-print",
+      "name": "رول بطباعة مخصصة",
+      "href": "/curtains/kids/",
+      "price": 13,
+      "short": "طباعة مخصصة"
+    },
+    {
       "id": "office",
       "name": "ستائر مكتبية (رول)",
       "href": "/curtains/office/",
