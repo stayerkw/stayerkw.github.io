@@ -20,6 +20,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: ذاكرة الصور المحسّنة (لا يُعاد توليد AVIF/WebP للصور القديمة)
+        uses: actions/cache@v6
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ github.sha }}
+          restore-keys: astro-assets-
       - run: npm run build
       - name: seo-lint (تنبيهات فقط)
         run: node scripts/seo-lint.mjs --report-only   # ينبّه ولا يُفشل (قرار المالك 2 أكتوبر)
@@ -39,6 +45,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: ذاكرة الصور المحسّنة (لا يُعاد توليد AVIF/WebP للصور القديمة)
+        uses: actions/cache@v6
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ github.sha }}
+          restore-keys: astro-assets-
       - run: npm run build
       - name: Lighthouse CI
         id: lh
