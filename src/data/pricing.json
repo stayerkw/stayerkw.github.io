@@ -10,6 +10,13 @@
       "short": "رول"
     },
     {
+      "id": "zebra",
+      "name": "ستائر زيبرا (ليلي نهاري)",
+      "href": "/curtains/zebra/",
+      "price": 9,
+      "short": "زيبرا"
+    },
+    {
       "id": "wave",
       "name": "ستائر ويفي",
       "href": "/curtains/wave/",

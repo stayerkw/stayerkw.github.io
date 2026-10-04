@@ -31,7 +31,7 @@ relatedPosts: ["wave-vs-eyelet-curtains", "best-curtain-fabric-kuwait-climate"]
 
 ## مثال من أعمالنا
 
-[ستارة ويفي بيج على جدار كامل](/projects/wave-beige-full-wall/) من السقف إلى الأرض، وهي فكرة مناسبة لجدار المجلس.
+[ستارة ويفي بيج على جدار كامل](/projects/wave-beige-full-wall/) من السقف إلى الأرض، وهي فكرة مناسبة لجدار المجلس. ومن أعمالنا في حولي: [ويفي رمادي مع شيفون لديوانية](/projects/hawalli-wave-grey-sheer-diwaniya/) يغطي جدارين، و[ويفي مع شيفون لمجلس بجلسة أرضية](/projects/hawalli-wave-grey-sheer-majlis/)، و[ستائر بشراشيب على سكة منحنية لمجلس دائري](/projects/hawalli-majlis-curved-sheer-tassels/).
 
 ![ستارة ويفي بيج مغلقة تغطي جداراً كاملاً من السقف إلى الأرض بطيات موجية](../projects/images/wave-beige-full-wall.jpg)
 
