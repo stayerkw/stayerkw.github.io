@@ -29,6 +29,12 @@ jobs:
           cache: npm
       - name: Install
         run: npm ci
+      - name: ذاكرة الصور المحسّنة (لا يُعاد توليد AVIF/WebP للصور القديمة)
+        uses: actions/cache@v6
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ github.sha }}
+          restore-keys: astro-assets-
       - name: Build
         run: npm run build
       - name: فحص السيو (تنبيهات فقط)
