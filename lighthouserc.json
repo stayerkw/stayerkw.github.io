@@ -3,7 +3,7 @@
     "collect": {
       "staticDistDir": "./dist",
       "url": ["/index.html", "/products/index.html", "/curtains/roll/index.html", "/contact/index.html"],
-      "numberOfRuns": 3,
+      "numberOfRuns": 1,
       "settings": { "formFactor": "mobile", "locale": "ar" }
     },
     "assert": {
