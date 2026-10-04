@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { business } from "../../data/business";
+// P-ABOUT: كل ما هنا وقائع مؤكدة من المالك (business.ts). السجل التجاري لا يُذكر بقرار المالك.
+---
+<BaseLayout
+  title="من نحن"
+  description={`${business.name}: نفصّل الستائر ونركّبها في الكويت منذ ${business.foundedYear}، من ورشتنا في ${business.workshopArea}، بزيارة لأخذ المقاسات وأسعار واضحة بالمتر المربع.`}
+>
+  <article class="mx-auto max-w-3xl px-4 py-10">
+    <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "من نحن" }]} />
+    <h1 class="text-3xl font-bold text-charcoal mb-6">من نحن</h1>
+
+    <div class="prose prose-neutral max-w-none prose-headings:text-charcoal">
+      <p>
+        <strong>{business.name}</strong> نعمل في تفصيل الستائر وتركيبها في الكويت <strong>منذ {business.foundedYear}</strong>.
+        نفصّل كل ستارة حسب مقاس نافذتك في ورشتنا في {business.workshopArea}، ونركّبها في البيوت والشقق والمكاتب في جميع محافظات الكويت.
+      </p>
+
+      <h2>كيف نعمل</h2>
+      <ol>
+        <li><strong>التواصل:</strong> ترسل صورة النافذة ومقاسها التقريبي عبر واتساب، فنرد بعرض سعر مبدئي.</li>
+        <li><strong>الزيارة:</strong> نزورك لأخذ المقاسات الدقيقة وعرض عينات الأقمشة، والزيارة مجانية (عدا العبدلي والصبية، فالمعاينة فيهما مدفوعة).</li>
+        <li><strong>التفصيل:</strong> نفصّل الستائر في ورشتنا خلال {business.leadTime}.</li>
+        <li><strong>التركيب:</strong> نركّب الستائر ونضبط حركتها، والتركيب مجاني عند طلب 5 ستائر فأكثر، وأقل من ذلك 5 د.ك لكل ستارة.</li>
+      </ol>
+
+      <h2>ما نفصّله</h2>
+      <p>
+        ستائر <a href="/curtains/wave/">الويفي</a> و<a href="/curtains/sheer/">الشيفون</a> و<a href="/curtains/blackout/">البلاك أوت</a>
+        و<a href="/curtains/roll/">الرول</a> و<a href="/curtains/roman/">الرومانية</a> و<a href="/curtains/wooden/">الخشبية</a>
+        و<a href="/curtains/office/">المكتبية</a> و<a href="/curtains/kids/">ستائر الأطفال</a>، وستائر الحلقات، بأقمشة تركية وبكل أنواع الخيوط.
+        وشاهد أمثلة من تنفيذنا في <a href="/projects/">أعمالنا</a>.
+      </p>
+
+      <h2>أسعار واضحة</h2>
+      <p>
+        نسعّر بالمتر المربع (العرض × الارتفاع)، والسعر شامل القماش والسكة والتفصيل. الأسعار كلها وحاسبة التقدير في
+        <a href="/prices/">صفحة الأسعار</a>، وتفاصيل الضمان في <a href="/warranty/">الضمان والاسترجاع</a>.
+      </p>
+
+      <h2>التواصل</h2>
+      <p>
+        الهاتف وواتساب: <a href={`tel:${business.phone}`} dir="ltr">{business.phone.replace("+965", "")}</a>، {business.hours}.
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <WhatsAppButton label="اطلب عرض سعر عبر واتساب" />
+    </div>
+  </article>
+</BaseLayout>

@@ -38,6 +38,7 @@ const graph: Record<string, unknown>[] = [
     name: business.name,
     alternateName: business.alternateName,
     url: `${origin}/`,
+    foundingDate: String(business.foundedYear),
     telephone: business.phone,
     areaServed: areaServedList,
     address: { "@type": "PostalAddress", addressCountry: business.country },
