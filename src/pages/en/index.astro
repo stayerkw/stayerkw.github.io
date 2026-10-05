@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/projects/images/capital-wave-beige-sheer-living-1.jpg";
+const faqs = [{"question": "How much do curtains cost in Kuwait?", "answer": "Our prices are per square metre (width × height) and include fabric, track and tailoring: from 5 KWD for sheers, 6 KWD for roller, wave and blackout, 9 KWD for zebra and 13 KWD for wooden blinds. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}, {"question": "Do you cover my area?", "answer": "Yes, we tailor and install curtains in all six governorates of Kuwait: Capital, Hawalli, Farwaniya, Ahmadi, Mubarak Al-Kabeer and Jahra."}, {"question": "How long does it take?", "answer": "Usually 2 to 3 days depending on the quantity, after the measurement visit and fabric selection."}];
+---
+<BaseLayout title="Curtains Kuwait — Made to Measure" description="Custom curtains and blinds in Kuwait, made to measure since 2012: wave curtains, sheers, roller, blackout, zebra and wooden blinds, priced per square metre." schemaType="WebSite" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Custom Curtains in Kuwait, Made to Measure</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Alam Curtains Kuwait has been tailoring curtains since 2012. We visit your home to measure every window and show you fabric samples, sew each curtain in our workshop in Al-Dajeej, and install it in 2 to 3 days. Prices are clear and per square metre, so you know the cost before you order.</p>
+    <Picture src={img} alt="Beige wave curtains with white sheers covering a full living room wall in Kuwait" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">What we make</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><a class="text-olive underline" href="/en/custom-curtains/">Wave curtains and sheers</a> for living rooms, majlis and diwaniya, from ceiling to floor.</li>
+      <li><a class="text-olive underline" href="/en/roller-blinds/">Roller blinds</a> for bedrooms, kitchens, bathrooms and offices, plus zebra (day and night) blinds.</li>
+      <li><a class="text-olive underline" href="/en/blackout-curtains/">Blackout curtains</a> for bedrooms and windows that face the afternoon sun.</li>
+      <li>Wooden blinds, eyelet curtains and printed kids’ blinds.</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">How it works</h2>
+    <ol class="mt-4 list-decimal ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li>Send a photo of your window and its rough size on WhatsApp, and we reply with an initial quote.</li>
+      <li>We visit to take exact measurements and show samples. The home visit to take measurements and show fabric samples is free (except in Abdali and Subiya, where the visit is paid).</li>
+      <li>We tailor the curtains in our workshop, using Turkish fabrics in every type of yarn.</li>
+      <li>We install them and adjust how they open and close. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain.</li>
+    </ol>
+    <p class="mt-4 text-charcoal/85 leading-8">See all rates in our <a class="text-olive underline" href="/en/curtain-prices/">curtain price list</a>. Every curtain has a 3-day warranty covering adjustments for manufacturing defects.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

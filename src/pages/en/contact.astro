@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+
+const faqs = [{"question": "What should I send for a quote?", "answer": "A photo of the window, its approximate width and height, your area, and whether you need installation."}, {"question": "What are your working hours?", "answer": "We are available every day from 8 am to 10 pm."}, {"question": "Can I cancel my order?", "answer": "You can cancel after paying the deposit as long as tailoring has not started. Once tailoring starts, the order cannot be cancelled."}];
+---
+<BaseLayout title="Contact Us — Curtains Kuwait" description="Contact Alam Curtains Kuwait on WhatsApp or by phone for a curtain quote: send a photo of your window and its size, and book a free measurement visit." schemaType="WebSite" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Contact Us</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">The fastest way to get a quote is WhatsApp. Send us a photo of your window and its rough size, and we will reply with an initial price, then book a visit to take exact measurements and show you fabric samples.</p>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>Phone and WhatsApp:</strong> <a class="text-olive underline" href="tel:+96565061072">+965 6506 1072</a></li>
+      <li><strong>Hours:</strong> every day, 8 am to 10 pm</li>
+      <li><strong>Coverage:</strong> all six governorates of Kuwait</li>
+      <li><strong>Workshop:</strong> Al-Dajeej (we come to you; there is no showroom)</li>
+    </ul>
+    <p class="mt-4 text-charcoal/85 leading-8">The home visit to take measurements and show fabric samples is free (except in Abdali and Subiya, where the visit is paid). Orders are usually ready and installed within 2 to 3 days.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

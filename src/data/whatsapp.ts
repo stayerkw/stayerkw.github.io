@@ -74,6 +74,10 @@ const FIELDS = {
 
 /** يبني نص الرسالة. الأسطر الفارغة (مثل «المنطقة:») يملؤها العميل. */
 export function buildWhatsAppMessage({ topic = "general", product, area, pageUrl }: WaContext): string {
+  // F1: الصفحات الإنجليزية — رسالة إنجليزية بنفس الحقول
+  if (pageUrl.includes("/en/")) {
+    return ["Hello, I would like a quote for curtains.", "Area:", "Number of windows:", "Approximate size:", "Do I need installation too? Yes / No", `Page I visited: ${pageUrl}`].join("\n");
+  }
   const page = `الصفحة التي زرتها: ${pageUrl}`;
   const lines: string[] = [];
 

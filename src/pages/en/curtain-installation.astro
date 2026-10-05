@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/projects/images/hawalli-wave-grey-staircase-1.jpg";
+const faqs = [{"question": "Is installation free?", "answer": "Installation is free for orders of 5 curtains or more. For smaller orders it costs 5 KWD per curtain."}, {"question": "Do you install curtains bought elsewhere?", "answer": "No. We only install the curtains and blinds we tailor ourselves, because installation is part of a made-to-measure job."}, {"question": "Can you install tracks inside a gypsum ceiling?", "answer": "Yes. We fit tracks in ceiling recesses and cornices, on walls, or inside the window opening, and we check the depth needed for double tracks during the measurement visit."}];
+---
+<BaseLayout title="Curtain Installation Kuwait" description="Curtain and blind installation in Kuwait for curtains we tailor: free installation on orders of 5 curtains or more, ceiling and wall tracks, done in 2–3 days." schemaType="Service" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Curtain Installation in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Installation is the last step of every curtain we tailor. We fit the track, hang the curtain or blind and adjust how it opens and closes, so it works properly from day one.</p>
+    <Picture src={img} alt="Light grey wave curtains installed on a double-height staircase window in Hawalli" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">What we install</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li>Ceiling and wall tracks for wave curtains and sheers, including double tracks for two layers.</li>
+      <li>Roller, zebra and blackout blinds inside the window opening or above it.</li>
+      <li>Wooden blinds, eyelet rods and curved tracks for round walls.</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Cost and timing</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain. The home visit to take measurements and show fabric samples is free (except in Abdali and Subiya, where the visit is paid). Most orders are tailored and installed within 2 to 3 days. We cover all six governorates of Kuwait.</p>
+    <p class="mt-4 text-charcoal/85 leading-8">Need the curtains too? Start with our <a class="text-olive underline" href="/en/custom-curtains/">custom curtains</a> page or the <a class="text-olive underline" href="/en/curtain-prices/">price list</a>.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>
