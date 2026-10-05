@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      indexnow_urls: ${{ steps.indexnow.outputs.urls }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -43,6 +45,17 @@ jobs:
         run: node scripts/check-links.mjs --report-only
       - name: وزن الصور المنشورة (تنبيهات فقط)
         run: node scripts/image-weight-check.mjs --report-only
+      - name: ذاكرة IndexNow (بصمات صفحات آخر نشر)
+        uses: actions/cache@v6
+        with:
+          path: .indexnow
+          key: indexnow-${{ github.sha }}
+          restore-keys: indexnow-
+      - name: IndexNow — تجهيز الروابط المتغيرة
+        id: indexnow
+        run: |
+          node scripts/indexnow.mjs prepare
+          { echo "urls<<EOF"; cat .indexnow/urls.txt; echo; echo "EOF"; } >> "$GITHUB_OUTPUT"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
@@ -58,3 +71,23 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  # N-56: بعد اكتمال النشر يُرسل إلى Bing/IndexNow ما تغيّر فقط (لا يمنع النشر إن فشل)
+  indexnow:
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: إرسال IndexNow
+        env:
+          URLS: ${{ needs.build.outputs.indexnow_urls }}
+        run: |
+          mkdir -p .indexnow
+          printf '%s\n' "$URLS" > .indexnow/urls.txt
+          node scripts/indexnow.mjs submit
