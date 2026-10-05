@@ -20,7 +20,7 @@ const track = waTrackingAttrs({ topic: resolvedTopic, product, area: resolvedAre
   href={href}
   target="_blank"
   rel="noopener noreferrer"
-  aria-label="تواصل معنا عبر واتساب"
+  aria-label={pathname.startsWith("/en/") ? "Contact us on WhatsApp" : "تواصل معنا عبر واتساب"}
   {...track}
   class="fixed left-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lg transition-colors hover:bg-[#0d6e36] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal print:hidden"
 >

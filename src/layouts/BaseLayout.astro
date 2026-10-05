@@ -2,6 +2,8 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import EnFooter from "../components/EnFooter.astro";
+import { alternatesFor, isEnglishPath, nameEn } from "../data/i18n";
 import Schema from "../components/Schema.astro";
 import FloatingWhatsApp from "../components/FloatingWhatsApp.astro";
 import type { WaTopic } from "../data/whatsapp";
@@ -47,13 +49,17 @@ const {
   waArea,
 } = Astro.props;
 // وصف احتياطي إن تُرك «وصف جوجل» فارغاً من اللوحة: الصفحة تُنشر، وseo-lint ينبّه لكتابة وصف حقيقي
+// F1: اللغة من المسار (/en/ = إنجليزي)
+const isEn = isEnglishPath(Astro.url.pathname);
+const siteName = isEn ? nameEn : business.name;
+const alternates = alternatesFor(Astro.url.pathname);
 const metaDescription = description?.trim() ? description : `${title} — ${business.name}: تفصيل وتركيب ستائر بالمقاس في الكويت.`;
 
-const fullTitle = title.includes(business.name) ? title : `${title} | ${business.name}`;
+const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang={isEn ? "en" : "ar"} dir={isEn ? "ltr" : "rtl"}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -104,29 +110,59 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     {noindex
       ? <meta name="robots" content="noindex, nofollow" />
       : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
-    <link rel="alternate" hreflang="ar-KW" href={canonicalURL} />
+    {alternates ? (
+      <>
+        <link rel="alternate" hreflang="ar-KW" href={new URL(alternates.ar, Astro.site)} />
+        <link rel="alternate" hreflang="en-KW" href={new URL(alternates.en, Astro.site)} />
+        <link rel="alternate" hreflang="x-default" href={new URL(alternates.ar, Astro.site)} />
+      </>
+    ) : isEn ? (
+      <link rel="alternate" hreflang="en-KW" href={canonicalURL} />
+    ) : (
+      <link rel="alternate" hreflang="ar-KW" href={canonicalURL} />
+    )}
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={new URL(ogImage, Astro.site)} />
-    <meta property="og:locale" content={business.locale} />
-    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content={isEn ? "en_KW" : business.locale} />
+    <meta property="og:site_name" content={siteName} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
 
-    <Schema type={schemaType} title={fullTitle} description={metaDescription} faqs={faqs} image={ogImage} price={price} pubDate={pubDate} updatedDate={updatedDate} areaServed={areaServed} serviceType={serviceType} itemList={itemList} />
+    <Schema type={schemaType} title={fullTitle} description={metaDescription} faqs={faqs} image={ogImage} price={price} pubDate={pubDate} updatedDate={updatedDate} areaServed={areaServed} serviceType={serviceType} itemList={itemList}  lang={isEn ? "en" : "ar"} />
   </head>
   <body class="flex min-h-screen flex-col">
     <Header />
     <main class="flex-1">
       <slot />
     </main>
-    <Footer />
+    {isEn ? <EnFooter /> : <Footer />}
+    {!isEn && alternates && (
+      <div id="lang-suggest" hidden lang="en" dir="ltr" class="fixed inset-x-0 bottom-0 z-50 bg-charcoal text-ivory text-sm px-4 py-3 flex items-center justify-center gap-4 print:hidden">
+        <a href={alternates.en} hreflang="en" data-lang-switch="en" class="font-semibold underline">View this page in English</a>
+        <button type="button" data-lang-dismiss class="opacity-80 hover:opacity-100" aria-label="Dismiss">✕</button>
+      </div>
+    )}
+    <script is:inline>
+      // F1: اقتراح اللغة عند أول زيارة فقط — لا تحويل تلقائي (آمن لجوجل)، والاختيار اليدوي يُحفظ
+      (function () {
+        var bar = document.getElementById("lang-suggest"); if (!bar) return;
+        var saved; try { saved = localStorage.getItem("lang"); } catch (e) {}
+        var l = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+        if (!saved && /^en/i.test(l)) bar.hidden = false;
+        bar.addEventListener("click", function (e) {
+          var t = e.target; if (!t.closest) return;
+          if (t.closest("[data-lang-dismiss]")) { bar.hidden = true; try { localStorage.setItem("lang", "ar"); } catch (e2) {} }
+          if (t.closest("[data-lang-switch]")) { try { localStorage.setItem("lang", "en"); } catch (e3) {} }
+        });
+      })();
+    </script>
     <FloatingWhatsApp topic={waTopic} product={waProduct} area={waArea} />
 
     <!-- تتبع نقرات واتساب: حدث whatsapp_click (يعمل مع gtag إن وُجد، وإلا يُدفع إلى dataLayer) -->

@@ -12,11 +12,13 @@ import imgBlackout from "../content/products/images/roller-dark-living.jpg";
 import imgSheer from "../content/curtain-types/images/sheer-white-kitchen.jpg";
 import imgKids from "../content/curtain-types/images/kids-astronaut-room.jpg";
 import imgWooden from "../content/products/images/wooden-white-bedroom.jpg";
+import imgZebra from "../content/projects/images/capital-zebra-black-bedroom-1.jpg";
 
 // الأنواع المعروضة في أول شاشة: السعر يأتي من مصدر الأسعار الواحد
 const price = (id: string) => priceList.find((r) => r.id === id)!.price;
 const types = [
   { id: "roll", name: "ستائر رول", href: "/curtains/roll/", img: imgRoll, alt: "ستارة رول رمادية في صالة معيشة" },
+  { id: "zebra", name: "ستائر زيبرا (ليلي نهاري)", href: "/curtains/zebra/", img: imgZebra, alt: "ستارة رول زيبرا سوداء بشرائح مفتوحة يدخل منها ضوء النهار" },
   { id: "wave", name: "ستائر ويفي", href: "/curtains/wave/", img: imgWave, alt: "ستائر ويفي رمادية مع شيفون كريمي ورباط جانبي" },
   { id: "blackout", name: "ستائر بلاك أوت", href: "/curtains/blackout/", img: imgBlackout, alt: "ستارة رول داكنة أمام نافذة طويلة" },
   { id: "sheer", name: "ستائر شيفون", href: "/curtains/sheer/", img: imgSheer, alt: "ستائر شيفون بيضاء بطيات ناعمة في غرفة" },

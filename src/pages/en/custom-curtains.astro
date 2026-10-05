@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/projects/images/hawalli-wave-grey-sheer-diwaniya-1.jpg";
+const faqs = [{"question": "Why choose custom curtains over ready-made?", "answer": "Ready-made curtains come in fixed sizes and often leave gaps or extra fabric. A custom curtain is cut to your real window, so it covers it fully and falls neatly to the floor."}, {"question": "Which fabrics do you use?", "answer": "Turkish fabrics in every type of yarn, from polyester to linen blends. We bring samples to the measurement visit so you can choose in your own light."}, {"question": "Can you do wave curtains with a sheer layer?", "answer": "Yes. Wave curtains with a sheer on a double track cost 7 KWD per square metre, and blackout plus sheer costs 9 KWD."}];
+---
+<BaseLayout title="Custom Curtains Kuwait — Tailored Fit" description="Custom-made curtains in Kuwait: wave curtains, sheers, eyelet and blackout tailored to your exact window size, with a free home measurement visit." schemaType="Service" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Custom Curtains in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Every curtain we make is tailored to your window. We measure on site, help you pick the fabric and style, sew it in our Al-Dajeej workshop and install it. It is what we have done since 2012, for apartments, villas, offices and diwaniyas across Kuwait.</p>
+    <Picture src={img} alt="Grey wave curtains with white sheers along two walls of a diwaniya in Hawalli" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Styles we tailor</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>Wave curtains:</strong> even, soft S-shaped folds on a ceiling track, ideal for long walls and gypsum ceilings. 6 KWD per m².</li>
+      <li><strong>Wave with sheer:</strong> a sheer layer for daytime privacy and a fabric layer for the evening. 7 KWD per m².</li>
+      <li><strong>Eyelet curtains:</strong> rings on a visible rod for a classic look. 6 KWD per m².</li>
+      <li><strong>Blackout with sheer:</strong> two layers for bedrooms. 9 KWD per m². See <a class="text-olive underline" href="/en/blackout-curtains/">blackout curtains</a>.</li>
+      <li><strong>Sheers only:</strong> light and privacy for glass doors. 5 KWD per m².</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">What is included</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">The price per square metre includes fabric, track and tailoring. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain. The home visit to take measurements and show fabric samples is free (except in Abdali and Subiya, where the visit is paid). Delivery takes 2 to 3 days depending on the quantity. Full rates are on the <a class="text-olive underline" href="/en/curtain-prices/">price list</a>.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+
+const faqs = [{"question": "Do blackout curtains reduce heat?", "answer": "They block the light and cut part of the sun’s heat when closed, especially on west and south facing windows, but they are not full insulation. A light-coloured back reflects more sun."}, {"question": "Will a blackout curtain make the room completely dark?", "answer": "The fabric blocks light passing through it. Light at the edges depends on size and installation, so we make the curtain wider than the window or fit the track inside the ceiling recess."}, {"question": "Can I have a sheer with blackout?", "answer": "Yes. Blackout with a sheer on a double track costs 9 KWD per square metre: the sheer for the day and the blackout for the night."}];
+---
+<BaseLayout title="Blackout Curtains Kuwait" description="Blackout curtains in Kuwait for bedrooms and sunny windows: blackout roller blinds, wave blackout and blackout with sheer, made to measure from 6 KWD per m²." schemaType="Service" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Blackout Curtains in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Blackout curtains block daylight for better sleep, for children’s rooms, and for windows that take the strong afternoon sun in Kuwait. We tailor them to your window so light does not leak around the edges.</p>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Blackout options</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>Blackout roller blind:</strong> flat and tidy, ideal for small windows. 6 KWD per m².</li>
+      <li><strong>Wave blackout (single layer):</strong> soft wave folds that block the light. 6 KWD per m².</li>
+      <li><strong>Blackout with sheer:</strong> two layers on a double track for daytime privacy and night-time darkness. 9 KWD per m².</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Getting a dark room</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Even blackout fabric lets light in around a curtain cut to the exact window size. We make fabric curtains wider than the window, fit tracks inside gypsum ceilings where possible, and choose inside or outside mounting for roller blinds during the visit.</p>
+    <p class="mt-4 text-charcoal/85 leading-8">Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain. The home visit to take measurements and show fabric samples is free (except in Abdali and Subiya, where the visit is paid). See all rates on the <a class="text-olive underline" href="/en/curtain-prices/">price list</a>, or compare with <a class="text-olive underline" href="/en/roller-blinds/">roller blinds</a>.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

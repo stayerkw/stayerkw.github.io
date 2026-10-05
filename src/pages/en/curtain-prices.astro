@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import pricing from "../../data/pricing.json";
+// F1: أسماء إنجليزية لصفوف pricing.json (الأسعار من المصدر نفسه فلا تتكرر الأرقام)
+const en: Record<string, string> = {
+  roll: "Roller blinds", zebra: "Zebra blinds (day and night)", wave: "Wave curtains", "wave-sheer": "Wave curtains with sheer",
+  "wave-blackout": "Wave blackout (single layer)", eyelet: "Eyelet curtains", blackout: "Blackout roller blinds",
+  "khaam-blackout": "Blackout with sheer (double track)", sheer: "Sheer curtains", kids: "Kids' curtains",
+  "kids-print": "Custom-printed roller blinds", office: "Office blinds", roman: "Roman blinds", wooden: "Wooden blinds",
+};
+const rows = pricing.rows.filter((r: any) => en[r.id]).map((r: any) => ({ name: en[r.id], price: r.price }));
+const faqs = [
+  { question: "Is installation included in the price?", answer: "The price per square metre includes fabric, track and tailoring. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain." },
+  { question: "How do I calculate the price?", answer: "Multiply the width by the height in metres, then by the price per square metre. For example, a 2 × 2.5 m window with wave curtains and sheer is 5 m² × 7 = 35 KWD." },
+  { question: "Is the measurement visit free?", answer: "Yes, the home visit to take measurements and show samples is free, except in Abdali and Subiya where the visit is paid." },
+];
+---
+<BaseLayout title="Curtain Prices Kuwait — Per m²" description="Curtain prices in Kuwait per square metre: sheers 5 KWD, roller, wave and blackout 6 KWD, zebra 9 KWD, wooden blinds 13 KWD. Fabric and track included." schemaType="WebSite" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Curtain Prices in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">All our prices are per square metre (width × height) and include the fabric, the track and the tailoring, so the number you see is the number you pay, plus installation on small orders.</p>
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead><tr class="border-b border-sand"><th class="py-2 pe-4">Type</th><th class="py-2">Price per m²</th></tr></thead>
+        <tbody>{rows.map((r) => <tr class="border-b border-sand/60"><td class="py-2 pe-4">{r.name}</td><td class="py-2 font-semibold">{r.price} KWD</td></tr>)}</tbody>
+      </table>
+    </div>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Installation and visit</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain. The measurement visit is free except in Abdali and Subiya. Delivery takes 2 to 3 days, and every curtain has a 3-day warranty covering adjustments for manufacturing defects.</p>
+    <p class="mt-4 text-charcoal/85 leading-8">Learn more about <a class="text-olive underline" href="/en/custom-curtains/">custom curtains</a>, <a class="text-olive underline" href="/en/roller-blinds/">roller blinds</a> and <a class="text-olive underline" href="/en/blackout-curtains/">blackout curtains</a>.</p>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

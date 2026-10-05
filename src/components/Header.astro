@@ -2,43 +2,54 @@
 import { mainNav } from "../data/navigation";
 import { business } from "../data/business";
 import { buildWhatsAppHref, inferArea, inferTopic, waTrackingAttrs } from "../data/whatsapp";
+import { alternatesFor, enNav, isEnglishPath, nameEn } from "../data/i18n";
 
 const pathname = Astro.url.pathname;
+const isEn = isEnglishPath(pathname);
 const topic = inferTopic(pathname);
 const area = inferArea(pathname);
 const waHref = buildWhatsAppHref({ topic, area, pageUrl: new URL(pathname, Astro.site).href });
 const waTrack = waTrackingAttrs({ topic, area, placement: "header" });
+const nav = isEn ? enNav : mainNav;
+// F1: زر اللغة — يذهب للمقابل إن وُجد، وإلا للرئيسية في اللغة الأخرى؛ الاختيار يُحفظ (localStorage)
+const alt = alternatesFor(pathname);
+const switchHref = isEn ? (alt?.ar ?? "/") : (alt?.en ?? "/en/");
+const switchLabel = isEn ? "العربية" : "English";
+const switchLang = isEn ? "ar" : "en";
 ---
 <header class="sticky top-0 z-50 bg-ivory border-b border-sand">
   <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-4">
-    <a href="/" class="text-lg font-bold text-charcoal">{business.name}</a>
+    <a href={isEn ? "/en/" : "/"} class="text-lg font-bold text-charcoal">{isEn ? nameEn : business.name}</a>
 
-    <nav aria-label="القائمة الرئيسية" class="hidden md:flex items-center gap-6 text-sm">
-      {mainNav.map((item) => (
+    <nav aria-label={isEn ? "Main menu" : "القائمة الرئيسية"} class="hidden md:flex items-center gap-6 text-sm">
+      {nav.map((item) => (
         <a href={item.href} class="text-charcoal/80 hover:text-olive transition-colors">
           {item.label}
         </a>
       ))}
     </nav>
 
-    <a
-      href={waHref}
-      target="_blank"
-      rel="noopener noreferrer"
-      {...waTrack}
-      class="rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-white hover:bg-[#0d6e36] transition-colors"
-    >
-      واتساب
-    </a>
+    <div class="flex items-center gap-3">
+      <a href={switchHref} hreflang={switchLang} lang={switchLang} data-lang-switch={switchLang} class="text-sm font-semibold text-olive hover:underline">{switchLabel}</a>
+      <a
+        href={waHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...waTrack}
+        class="rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-white hover:bg-[#0d6e36] transition-colors"
+      >
+        {isEn ? "WhatsApp" : "واتساب"}
+      </a>
+    </div>
   </div>
 
   <details class="md:hidden border-t border-sand group">
     <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-semibold text-charcoal">
-      <span>القائمة</span>
+      <span>{isEn ? "Menu" : "القائمة"}</span>
       <span aria-hidden="true" class="transition-transform group-open:rotate-180">▾</span>
     </summary>
-    <nav aria-label="قائمة الجوال" class="grid grid-cols-2 gap-x-4 gap-y-1 px-4 pb-4 text-sm">
-      {mainNav.map((item) => (
+    <nav aria-label={isEn ? "Mobile menu" : "قائمة الجوال"} class="grid grid-cols-2 gap-x-4 gap-y-1 px-4 pb-4 text-sm">
+      {nav.map((item) => (
         <a href={item.href} class="rounded-lg px-2 py-2 text-charcoal/80 hover:bg-sand/40 hover:text-olive">
           {item.label}
         </a>
@@ -46,3 +57,8 @@ const waTrack = waTrackingAttrs({ topic, area, placement: "header" });
     </nav>
   </details>
 </header>
+<script is:inline>
+  document.querySelectorAll("[data-lang-switch]").forEach(function (a) {
+    a.addEventListener("click", function () { try { localStorage.setItem("lang", a.getAttribute("data-lang-switch")); } catch (e) {} });
+  });
+</script>

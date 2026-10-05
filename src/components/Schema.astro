@@ -6,6 +6,7 @@ import { kuwaitAreas } from "../data/areas";
 // وتشير إليه بقية العقد بـ @id بدل تكرار بياناته. لا تُكتب هنا حقول غير مؤكدة (ساعات، عنوان، sameAs،
 // priceRange، logo) — تُضاف من business.ts بعد تأكيدها. الساعات والأيام مؤكدة وتُصدَّر من business.ts.
 export interface Props {
+  lang?: string;
   type?: "WebSite" | "Service" | "Product" | "Article" | "FAQPage" | "CollectionPage";
   title?: string;
   description?: string;
@@ -21,7 +22,7 @@ export interface Props {
   itemList?: { name: string; url: string }[];
 }
 
-const { type = "WebSite", title, description, url, faqs, price, image, pubDate, updatedDate, areaServed, serviceType, itemList } = Astro.props;
+const { lang = "ar", type = "WebSite", title, description, url, faqs, price, image, pubDate, updatedDate, areaServed, serviceType, itemList } = Astro.props;
 const pageUrl = url ?? Astro.url.href;
 const absoluteImage = image ? new URL(image, business.domain).href : undefined;
 const origin = business.domain.replace(/\/$/, "");
@@ -36,7 +37,7 @@ const graph: Record<string, unknown>[] = [
     "@type": "HomeAndConstructionBusiness",
     "@id": ids.business,
     name: business.name,
-    alternateName: business.alternateName,
+    alternateName: [business.alternateName, "Alam Curtains Kuwait"],
     url: `${origin}/`,
     foundingDate: String(business.foundedYear),
     telephone: business.phone,
@@ -58,8 +59,8 @@ const graph: Record<string, unknown>[] = [
     "@id": ids.website,
     url: `${origin}/`,
     name: business.name,
-    alternateName: business.alternateName,
-    inLanguage: business.language,
+    alternateName: [business.alternateName, "Alam Curtains Kuwait"],
+    inLanguage: lang,
     publisher: { "@id": ids.business },
   },
 ];
@@ -78,7 +79,7 @@ if (!isHome) {
     url: pageUrl,
     name: title,
     description,
-    inLanguage: business.language,
+    inLanguage: lang,
     isPartOf: { "@id": ids.website },
     about: { "@id": ids.business },
     ...(absoluteImage ? { primaryImageOfPage: { "@type": "ImageObject", url: absoluteImage } } : {}),
@@ -141,7 +142,7 @@ if (type === "Service") {
     headline: title,
     description,
     url: pageUrl,
-    inLanguage: business.language,
+    inLanguage: lang,
     mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
     ...(absoluteImage ? { image: absoluteImage } : {}),
     ...(pubDate ? { datePublished: pubDate.toISOString() } : {}),
