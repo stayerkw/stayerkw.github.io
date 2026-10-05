@@ -1,6 +1,6 @@
 ---
 import { business } from "../data/business";
-import { nameEn, enNav, enTypes } from "../data/i18n";
+import { nameEn, enNav, enTypes, enAreas } from "../data/i18n";
 ---
 <footer class="bg-charcoal text-sand mt-16" lang="en" dir="ltr">
   <div class="mx-auto max-w-6xl px-4 py-10 grid gap-8 md:grid-cols-3 text-sm">
@@ -19,6 +19,8 @@ import { nameEn, enNav, enTypes } from "../data/i18n";
       <p class="mt-2">Phone &amp; WhatsApp: <a href={`tel:${business.phone}`} class="hover:text-gold">{business.phone.replace("+965", "+965 ")}</a></p>
       <p class="mt-1">Open daily, 8 am to 10 pm</p>
       <p class="mt-1">We speak English and Arabic</p>
+      <p class="mt-3 font-semibold text-ivory">Areas</p>
+      <ul class="mt-1 space-y-1">{enAreas.map((a) => <li><a href={a.href} class="hover:text-gold">{a.label}</a></li>)}</ul>
       <p class="mt-3"><a href="/" hreflang="ar" lang="ar" class="hover:text-gold">الموقع بالعربية</a></p>
     </div>
   </div>
