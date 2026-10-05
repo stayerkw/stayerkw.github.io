@@ -40,6 +40,8 @@ const graph: Record<string, unknown>[] = [
     alternateName: [business.alternateName, "Alam Curtains Kuwait"],
     url: `${origin}/`,
     foundingDate: String(business.foundedYear),
+    // اللوجو الرسمي (5 أكتوبر 2026) — نفسه في إنستغرام لتوحيد الهوية
+    logo: { "@type": "ImageObject", url: `${origin}/logo.png`, width: 600, height: 600 },
     telephone: business.phone,
     // English: موظف يتحدث الإنجليزية (المالك 5 أكتوبر 2026)
     knowsLanguage: ["ar", "en"],
