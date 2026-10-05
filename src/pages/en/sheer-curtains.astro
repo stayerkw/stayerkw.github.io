@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/projects/images/sheer-white-pompom-sliding-door-1.jpg";
+const faqs = [{"question": "Do sheer curtains give privacy?", "answer": "During the day, yes: they let light in while blocking the view from outside. At night, with the lights on inside, shapes can show through, so many homes add a fabric or blackout layer on a second track."}, {"question": "How much are sheer curtains?", "answer": "5 KWD per square metre including fabric, track and tailoring. With a wave curtain on a double track it is 7 KWD per m²."}, {"question": "Which colour sheer should I choose?", "answer": "White gives the brightest light; beige or linen-tone sheers give a warmer glow."}];
+---
+<BaseLayout title="Sheer Curtains Kuwait — Custom Fit" description="Sheer curtains in Kuwait made to measure: soft daylight and daytime privacy for windows and glass doors, alone or layered with wave curtains, 5 KWD per m²." schemaType="Service" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Sheer Curtains in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Sheer curtains soften the strong Kuwaiti daylight and give privacy during the day without darkening the room. We tailor them to the full height of your windows and glass doors, in white, beige and linen tones.</p>
+    <Picture src={img} alt="White sheer curtain with small pompom trim tied back on both sides of a tall sliding glass door" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Ways to use sheers</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>On their own</strong> for glass doors and living rooms: 5 KWD per m².</li>
+      <li><strong>Layered with <a class="text-olive underline" href="/en/wave-curtains/">wave curtains</a></strong> on a double track: 7 KWD per m².</li>
+      <li><strong>With <a class="text-olive underline" href="/en/blackout-curtains/">blackout</a></strong> for bedrooms: 9 KWD per m².</li>
+      <li><strong>Decorative details:</strong> pompom trims, tiebacks and side swags.</li>
+    </ul>
+    <p class="mt-4 text-charcoal/85 leading-8">Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain. The home visit to measure and show samples is free, except in Abdali and Subiya.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

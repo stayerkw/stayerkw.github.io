@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/projects/images/capital-zebra-grey-clinic-1.jpg";
+const faqs = [{"question": "What is the difference between zebra and day and night blinds?", "answer": "They are the same blind. It has two layers of alternating sheer and solid stripes; some call it zebra after the stripes, others day and night because it gives daylight and privacy in one blind."}, {"question": "How much are zebra blinds in Kuwait?", "answer": "9 KWD per square metre including fabric and tailoring. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}, {"question": "Do zebra blinds block all light?", "answer": "No. Closed stripes block the view and cut a lot of light, especially in dark colours, but they are not blackout. For a fully dark bedroom choose blackout."}];
+---
+<BaseLayout title="Zebra Blinds Kuwait — Day and Night" description="Zebra blinds in Kuwait, also called day and night blinds: alternating sheer and solid stripes for light and privacy, made to measure at 9 KWD per m²." schemaType="Service" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Zebra Blinds in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Zebra blinds, or day and night blinds, are roller blinds with two layers of alternating sheer and solid stripes. Pull the chain to line up the sheer stripes and let soft daylight in, offset them for privacy, or roll the blind up completely. We make them to the exact size of your window for 9 KWD per square metre.</p>
+    <Picture src={img} alt="Two grey zebra blinds with closed stripes in a paediatric clinic in Kuwait City" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Where they work best</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Bedrooms, living rooms, offices and clinics: anywhere you want light and privacy at the same time without lifting the blind. In a paediatric clinic in Kuwait City we fitted two grey zebra blinds side by side so each half of the wide window is adjusted on its own.</p>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Colours and comparison</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Available in brown-grey, caramel, grey, beige and white, plus black. Compared with a standard <a class="text-olive underline" href="/en/roller-blinds/">roller blind</a> (6 KWD per m²), zebra gives finer light control; compared with <a class="text-olive underline" href="/en/blackout-curtains/">blackout</a>, it never makes the room fully dark.</p>
+    <p class="mt-4 text-charcoal/85 leading-8">Example: a 2 × 1.5 m window (3 m²) costs 27 KWD, plus 5 KWD installation for orders under 5 blinds. The home visit to measure and show samples is free, except in Abdali and Subiya.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

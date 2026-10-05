@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/projects/images/capital-wooden-brown-kitchen-1.jpg";
+const faqs = [{"question": "How much are wooden blinds in Kuwait?", "answer": "13 KWD per square metre. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}, {"question": "How do I clean wooden blinds?", "answer": "Wipe the slats with a dry or slightly damp cloth. Do not soak them, because wood is sensitive to moisture."}, {"question": "Can wooden blinds go inside the window opening?", "answer": "Yes, inside the opening for a clean look or on the wall above it to cover the window completely. We decide during the measurement visit."}];
+---
+<BaseLayout title="Wooden Blinds Kuwait — Custom Fit" description="Wooden blinds in Kuwait made to measure for kitchens, living rooms and offices: tilting slats for light and privacy, in brown and natural wood, 13 KWD per m²." schemaType="Service" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Wooden Blinds in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Wooden blinds are horizontal wooden slats on ladder tapes. Tilt the slats to control light and privacy in steps, or raise the blind fully with the side cord. They bring warmth to kitchens, living rooms and executive offices.</p>
+    <Picture src={img} alt="Brown wooden blinds with tilted slats over a wide kitchen window above a black sink" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Recent wooden blind projects</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">A wide kitchen window in Kuwait City in brown wood matching the upper cabinets, a kitchen in Hawalli in natural wood matching the worktops, and a sitting room with two windows in deep brown.</p>
+    <p class="mt-4 text-charcoal/85 leading-8">Wooden blinds cost 13 KWD per m². Prefer fabric? See <a class="text-olive underline" href="/en/roller-blinds/">roller blinds</a> or <a class="text-olive underline" href="/en/zebra-blinds/">zebra blinds</a>. The home visit to measure and show samples is free, except in Abdali and Subiya.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>
