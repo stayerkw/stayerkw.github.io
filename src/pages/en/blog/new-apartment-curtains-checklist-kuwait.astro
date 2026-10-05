@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../../content/projects/images/roll-grey-three-windows-1.jpg";
+const faqs = [{"question": "How soon can curtains be ready after I move in?", "answer": "Usually 2 to 3 days after the measurement visit and fabric choice."}, {"question": "Should I measure the windows myself?", "answer": "A rough size is enough for a quote on WhatsApp. We take exact measurements during the free home visit before tailoring."}, {"question": "Can I order everything at once?", "answer": "Yes, and it usually costs less: from 5 curtains, installation is free."}];
+
+---
+<BaseLayout title="New Apartment Curtains Checklist" description="Moving into a new apartment in Kuwait? A room-by-room curtains checklist: what to choose for bedrooms, living room, kitchen and bathroom, and how to save." schemaType="Article" faqs={faqs} pubDate={new Date("2026-10-05")}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">New Apartment in Kuwait? Your Curtains Checklist</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">New flats in Kuwait usually come with bare windows, strong sun and neighbours close by. Here is a simple room-by-room plan that most of our customers follow when they move in.</p>
+    <Picture src={img} alt="Three grey roller blinds on three separate windows above a sofa" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Room by room</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>Bedrooms:</strong> <a class="text-olive underline" href="/en/blackout-curtains/">blackout</a> curtains or roller blinds, so you can sleep in the morning sun. Add a sheer if the window faces the street.</li>
+      <li><strong>Living room:</strong> <a class="text-olive underline" href="/en/wave-curtains/">wave curtains</a> with a sheer on a double track: daylight and privacy by day, full cover at night.</li>
+      <li><strong>Kitchen:</strong> a <a class="text-olive underline" href="/en/roller-blinds/">roller blind</a> that wipes clean and stays clear of the hob.</li>
+      <li><strong>Bathroom:</strong> a light-filtering roller blind for privacy with daylight.</li>
+      <li><strong>Kids’ room:</strong> a <a class="text-olive underline" href="/en/kids-blinds/">printed blind</a> or blackout for naps.</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Before you order</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li>Take a photo of each window and note its rough width and height.</li>
+      <li>Check whether there is a gypsum ceiling recess: wave tracks can be hidden inside it.</li>
+      <li>Order everything together: from 5 curtains, installation is free.</li>
+    </ul>
+    <p class="mt-4 text-charcoal/85 leading-8">Send the photos on WhatsApp in English and we will reply with a quote for the whole flat. The home visit to measure and show samples is free, except in Abdali and Subiya.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../../content/projects/images/hawalli-wave-beige-sheer-tall-window-1.jpg";
+const faqs = [{"question": "Are custom curtains much more expensive?", "answer": "Not necessarily. Our custom prices start at 5 KWD per m² for sheers and 6 KWD per m² for roller and wave curtains, with fabric, track and tailoring included."}, {"question": "Do you install ready-made curtains I bought elsewhere?", "answer": "No. We only install the curtains we tailor, because the fit is part of the job."}, {"question": "When is ready-made fine?", "answer": "For a standard-size window in a rented room where fit and finish matter less."}];
+
+---
+<BaseLayout title="Ready-Made vs Custom Curtains" description="Ready-made or custom curtains in Kuwait? Compare fit, look, price and installation, and see when a made-to-measure curtain is worth it for your windows." schemaType="Article" faqs={faqs} pubDate={new Date("2026-10-05")}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Ready-Made vs Custom Curtains in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Ready-made curtains are sold in fixed sizes; custom curtains are cut and sewn for your window. Here is how they compare for typical Kuwaiti homes, where windows are often tall, wide or set into gypsum ceilings.</p>
+    <Picture src={img} alt="White sheer and beige wave curtain on hidden ceiling tracks beside a tall window" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">The main differences</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>Fit:</strong> ready-made sizes rarely match, leaving gaps that let light in or fabric that pools on the floor. Custom curtains cover the window exactly and can run from ceiling to floor.</li>
+      <li><strong>Track:</strong> custom work includes the right track, including hidden ceiling tracks and double tracks for two layers.</li>
+      <li><strong>Choice:</strong> custom gives you every fabric, colour and style, from wave to zebra.</li>
+      <li><strong>Installation:</strong> custom orders are installed and adjusted for you; free from 5 curtains.</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">When custom is worth it</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Tall or wide windows, living rooms and majlis, bedrooms that need real darkness, and any room where the curtain is part of the design. For a quick, low-cost cover on a standard window, ready-made can be enough. See <a class="text-olive underline" href="/en/custom-curtains/">custom curtains</a> and the <a class="text-olive underline" href="/en/curtain-prices/">price list</a>.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

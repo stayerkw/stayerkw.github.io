@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/projects/images/capital-zebra-grey-clinic-1.jpg";
+const faqs = [{"question": "Do you supply schools and embassies?", "answer": "Yes, we tailor and install for any organisation: offices, schools, embassies, clinics and showrooms. Each project starts with a site visit to measure every window and agree the fabric and type."}, {"question": "Can you match one style across a whole building?", "answer": "Yes. We use the same fabric, colour and mechanism on every window so the building looks consistent from inside and out."}, {"question": "How long does a large order take?", "answer": "Most orders are tailored and installed within 2 to 3 days; larger buildings depend on the number of windows, which we confirm after the site visit."}, {"question": "What does it cost?", "answer": "Prices are per square metre everywhere in Kuwait: sheers 5 KWD, roller, wave and blackout 6 KWD, wave with sheer 7 KWD, zebra 9 KWD, wooden blinds 13 KWD. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}];
+
+---
+<BaseLayout title="Commercial Blinds Kuwait" description="Commercial curtains and blinds in Kuwait for offices, schools, embassies, clinics and showrooms: made to measure, large orders, free installation from 5 blinds." schemaType="Service" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Commercial Curtains and Blinds in Kuwait</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Offices, schools, embassies, clinics and showrooms need window coverings that look consistent, control glare and hold up to daily use. We tailor every blind to its window and install a whole site in one programme, with one point of contact who speaks English.</p>
+    <Picture src={img} alt="Two grey zebra blinds in a paediatric clinic, closed for privacy" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">By type of building</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>Offices:</strong> light-filtering <a class="text-olive underline" href="/en/roller-blinds/">roller blinds</a> to cut screen glare, split into sections on wide facades. See <a class="text-olive underline" href="/en/office-blinds/">office blinds</a>.</li>
+      <li><strong>Schools:</strong> blackout roller blinds for classrooms with projectors and smart boards; simple chain controls that are easy to use.</li>
+      <li><strong>Embassies and offices that need privacy:</strong> <a class="text-olive underline" href="/en/zebra-blinds/">zebra blinds</a> or blackout layers that block the view from outside.</li>
+      <li><strong>Clinics:</strong> zebra blinds that give daylight and close for privacy during examinations, as in a paediatric clinic we fitted in Kuwait City.</li>
+      <li><strong>Showrooms and reception areas:</strong> <a class="text-olive underline" href="/en/wave-curtains/">wave curtains</a> with sheers for a softer, premium look.</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">How a commercial project runs</h2>
+    <ol class="mt-4 list-decimal ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li>Send floor photos or a window list on WhatsApp for an initial quote.</li>
+      <li>We visit the site to measure every window and show samples, at a time that suits your working hours (we work daily from 8 am to 10 pm).</li>
+      <li>We tailor everything together and install it, free of charge for 5 blinds or more.</li>
+    </ol>
+    <p class="mt-4 text-charcoal/85 leading-8">Located in the city centre? See <a class="text-olive underline" href="/en/curtains-sharq/">Sharq office blinds</a>.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>
