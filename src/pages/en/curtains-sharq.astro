@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/products/images/roller-office-grey.jpg";
+const faqs = [{"question": "Do you visit offices in Sharq outside working hours?", "answer": "We are available every day from 8 am to 10 pm, so the measurement visit can be arranged early, in the evening or at the weekend to avoid disturbing your staff."}, {"question": "How are large orders priced?", "answer": "Prices are per square metre everywhere in Kuwait: sheers 5 KWD, roller, wave and blackout 6 KWD, wave with sheer 7 KWD, zebra 9 KWD, wooden blinds 13 KWD. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}, {"question": "Can you split a wide glass facade?", "answer": "Yes. We divide wide glass fronts into several blinds side by side, so each section is raised or lowered on its own."}, {"question": "Can we talk to you in English?", "answer": "Yes, we speak English. Message us on WhatsApp with photos of the windows and approximate sizes."}];
+
+---
+<BaseLayout title="Office Blinds Sharq — Kuwait City CBD" description="Office blinds and curtains in Sharq and the Kuwait City business district: roller and zebra blinds for glass towers, split facades, free visit, English spoken." schemaType="Service" faqs={faqs}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Office Blinds and Curtains in Sharq</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Sharq, Mirqab and Qibla make up the business heart of Kuwait City: glass towers, open-plan offices, meeting rooms and clinics facing strong sun most of the day. We measure, tailor and install blinds for offices and apartments across the district.</p>
+    <Picture src={img} alt="Three grey roller blinds side by side on an office window with a suspended ceiling" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">What works in glass towers</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>Light-filtering <a class="text-olive underline" href="/en/roller-blinds/">roller blinds</a></strong> to cut screen glare while keeping the view: 6 KWD per m².</li>
+      <li><strong>Blackout roller blinds</strong> for meeting and training rooms with projectors: 6 KWD per m².</li>
+      <li><strong><a class="text-olive underline" href="/en/zebra-blinds/">Zebra blinds</a></strong> for reception areas and clinics that need light and privacy: 9 KWD per m².</li>
+      <li><strong><a class="text-olive underline" href="/en/wooden-blinds/">Wooden blinds</a></strong> for executive offices: 13 KWD per m².</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Working around your business</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Wide facades are split into several blinds so each desk controls its own section. We are available daily from 8 am to 10 pm, which makes it easier to measure and install before or after office hours. Installation is free for 5 blinds or more, which covers most office fit-outs. For homes in the area see <a class="text-olive underline" href="/en/curtains-kuwait-city/">Kuwait City</a>.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>

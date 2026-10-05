@@ -39,6 +39,8 @@ export const enAreas = [
   { label: "Salmiya", href: "/en/curtains-salmiya/" },
   { label: "Mangaf & Mahboula", href: "/en/curtains-mangaf-mahboula/" },
   { label: "Kuwait City", href: "/en/curtains-kuwait-city/" },
+  { label: "Sharq (offices)", href: "/en/curtains-sharq/" },
+  { label: "Offices, Schools & Embassies", href: "/en/commercial-curtains/" },
   { label: "Farwaniya & Khaitan", href: "/en/curtains-farwaniya-khaitan/" },
 ];
 
@@ -49,5 +51,7 @@ export const enNav = [
   { label: "Blackout Curtains", href: "/en/blackout-curtains/" },
   { label: "Installation", href: "/en/curtain-installation/" },
   { label: "Prices", href: "/en/curtain-prices/" },
+  { label: "Guides", href: "/en/blog/" },
+  { label: "Guides", href: "/en/blog/" },
   { label: "Contact", href: "/en/contact/" },
 ];

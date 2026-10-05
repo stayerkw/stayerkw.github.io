@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../../content/projects/images/blackout-wave-beige-tall-room-1.jpg";
+const faqs = [{"question": "Will blackout curtains replace my air conditioning?", "answer": "No. They block light and cut part of the direct sun’s heat, but cooling still comes from the AC."}, {"question": "Which windows need blackout most?", "answer": "West and south facing windows that take the strong afternoon sun, and any bedroom where you sleep after sunrise."}, {"question": "Light or dark colour?", "answer": "A lighter back facing the glass reflects more sun; choose the room-side colour to suit your décor."}];
+
+---
+<BaseLayout title="Blackout Curtains for Kuwait Summers" description="Do blackout curtains help in a Kuwait summer? How they cut light and part of the sun’s heat, which windows need them most, and how to choose the right type." schemaType="Article" faqs={faqs} pubDate={new Date("2026-10-05")}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Blackout Curtains for Kuwait Summers</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">In a Kuwaiti summer the sun is strong from early morning until late afternoon. Blackout curtains block the light completely through the fabric and, when closed, reduce part of the heat entering through the glass. They are not insulation, but on a sunny window they make a noticeable difference.</p>
+    <Picture src={img} alt="Beige wave blackout curtain from ceiling to floor on a hidden ceiling track" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">How much heat do they cut?</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Research from the US Department of Energy found that medium-coloured curtains with a white backing can reduce heat gain through a window by around a third when closed. That is a general figure, not a measurement of our fabrics, so we do not promise a specific temperature drop.</p>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Getting the most from blackout</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li>Close them during the hottest hours, especially on west and south windows.</li>
+      <li>Make the curtain wider than the window and, where possible, hide the track in the ceiling to stop light leaking.</li>
+      <li>Use two layers, blackout with a sheer, for daytime privacy and night-time darkness.</li>
+      <li>Choose our sun-insulating herringbone or linen-look blackout fabrics for a natural look.</li>
+    </ul>
+    <p class="mt-4 text-charcoal/85 leading-8">Blackout roller blinds and wave blackout cost 6 KWD per m²; blackout with sheer is 9 KWD per m². More on <a class="text-olive underline" href="/en/blackout-curtains/">blackout curtains</a>.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>
