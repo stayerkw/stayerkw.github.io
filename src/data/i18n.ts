@@ -1,6 +1,10 @@
 // F1: أزواج الصفحات العربية/الإنجليزية (translationKey ← slugAr/slugEn). مصدر واحد لـ hreflang وزر اللغة.
 // كل صفحة إنجليزية مستقلة بنص طبيعي يستهدف نية الباحث بالإنجليزية — لا ترجمة حرفية.
+import { projectsEn } from "./projects-en";
+
 export const pagePairs: { key: string; ar: string; en: string }[] = [
+  { key: "projects", ar: "/projects/", en: "/en/projects/" },
+  ...projectsEn.map((p) => ({ key: `project-${p.slug}`, ar: `/projects/${p.slug}/`, en: `/en/projects/${p.slug}/` })),
   { key: "home", ar: "/", en: "/en/" },
   { key: "tailoring", ar: "/services/tailoring/", en: "/en/custom-curtains/" },
   { key: "installation", ar: "/services/installation/", en: "/en/curtain-installation/" },
@@ -51,6 +55,7 @@ export const enNav = [
   { label: "Blackout Curtains", href: "/en/blackout-curtains/" },
   { label: "Installation", href: "/en/curtain-installation/" },
   { label: "Prices", href: "/en/curtain-prices/" },
+  { label: "Our Work", href: "/en/projects/" },
   { label: "Guides", href: "/en/blog/" },
   { label: "Guides", href: "/en/blog/" },
   { label: "Contact", href: "/en/contact/" },
