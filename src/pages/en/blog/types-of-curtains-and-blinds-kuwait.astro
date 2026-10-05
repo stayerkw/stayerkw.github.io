@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../../content/projects/images/hawalli-majlis-curved-sheer-tassels-1.jpg";
+const faqs = [{"question": "What is the difference between curtains and drapes?", "answer": "In everyday use they mean the same thing: fabric panels that hang from a track or rod. “Drapes” usually refers to heavier, lined or blackout fabric, and “curtains” to lighter fabric and sheers."}, {"question": "Which type is best for a living room in Kuwait?", "answer": "Wave curtains with a sheer on a double track: the sheer softens the strong daylight and the fabric layer gives privacy in the evening."}, {"question": "Which type is best for kitchens and bathrooms?", "answer": "Roller blinds, because they have no folds to collect moisture or dust and wipe clean easily. Wooden blinds also suit kitchens away from water."}];
+---
+<BaseLayout title="Types of Curtains and Blinds" description="Types of curtains, drapes and blinds explained for Kuwait homes: wave, sheer, eyelet, blackout, roller, zebra and wooden blinds, with uses and prices per m²." schemaType="Article" faqs={faqs} pubDate={new Date("2026-10-05")}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Types of Curtains and Blinds: A Kuwait Guide</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">Choosing window coverings is easier when you know what each type does. Here are the main types of curtains, drapes and blinds we tailor in Kuwait, with what they are best for and what they cost per square metre.</p>
+    <Picture src={img} alt="Round majlis with curved wave curtains, gold tassels and white sheers" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Curtains and drapes</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong><a class="text-olive underline" href="/en/wave-curtains/">Wave curtains</a></strong> (6 KWD): even S-shaped folds on a ceiling track. The modern choice for living rooms, majlis and tall windows.</li>
+      <li><strong><a class="text-olive underline" href="/en/sheer-curtains/">Sheer curtains</a></strong> (5 KWD): light and daytime privacy; often layered behind wave curtains (7 KWD together).</li>
+      <li><strong>Eyelet curtains</strong> (6 KWD): rings on a visible rod for a classic look.</li>
+      <li><strong><a class="text-olive underline" href="/en/blackout-curtains/">Blackout drapes</a></strong> (6 KWD, or 9 KWD with sheer): block the light for bedrooms and sunny windows.</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Blinds</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong><a class="text-olive underline" href="/en/roller-blinds/">Roller blinds</a></strong> (6 KWD): flat fabric that rolls up; kitchens, bathrooms, bedrooms, offices.</li>
+      <li><strong><a class="text-olive underline" href="/en/zebra-blinds/">Zebra (day and night) blinds</a></strong> (9 KWD): alternating sheer and solid stripes for light control without raising the blind.</li>
+      <li><strong><a class="text-olive underline" href="/en/wooden-blinds/">Wooden blinds</a></strong> (13 KWD): tilting wooden slats for a warm look.</li>
+      <li><strong><a class="text-olive underline" href="/en/kids-blinds/">Printed blinds</a></strong> (13 KWD for a custom print): playful designs for kids’ rooms.</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Living room curtain ideas from our projects</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Wall-to-wall wave curtains with sheers on a hidden track make a living room look taller; a curved track can follow a round majlis; and light grey wave curtains suit a double-height staircase window. See <a class="text-olive underline" href="/en/projects/">our work</a> for photos.</p>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Kitchens and bathrooms</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Choose roller blinds for bathrooms and around sinks, and wooden or roller blinds for kitchens. They stay clear of the hob and the water and are easy to wipe. Prices for every type are on the <a class="text-olive underline" href="/en/curtain-prices/">price list</a>.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>
