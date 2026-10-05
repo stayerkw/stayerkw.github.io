@@ -35,6 +35,13 @@ export const enTypes = [
   { label: "Office Blinds", href: "/en/office-blinds/" },
 ];
 
+export const enAreas = [
+  { label: "Salmiya", href: "/en/curtains-salmiya/" },
+  { label: "Mangaf & Mahboula", href: "/en/curtains-mangaf-mahboula/" },
+  { label: "Kuwait City", href: "/en/curtains-kuwait-city/" },
+  { label: "Farwaniya & Khaitan", href: "/en/curtains-farwaniya-khaitan/" },
+];
+
 export const enNav = [
   { label: "Home", href: "/en/" },
   { label: "Custom Curtains", href: "/en/custom-curtains/" },

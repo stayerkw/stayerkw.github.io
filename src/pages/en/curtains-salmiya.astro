@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import img from "../../content/projects/images/hawalli-sheer-beige-wave-living-1.jpg";
+// F3 المرحلة 2: صفحة منطقة إنجليزية فقط (بلا مقابل عربي). «نخدم» المنطقة؛ لا تُنسب لها أعمال لم تُنفَّذ فيها.
+const faqs = [{"question": "Do you come to Salmiya?", "answer": "Yes. We cover Salmiya and the rest of Kuwait, and the measurement visit with fabric samples is free in Salmiya."}, {"question": "How much do curtains cost in Salmiya?", "answer": "Prices are the same everywhere in Kuwait, per square metre: sheers 5 KWD, roller, wave and blackout 6 KWD, wave with sheer 7 KWD, zebra 9 KWD, wooden blinds 13 KWD. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}, {"question": "Can I message you in English?", "answer": "Yes, we speak English. Send a photo of your window and its size on WhatsApp in English and we reply with an initial quote."}, {"question": "My apartment windows face the sea and the sun. What should I choose?", "answer": "For bright sea-facing rooms, blackout with a sheer on a double track works well: the sheer cuts glare during the day and the blackout darkens the room at night. In living rooms, a sheer alone often gives enough softness."}];
+const areaServed = [{"type": "Place", "name": "Salmiya"}, {"type": "Place", "name": "Hawalli Governorate"}];
+---
+<BaseLayout title="Curtains Salmiya — Blinds & Blackout" description="Curtains and blinds in Salmiya, made to measure for apartments and sea-view windows: blackout, sheers, roller and zebra blinds, free visit, we speak English." schemaType="Service" faqs={faqs} areaServed={areaServed}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">Curtains and Blinds in Salmiya</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">We tailor and install curtains and blinds in Salmiya, from sea-view apartments on the Gulf Road to family flats and villas inland. We speak English, visit your home to measure every window, and deliver in 2 to 3 days.</p>
+    <Picture src={img} alt="Beige wave sheer curtain on a sliding glass door in a sitting room in Hawalli Governorate" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">What Salmiya homes usually need</h2>
+    <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
+      <li><strong>Glare and heat from big windows:</strong> <a class="text-olive underline" href="/en/blackout-curtains/">blackout curtains</a>, or blackout with a sheer on a double track (9 KWD per m²).</li>
+      <li><strong>Daytime privacy in living rooms:</strong> <a class="text-olive underline" href="/en/sheer-curtains/">sheer curtains</a> (5 KWD per m²) or <a class="text-olive underline" href="/en/wave-curtains/">wave curtains with sheer</a> (7 KWD per m²).</li>
+      <li><strong>Kitchens and bathrooms:</strong> <a class="text-olive underline" href="/en/roller-blinds/">roller blinds</a> that wipe clean (6 KWD per m²).</li>
+      <li><strong>Light and privacy in one blind:</strong> <a class="text-olive underline" href="/en/zebra-blinds/">zebra blinds</a> (9 KWD per m²).</li>
+    </ul>
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Our work in Hawalli Governorate</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">Salmiya is part of Hawalli Governorate, where we recently fitted wave curtains with sheers across two walls of a diwaniya, a curved track around a round majlis, a double-height staircase window and wooden blinds in a kitchen. See them on our <a class="text-olive underline" href="/areas/hawalli/">Hawalli page</a> (in Arabic). We also cover nearby Jabriya, Hawalli, Bayan and Mishref.</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>
