@@ -27,6 +27,14 @@ relatedPosts: ["wave-vs-eyelet-curtains", "diwaniya-majlis-curtains", "double-tr
 
 الصورة نموذج لستارة ويفي بيج أمامية مع شيفون أبيض. وتجد نماذج أكثر في [ستائر ويفي مع شيفون](/wave-curtains/).
 
+## أمثلة من أعمالنا بالويفي
+
+- [ويفي بيج مع شيفون يغطي جدار صالة كاملاً في العاصمة](/projects/capital-wave-beige-sheer-living/)
+- [ويفي رمادي فاتح لنافذة درج بارتفاع طابقين في حولي](/projects/hawalli-wave-grey-staircase/)
+- [ويفي بيج مع شيفون على سكتين لنافذة طويلة](/projects/hawalli-wave-beige-sheer-tall-window/)
+- [ويفي بيج مع شيفون بلفة جانبية وشراشيب](/projects/wave-beige-sheer-swag-room/)
+- [ويفي رمادي مع شيفون لغرفة نوم](/projects/wave-grey-sheer-bedroom/)
+
 ## الخيارات والأسعار
 
 السعر بالمتر المربع (العرض × الارتفاع)، وهو شامل القماش والسكة والتفصيل:
