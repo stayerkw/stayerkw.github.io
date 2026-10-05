@@ -2,6 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import { Picture } from "astro:assets";
+import work from "../../content/projects/images/blackout-wave-beige-sheer-bedroom-1.jpg";
+import herring from "../../content/curtain-types/images/blackout-herringbone-folds.jpg";
 import swatches from "../../content/curtain-types/images/blackout-linen-swatches.jpg";
 
 const faqs = [{"question": "Do blackout curtains reduce heat?", "answer": "They block the light and cut part of the sun’s heat when closed, especially on west and south facing windows, but they are not full insulation. A light-coloured back reflects more sun."}, {"question": "Will a blackout curtain make the room completely dark?", "answer": "The fabric blocks light passing through it. Light at the edges depends on size and installation, so we make the curtain wider than the window or fit the track inside the ceiling recess."}, {"question": "Can I have a sheer with blackout?", "answer": "Yes. Blackout with a sheer on a double track costs 9 KWD per square metre: the sheer for the day and the blackout for the night."}];
@@ -10,6 +12,7 @@ const faqs = [{"question": "Do blackout curtains reduce heat?", "answer": "They 
   <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
     <h1 class="text-4xl font-bold text-charcoal leading-tight">Blackout Curtains in Kuwait</h1>
     <p class="mt-4 text-charcoal/85 leading-8">Blackout curtains block daylight for better sleep, for children’s rooms, and for windows that take the strong afternoon sun in Kuwait. We tailor them to your window so light does not leak around the edges.</p>
+    <Picture src={work} alt="Beige wave blackout curtain beside a white sheer on a hidden ceiling track in a bedroom" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />
     <h2 class="mt-10 text-2xl font-bold text-charcoal">Blackout options</h2>
     <ul class="mt-4 list-disc ps-6 space-y-2 text-charcoal/85 leading-7">
       <li><strong>Blackout roller blind:</strong> flat and tidy, ideal for small windows. 6 KWD per m².</li>
@@ -19,6 +22,9 @@ const faqs = [{"question": "Do blackout curtains reduce heat?", "answer": "They 
     <h2 class="mt-10 text-2xl font-bold text-charcoal">Linen-look blackout fabric</h2>
     <p class="mt-4 text-charcoal/85 leading-8">One of our blackout fabrics has a linen texture: it blocks the light but looks like natural linen from inside the room, not shiny plastic. Colours range from white, pale grey and soft sage to beige and dark grey, and we bring the full sample book to the measurement visit.</p>
     <Picture src={swatches} alt="Linen-look blackout fabric samples in white, pale grey, sage, beige, taupe and dark grey" formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="lazy" class="my-6 w-full rounded-2xl" />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">Sun-insulating herringbone blackout</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">We also tailor a sun-insulating blackout fabric with a fine herringbone weave. It blocks the light and reduces the heat coming through the window, and works as wave curtains or roller blinds, in shades of grey.</p>
+    <Picture src={herring} alt="Grey herringbone sun-insulating blackout fabric hanging in even wave folds" formats={["avif"]} fallbackFormat="webp" widths={[400, 640]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="lazy" class="my-6 w-full rounded-2xl" />
     <h2 class="mt-10 text-2xl font-bold text-charcoal">Getting a dark room</h2>
     <p class="mt-4 text-charcoal/85 leading-8">Even blackout fabric lets light in around a curtain cut to the exact window size. We make fabric curtains wider than the window, fit tracks inside gypsum ceilings where possible, and choose inside or outside mounting for roller blinds during the visit.</p>
     <p class="mt-4 text-charcoal/85 leading-8">Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain. The home visit to take measurements and show fabric samples is free (except in Abdali and Subiya, where the visit is paid). See all rates on the <a class="text-olive underline" href="/en/curtain-prices/">price list</a>, or compare with <a class="text-olive underline" href="/en/roller-blinds/">roller blinds</a>.</p>
