@@ -41,6 +41,9 @@ const graph: Record<string, unknown>[] = [
     url: `${origin}/`,
     foundingDate: String(business.foundedYear),
     telephone: business.phone,
+    // English: موظف يتحدث الإنجليزية (المالك 5 أكتوبر 2026)
+    knowsLanguage: ["ar", "en"],
+    contactPoint: { "@type": "ContactPoint", telephone: business.phone, contactType: "customer service", areaServed: "KW", availableLanguage: ["Arabic", "English"] },
     areaServed: areaServedList,
     address: { "@type": "PostalAddress", addressCountry: business.country },
     knowsAbout: business.knowsAbout,

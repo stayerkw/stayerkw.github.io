@@ -18,6 +18,11 @@ const switchLabel = isEn ? "العربية" : "English";
 const switchLang = isEn ? "ar" : "en";
 ---
 <header class="sticky top-0 z-50 bg-ivory border-b border-sand">
+  {isEn && (
+    <div class="bg-olive text-ivory text-xs sm:text-sm text-center px-4 py-1.5" lang="en" dir="ltr">
+      We speak English — message us on <a href={waHref} target="_blank" rel="noopener noreferrer" {...waTrack} class="font-semibold underline">WhatsApp</a> in English
+    </div>
+  )}
   <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-4">
     <a href={isEn ? "/en/" : "/"} class="text-lg font-bold text-charcoal">{isEn ? nameEn : business.name}</a>
 

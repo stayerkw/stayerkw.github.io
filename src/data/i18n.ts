@@ -8,6 +8,12 @@ export const pagePairs: { key: string; ar: string; en: string }[] = [
   { key: "roll", ar: "/curtains/roll/", en: "/en/roller-blinds/" },
   { key: "blackout", ar: "/curtains/blackout/", en: "/en/blackout-curtains/" },
   { key: "contact", ar: "/contact/", en: "/en/contact/" },
+  { key: "zebra", ar: "/curtains/zebra/", en: "/en/zebra-blinds/" },
+  { key: "wave", ar: "/curtains/wave/", en: "/en/wave-curtains/" },
+  { key: "sheer", ar: "/curtains/sheer/", en: "/en/sheer-curtains/" },
+  { key: "wooden", ar: "/curtains/wooden/", en: "/en/wooden-blinds/" },
+  { key: "kids", ar: "/curtains/kids/", en: "/en/kids-blinds/" },
+  { key: "office", ar: "/curtains/office/", en: "/en/office-blinds/" },
 ];
 
 export const isEnglishPath = (p: string) => p === "/en" || p.startsWith("/en/");
@@ -19,6 +25,15 @@ export function alternatesFor(pathname: string): { ar: string; en: string } | un
 }
 
 export const nameEn = "Alam Curtains Kuwait";
+
+export const enTypes = [
+  { label: "Wave Curtains", href: "/en/wave-curtains/" },
+  { label: "Sheer Curtains", href: "/en/sheer-curtains/" },
+  { label: "Zebra Blinds", href: "/en/zebra-blinds/" },
+  { label: "Wooden Blinds", href: "/en/wooden-blinds/" },
+  { label: "Kids' Blinds", href: "/en/kids-blinds/" },
+  { label: "Office Blinds", href: "/en/office-blinds/" },
+];
 
 export const enNav = [
   { label: "Home", href: "/en/" },
