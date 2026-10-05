@@ -3,6 +3,11 @@
 name: قياس الأداء على الموقع الحي
 on:
   workflow_dispatch:
+    inputs:
+      pages:
+        description: "مسارات بلا / في البداية مفصولة بمسافة (فارغ = الرئيسية والخشبي والرول)"
+        required: false
+        default: ""
 jobs:
   live:
     runs-on: ubuntu-24.04
@@ -14,7 +19,8 @@ jobs:
       - name: Lighthouse (حي، 3 مرات لكل صفحة)
         run: |
           mkdir -p lh
-          for page in "" "curtains/wooden/" "curtains/roll/"; do
+          PAGES="${{ github.event.inputs.pages }}"; [ -z "$PAGES" ] && PAGES="_ curtains/wooden/ curtains/roll/"
+          for page in $PAGES; do [ "$page" = "_" ] && page=""
             for run in 1 2 3; do
               name="lhr-$(echo "${page:-home}" | tr '/' '_')-$run.json"
               npx --yes lighthouse@12 "https://alamcurtainskw.com/$page" --quiet --output=json --output-path="lh/$name" \
