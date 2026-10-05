@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import { Picture } from "astro:assets";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../../components/WhatsAppButton.astro";
+import { projectsEn } from "../../../data/projects-en";
+
+export async function getStaticPaths() {
+  const all = await getCollection("projects");
+  return projectsEn.map((p) => ({ params: { slug: p.slug }, props: { p, entry: all.find((e) => e.id === p.slug)! } }));
+}
+const { p, entry } = Astro.props;
+const images = entry.data.images ?? [];
+---
+<BaseLayout title={p.title} description={p.description} schemaType="WebSite">
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <p class="text-sm text-charcoal/60"><a href="/en/" class="hover:text-olive">Home</a> / <a href="/en/projects/" class="hover:text-olive">Our work</a></p>
+    <h1 class="mt-2 text-4xl font-bold text-charcoal leading-tight">{p.title}</h1>
+    <p class="mt-4 text-charcoal/85 leading-8">{p.description}</p>
+    <dl class="mt-6 grid grid-cols-2 gap-3 text-sm">
+      <div><dt class="text-charcoal/60">Location</dt><dd class="font-semibold">{p.location}</dd></div>
+      <div><dt class="text-charcoal/60">Room</dt><dd class="font-semibold">{p.room}</dd></div>
+      <div><dt class="text-charcoal/60">Type</dt><dd class="font-semibold"><a href={p.typeHref} class="text-olive underline">{p.type}</a></dd></div>
+    </dl>
+    {images.map((im, i) => (
+      <Picture src={im.src} alt={i === 0 ? `${p.title} — ${p.location}` : `${p.title}, another view`} formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading={i === 0 ? "eager" : "lazy"} class="my-6 w-full rounded-2xl" />
+    ))}
+    <h2 class="mt-8 text-2xl font-bold text-charcoal">What we did</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">{p.solution}</p>
+    <h2 class="mt-8 text-2xl font-bold text-charcoal">Tip</h2>
+    <p class="mt-4 text-charcoal/85 leading-8">{p.tip}</p>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>
