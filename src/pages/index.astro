@@ -5,6 +5,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
 import FAQ from "../components/FAQ.astro";
 import { priceList } from "../data/pricing";
+import { business } from "../data/business";
 
 import imgRoll from "../content/products/images/roll-ready-white-living.jpg";
 import imgWave from "../content/products/images/wave-grey-brown-cream-sheer.jpg";
@@ -68,8 +69,8 @@ const faqs = [
 ---
 <BaseLayout
   preloadImage={{ srcset: lcpWebp.srcSet.attribute, sizes: TILE_SIZES, type: "image/webp" }}
-  title="تفصيل وتركيب ستائر في الكويت"
-  description="محل ستائر في الكويت لتفصيل وتركيب الستائر حسب المقاس: ستائر رول وبلاك اوت وويفي ومودرن، مع زيارة منزلية لأخذ المقاسات وعرض العينات في جميع المحافظات."
+  title="محل ستائر في الكويت – تفصيل وتركيب ستائر | عالم ستائر الكويت"
+  description={`محل ستائر في الكويت منذ ${business.foundedYear} لتفصيل وتركيب الستائر حسب المقاس: رول وبلاك اوت وويفي وشيفون، من ${price("sheer")} د.ك للمتر المربع، وزيارة منزلية لأخذ المقاسات في كل المحافظات.`}
 >
   <section class="mx-auto max-w-6xl px-4 pt-10 md:pt-16">
     <div class="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
@@ -94,7 +95,7 @@ const faqs = [
         </div>
         <div class="lg:py-3">
           <dt class="text-charcoal/60">الزيارة المنزلية</dt>
-          <dd class="mt-1 font-bold text-charcoal">مجانية لأخذ المقاسات</dd>
+          <dd class="mt-1 font-bold text-charcoal">مجانية لأخذ المقاسات<span class="block text-xs font-normal text-charcoal/60">عدا العبدلي والصبية</span></dd>
         </div>
         <div class="lg:py-3">
           <dt class="text-charcoal/60">مدة التنفيذ</dt>
@@ -175,6 +176,7 @@ const faqs = [
       <h2 class="text-2xl font-bold text-charcoal mb-4">ستائر في الكويت: تفصيل حسب المقاس وتركيب في كل المحافظات</h2>
       <div class="space-y-4 leading-8 text-charcoal/80">
         <p>
+          عالم ستائر الكويت محل ستائر يفصّل الستائر منذ {business.foundedYear} في ورشته في الضجيج، ويخدم كل مناطق الكويت.
           إذا كنت تبحث عن <a href="/services/tailoring/" class="text-gold-deep underline">تفصيل ستائر في الكويت</a>،
           فالمقاس هو الأساس: نقيس النافذة على الطبيعة ثم نفصّل الستارة على مقاسها.
         </p>
@@ -184,7 +186,7 @@ const faqs = [
           و<a href="/curtains/wave/" class="text-gold-deep underline">ستائر الويفي</a> (وراجع <a href="/wave-curtains/" class="text-gold-deep underline">ستائر ويفي مع شيفون</a> بصور من أعمالنا) للصالات والمجالس.
         </p>
         <p>
-          أما <a href="/services/installation/" class="text-gold-deep underline">تركيب الستائر</a> فيتم في جميع المحافظات: العاصمة وحولي والفروانية ومبارك الكبير والأحمدي والجهراء.
+          أما <a href="/services/installation/" class="text-gold-deep underline">تركيب ستائر في الكويت</a> فيتم بيد فني التركيب لدينا للستائر التي نفصّلها، في جميع المحافظات: العاصمة وحولي والفروانية ومبارك الكبير والأحمدي والجهراء.
           راجع <a href="/prices/" class="text-gold-deep underline">دليل أسعار الستائر</a> لمعرفة ما يحدد السعر، أو أرسل المقاس عبر واتساب لعرض مبدئي.
         </p>
       </div>
