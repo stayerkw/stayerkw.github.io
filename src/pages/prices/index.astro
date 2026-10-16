@@ -9,10 +9,40 @@ import { priceList, installRule, priceOf, priceSummary } from "../../data/pricin
 const pageUrl = new URL("/prices/", Astro.site).href;
 const metaDescription = `أسعار الستائر في الكويت للمتر المربع: ${priceSummary(["roll", "wave", "blackout", "kids", "office", "sheer", "wave-sheer", "wooden"])}.`;
 const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
+import FAQ from "../../components/FAQ.astro";
+
+// مثال حسابي يتولد من بيانات الأسعار نفسها فلا يتقادم عند تغيير سعر
+const exW = 2, exH = 2.5, exArea = exW * exH, exCount = 3;
+const exWave = priceOf("wave") * exArea;
+const exInstall = exCount * installRule.fee;
+const cheapest = [...priceList].sort((a, b) => a.price - b.price)[0];
+const faqs = [
+  {
+    question: "كم سعر متر الستائر في الكويت؟",
+    answer: `السعر بالمتر المربع ويختلف حسب النوع: ${priceSummary(["sheer", "roll", "wave", "blackout", "wave-sheer", "zebra", "wooden"])}.`,
+  },
+  {
+    question: "ما أرخص نوع ستائر لديكم؟",
+    answer: `${cheapest.name} بسعر يبدأ من ${cheapest.price} د.ك للمتر المربع. والأنسب لنافذتك يتحدد حسب الغرفة ودرجة حجب الضوء المطلوبة.`,
+  },
+  {
+    question: "هل السعر يشمل القماش والتفصيل والتركيب؟",
+    answer: `السعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند طلب ${installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف ${installRule.fee} د.ك لتركيب كل ستارة.`,
+  },
+  {
+    question: "هل زيارة أخذ المقاسات مجانية؟",
+    answer: "نعم، الزيارة المنزلية لأخذ المقاسات وعرض العينات مجانية، عدا العبدلي والصبية فالمعاينة فيهما مدفوعة.",
+  },
+  {
+    question: "هل السعر الذي تعطيه الحاسبة نهائي؟",
+    answer: "لا، الحاسبة تقدير مبدئي، والمبلغ النهائي يُؤكَّد بعد القياس.",
+  },
+];
 ---
 <BaseLayout
-  title="أسعار الستائر في الكويت"
+  title="أسعار الستائر في الكويت – سعر المتر | عالم ستائر الكويت"
   description={metaDescription}
+  faqs={faqs}
 >
   <div class="mx-auto max-w-3xl px-4 py-16">
     <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الأسعار" }]} />
@@ -21,6 +51,7 @@ const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
       أسعارنا تُحسب بالمتر المربع، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة. والزيارة المنزلية وأخذ المقاسات مجانية (عدا العبدلي والصبية، فالمعاينة فيهما مدفوعة).
     </p>
 
+    <h2 class="text-xl font-bold text-charcoal mb-3">سعر متر الستائر حسب النوع</h2>
     <div class="overflow-x-auto mb-8">
       <table class="w-full text-right border border-sand rounded-xl overflow-hidden">
         <thead class="bg-sand/40 text-charcoal">
@@ -43,6 +74,15 @@ const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
     <p class="text-charcoal/70 mb-6">
       ستائر «الخام» هي قماش أمامي مع شيفون: الويفي مع الشيفون {priceOf("wave-sheer")} د.ك، وبقماش بلاك اوت مع الشيفون {priceOf("khaam-blackout")} د.ك. والتركيب في كل الأنواع مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
     </p>
+
+    <section class="mb-10" aria-labelledby="example-title">
+      <h2 id="example-title" class="text-xl font-bold text-charcoal mb-2">مثال: كم تكلف ستائر غرفة فيها {exCount} نوافذ؟</h2>
+      <p class="text-charcoal/70">
+        نافذة عرضها {exW} م وارتفاعها {exH} م مساحتها {exArea} م². بستائر الويفي ({priceOf("wave")} د.ك للمتر المربع) تكلف النافذة نحو {exWave} د.ك،
+        فتكون {exCount} نوافذ نحو {exWave * exCount} د.ك، ويُضاف {exInstall} د.ك للتركيب لأن العدد أقل من {installRule.freeFrom} ستائر، فالإجمالي نحو {exWave * exCount + exInstall} د.ك.
+        وهذا تقدير مبدئي يُؤكَّد بعد القياس. جرّب مقاساتك في الحاسبة أدناه.
+      </p>
+    </section>
 
     <section id="calculator" class="rounded-2xl border border-sand bg-white p-5 mb-10" aria-labelledby="calc-title">
       <h2 id="calc-title" class="text-xl font-bold text-charcoal mb-2">حاسبة تقدير السعر</h2>
@@ -102,6 +142,11 @@ const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
       القياس والتركيب متاحان في
       <a href="/areas/" class="text-olive underline hover:text-charcoal">جميع مناطق الكويت</a>.
     </p>
+
+    <section class="mt-12" aria-labelledby="prices-faq-title">
+      <h2 id="prices-faq-title" class="text-xl font-bold text-charcoal mb-4">أسئلة شائعة عن أسعار الستائر</h2>
+      <FAQ faqs={faqs} />
+    </section>
   </div>
 </BaseLayout>
 
