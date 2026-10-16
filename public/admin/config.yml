@@ -83,86 +83,153 @@ collections:
         hint: "كلمة واحدة من خريطة الكلمات، لصفحة واحدة فقط. يُنبّه الفحص إن غابت عن العنوان أو الوصف أو تكررت في صفحتين، ولا يمنع النشر."
         options: &keywords
 # >>> keywords (مولَّد: npm run cms:keywords — لا تعدّله يدوياً)
-          - { label: "ستائر · 1550 بحث/شهر → /", value: "ستائر" }
-          - { label: "ستاير · 1550 بحث/شهر → /", value: "ستاير" }
-          - { label: "تركيب ستائر · 1546 بحث/شهر → /services/installation/", value: "تركيب ستائر" }
-          - { label: "curtains · 1050 بحث/شهر", value: "curtains" }
-          - { label: "تفصيل ستائر · 757 بحث/شهر → /services/tailoring/", value: "تفصيل ستائر" }
-          - { label: "ستارة · 613 بحث/شهر → /", value: "ستارة" }
-          - { label: "ستائر رول · 557 بحث/شهر → /curtains/roll/", value: "ستائر رول" }
-          - { label: "curtains kuwait · 480 بحث/شهر", value: "curtains kuwait" }
-          - { label: "ستائر ويفي · 433 بحث/شهر → /curtains/wave/", value: "ستائر ويفي" }
-          - { label: "blinds · 338 بحث/شهر", value: "blinds" }
+          - { label: "تركيب ستائر · 1600 بحث/شهر → /services/installation/", value: "تركيب ستائر" }
+          - { label: "تفصيل ستائر · 720 بحث/شهر → /services/tailoring/", value: "تفصيل ستائر" }
+          - { label: "تفصيل ستاير · 720 بحث/شهر → /services/tailoring/", value: "تفصيل ستاير" }
+          - { label: "ستائر رول · 590 بحث/شهر → /curtains/roll/", value: "ستائر رول" }
+          - { label: "ستائر ويفي · 480 بحث/شهر → /curtains/wave/", value: "ستائر ويفي" }
+          - { label: "curtains kuwait · 480 بحث/شهر → /en/", value: "curtains kuwait" }
           - { label: "تفصيل ستائر الكويت · 260 بحث/شهر → /services/tailoring/", value: "تفصيل ستائر الكويت" }
           - { label: "ستائر الكويت · 260 بحث/شهر → /", value: "ستائر الكويت" }
-          - { label: "curtain rod · 238 بحث/شهر", value: "curtain rod" }
-          - { label: "ikea curtains · 185 بحث/شهر", value: "ikea curtains" }
-          - { label: "blackout · 173 بحث/شهر", value: "blackout" }
-          - { label: "ستائر رول جاهزة الكويت · 140 بحث/شهر → /ready-roll-curtains/", value: "ستائر رول جاهزة الكويت" }
-          - { label: "تفصال ستائر · 122 بحث/شهر → /services/tailoring/", value: "تفصال ستائر" }
+          - { label: "ستاير الكويت · 260 بحث/شهر → /", value: "ستاير الكويت" }
           - { label: "تركيب ستائر الكويت · 110 بحث/شهر → /services/installation/", value: "تركيب ستائر الكويت" }
-          - { label: "ستائر جاهزة في الكويت · 110 بحث/شهر → /ready-roll-curtains/", value: "ستائر جاهزة في الكويت" }
-          - { label: "roller blinds kuwait · 110 بحث/شهر", value: "roller blinds kuwait" }
-          - { label: "ستائر بلاك اوت · 96 بحث/شهر → /curtains/blackout/", value: "ستائر بلاك اوت" }
-          - { label: "ارخص ستائر في الكويت · 90 بحث/شهر → /prices/", value: "ارخص ستائر في الكويت" }
-          - { label: "محل ستائر · 83 بحث/شهر → /", value: "محل ستائر" }
-          - { label: "برادي · 80 بحث/شهر → /services/tailoring/", value: "برادي" }
-          - { label: "ستائر ايكيا الكويت · 70 بحث/شهر", value: "ستائر ايكيا الكويت" }
-          - { label: "roller blinds · 65 بحث/شهر", value: "roller blinds" }
-          - { label: "ستائر غرف نوم · 63 بحث/شهر", value: "ستائر غرف نوم" }
-          - { label: "تركيب ستائر الجهراء · 50 بحث/شهر → /areas/jahra/", value: "تركيب ستائر الجهراء" }
+          - { label: "تفصيل وتركيب ستائر · 110 بحث/شهر → /", value: "تفصيل وتركيب ستائر" }
+          - { label: "roller blinds kuwait · 110 بحث/شهر → /en/roller-blinds/", value: "roller blinds kuwait" }
+          - { label: "ستائر بلاك اوت · 90 بحث/شهر → /curtains/blackout/", value: "ستائر بلاك اوت" }
+          - { label: "محل ستائر · 90 بحث/شهر → /", value: "محل ستائر" }
+          - { label: "فني ستائر · 70 بحث/شهر → /services/installation/", value: "فني ستائر" }
+          - { label: "ستائر الجهراء · 50 بحث/شهر → /areas/jahra/", value: "ستائر الجهراء" }
           - { label: "ستائر رول الكويت · 50 بحث/شهر → /curtains/roll/", value: "ستائر رول الكويت" }
-          - { label: "blackout curtains kuwait · 50 بحث/شهر", value: "blackout curtains kuwait" }
-          - { label: "curtain rod kuwait · 50 بحث/شهر", value: "curtain rod kuwait" }
-          - { label: "ikea curtains kuwait · 50 بحث/شهر", value: "ikea curtains kuwait" }
-          - { label: "ستائر الجهراء · 48 بحث/شهر → /areas/jahra/", value: "ستائر الجهراء" }
-          - { label: "ستائر مطبخ · 46 بحث/شهر", value: "ستائر مطبخ" }
-          - { label: "ستائر جاهزة · 32 بحث/شهر → /ready-roll-curtains/", value: "ستائر جاهزة" }
+          - { label: "ستائر غرف نوم · 50 بحث/شهر → /blog/bedroom-curtains/", value: "ستائر غرف نوم" }
+          - { label: "ستاير ويفي · 50 بحث/شهر → /curtains/wave/", value: "ستاير ويفي" }
+          - { label: "blackout curtains kuwait · 50 بحث/شهر → /en/blackout-curtains/", value: "blackout curtains kuwait" }
+          - { label: "ستائر جاهزة · 30 بحث/شهر → /ready-roll-curtains/", value: "ستائر جاهزة" }
           - { label: "ستائر خشبية · 30 بحث/شهر → /curtains/wooden/", value: "ستائر خشبية" }
-          - { label: "ستائر شيفون · 29 بحث/شهر → /curtains/sheer/", value: "ستائر شيفون" }
-          - { label: "ستائر حولي · 23 بحث/شهر → /areas/hawalli/", value: "ستائر حولي" }
-          - { label: "ستائر رومانية · 23 بحث/شهر → /curtains/roman/", value: "ستائر رومانية" }
-          - { label: "ستائر مكاتب · 20 بحث/شهر → /curtains/office/", value: "ستائر مكاتب" }
-          - { label: "ستائر مكتبية · 17 بحث/شهر → /curtains/office/", value: "ستائر مكتبية" }
-          - { label: "ستائر زيبرا · 12 بحث/شهر", value: "ستائر زيبرا" }
+          - { label: "ستائر شيفون · 30 بحث/شهر → /curtains/sheer/", value: "ستائر شيفون" }
+          - { label: "ستائر رومانية · 20 بحث/شهر → /curtains/roman/", value: "ستائر رومانية" }
+          - { label: "ستائر شتر · 20 بحث/شهر", value: "ستائر شتر" }
+          - { label: "ستائر للمكاتب · 20 بحث/شهر → /curtains/office/", value: "ستائر للمكاتب" }
+          - { label: "أسعار الستائر · 10 بحث/شهر → /prices/", value: "أسعار الستائر" }
+          - { label: "أفضل أنواع الستائر · 10 بحث/شهر", value: "أفضل أنواع الستائر" }
           - { label: "تركيب ستائر حولي · 10 بحث/شهر → /areas/hawalli/", value: "تركيب ستائر حولي" }
-          - { label: "ستائر كهربائية · 10 بحث/شهر", value: "ستائر كهربائية" }
-          - { label: "ستائر كهربائية الكويت · 10 بحث/شهر", value: "ستائر كهربائية الكويت" }
+          - { label: "تفصيل ستائر الفروانية · 10 بحث/شهر → /areas/farwaniya/", value: "تفصيل ستائر الفروانية" }
+          - { label: "ستائر بلاك أوت · 10 بحث/شهر → /curtains/blackout/", value: "ستائر بلاك أوت" }
+          - { label: "ستائر خيطان · 10 بحث/شهر", value: "ستائر خيطان" }
+          - { label: "ستائر زيبرا · 10 بحث/شهر → /curtains/zebra/", value: "ستائر زيبرا" }
+          - { label: "ستائر صالات · 10 بحث/شهر", value: "ستائر صالات" }
+          - { label: "ستائر عازلة للضوء · 10 بحث/شهر → /curtains/blackout/", value: "ستائر عازلة للضوء" }
+          - { label: "ستائر عمودية · 10 بحث/شهر", value: "ستائر عمودية" }
+          - { label: "ستائر للشركات · 10 بحث/شهر → /curtains/office/", value: "ستائر للشركات" }
+          - { label: "ستائر مجالس · 10 بحث/شهر", value: "ستائر مجالس" }
           - { label: "ستائر ويفي الكويت · 10 بحث/شهر → /curtains/wave/", value: "ستائر ويفي الكويت" }
-          - { label: "سعر متر ستائر الويفي · 10 بحث/شهر → /prices/", value: "سعر متر ستائر الويفي" }
-          - { label: "curtain installation · 10 بحث/شهر", value: "curtain installation" }
-          - { label: "سعر ستائر · 9 بحث/شهر → /prices/", value: "سعر ستائر" }
-          - { label: "curtain prices · 9 بحث/شهر", value: "curtain prices" }
-          - { label: "ستائر خيطان · 8 بحث/شهر", value: "ستائر خيطان" }
-          - { label: "ستائر صالات · 8 بحث/شهر", value: "ستائر صالات" }
-          - { label: "ستائر مجالس · 7 بحث/شهر", value: "ستائر مجالس" }
-          - { label: "شركة ستائر · 7 بحث/شهر → /", value: "شركة ستائر" }
-          - { label: "custom curtains · 7 بحث/شهر", value: "custom curtains" }
-          - { label: "ستائر منزلية · 4 بحث/شهر → /", value: "ستائر منزلية" }
-          - { label: "أسعار تفصيل الستائر · بلا بيانات → /prices/", value: "أسعار تفصيل الستائر" }
+          - { label: "سعر متر الستائر · 10 بحث/شهر → /prices/", value: "سعر متر الستائر" }
+          - { label: "قياس الستائر · 10 بحث/شهر → /blog/how-to-measure-window/", value: "قياس الستائر" }
+          - { label: "معلم ستائر · 10 بحث/شهر → /services/installation/", value: "معلم ستائر" }
+          - { label: "أسعار تفصيل الستائر · 0 بحث/شهر → /prices/", value: "أسعار تفصيل الستائر" }
+          - { label: "سعر تفصيل الستائر · 0 بحث/شهر → /prices/", value: "سعر تفصيل الستائر" }
+          - { label: "ارخص ستائر في الكويت · بلا بيانات → /prices/", value: "ارخص ستائر في الكويت" }
+          - { label: "أسعار الستائر الكويت · بلا بيانات → /prices/", value: "أسعار الستائر الكويت" }
           - { label: "أسعار ستائر · بلا بيانات → /prices/", value: "أسعار ستائر" }
+          - { label: "أفضل ستائر لحجب الشمس · بلا بيانات → /curtains/blackout/", value: "أفضل ستائر لحجب الشمس" }
+          - { label: "برادي · بلا بيانات → /services/tailoring/", value: "برادي" }
           - { label: "تركيب ستائر الأحمدي · بلا بيانات", value: "تركيب ستائر الأحمدي" }
-          - { label: "تركيب ستائر العاصمة · بلا بيانات → /areas/", value: "تركيب ستائر العاصمة" }
+          - { label: "تركيب ستائر الجهراء · بلا بيانات → /areas/jahra/", value: "تركيب ستائر الجهراء" }
+          - { label: "تركيب ستائر العاصمة · بلا بيانات → /areas/capital/", value: "تركيب ستائر العاصمة" }
           - { label: "تركيب ستائر الفروانية · بلا بيانات", value: "تركيب ستائر الفروانية" }
           - { label: "تركيب ستائر مبارك الكبير · بلا بيانات → /areas/mubarak-al-kabeer/", value: "تركيب ستائر مبارك الكبير" }
+          - { label: "تركيب قضبان الستائر · بلا بيانات → /services/installation/", value: "تركيب قضبان الستائر" }
+          - { label: "تفصال ستائر · بلا بيانات → /services/tailoring/", value: "تفصال ستائر" }
           - { label: "تفصال ستاير الكويت · بلا بيانات → /services/tailoring/", value: "تفصال ستاير الكويت" }
+          - { label: "تفصيل ستائر السالمية · بلا بيانات → /areas/hawalli/", value: "تفصيل ستائر السالمية" }
+          - { label: "تفصيل ستائر حسب الطلب · بلا بيانات → /services/tailoring/", value: "تفصيل ستائر حسب الطلب" }
+          - { label: "تفصيل ستائر حولي · بلا بيانات → /areas/hawalli/", value: "تفصيل ستائر حولي" }
+          - { label: "تفصيل ستاير الكويت · بلا بيانات → /services/tailoring/", value: "تفصيل ستاير الكويت" }
+          - { label: "ستائر · بلا بيانات → /", value: "ستائر" }
+          - { label: "ستائر اطفال · بلا بيانات → /curtains/kids/", value: "ستائر اطفال" }
           - { label: "ستائر الأحمدي · بلا بيانات", value: "ستائر الأحمدي" }
           - { label: "ستائر السالمية · بلا بيانات → /areas/hawalli/", value: "ستائر السالمية" }
-          - { label: "ستائر الشويخ · بلا بيانات → /areas/", value: "ستائر الشويخ" }
-          - { label: "ستائر العاصمة · بلا بيانات → /areas/", value: "ستائر العاصمة" }
+          - { label: "ستائر الشويخ · بلا بيانات → /areas/capital/", value: "ستائر الشويخ" }
+          - { label: "ستائر العاصمة · بلا بيانات → /areas/capital/", value: "ستائر العاصمة" }
           - { label: "ستائر العدان · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر العدان" }
           - { label: "ستائر الفحيحيل · بلا بيانات", value: "ستائر الفحيحيل" }
           - { label: "ستائر الفروانية · بلا بيانات", value: "ستائر الفروانية" }
-          - { label: "ستائر بلاك اوت الكويت · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك اوت الكويت" }
+          - { label: "ستائر الكويت العاصمة · بلا بيانات → /areas/capital/", value: "ستائر الكويت العاصمة" }
+          - { label: "ستائر ايكيا الكويت · بلا بيانات", value: "ستائر ايكيا الكويت" }
+          - { label: "ستائر بلاك أوت الكويت · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك أوت الكويت" }
+          - { label: "ستائر بلاك أوت رول · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك أوت رول" }
+          - { label: "ستائر جاهزة الكويت · بلا بيانات → /ready-roll-curtains/", value: "ستائر جاهزة الكويت" }
+          - { label: "ستائر جاهزة في الكويت · بلا بيانات → /ready-roll-curtains/", value: "ستائر جاهزة في الكويت" }
+          - { label: "ستائر حولي · بلا بيانات → /areas/hawalli/", value: "ستائر حولي" }
+          - { label: "ستائر خشبية الكويت · بلا بيانات → /curtains/wooden/", value: "ستائر خشبية الكويت" }
           - { label: "ستائر ديوانية · بلا بيانات", value: "ستائر ديوانية" }
+          - { label: "ستائر رول جاهزة الكويت · بلا بيانات → /ready-roll-curtains/", value: "ستائر رول جاهزة الكويت" }
+          - { label: "ستائر زيبرا الكويت · بلا بيانات → /curtains/zebra/", value: "ستائر زيبرا الكويت" }
+          - { label: "ستائر شيفون الكويت · بلا بيانات → /curtains/sheer/", value: "ستائر شيفون الكويت" }
+          - { label: "ستائر صالات الكويت · بلا بيانات", value: "ستائر صالات الكويت" }
           - { label: "ستائر صالة · بلا بيانات", value: "ستائر صالة" }
+          - { label: "ستائر صباح السالم · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر صباح السالم" }
+          - { label: "ستائر عازلة للشمس · بلا بيانات → /curtains/blackout/", value: "ستائر عازلة للشمس" }
+          - { label: "ستائر كهربائية · بلا بيانات", value: "ستائر كهربائية" }
+          - { label: "ستائر كهربائية الكويت · بلا بيانات", value: "ستائر كهربائية الكويت" }
+          - { label: "ستائر للمنازل الجديدة · بلا بيانات", value: "ستائر للمنازل الجديدة" }
           - { label: "ستائر مبارك الكبير · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر مبارك الكبير" }
+          - { label: "ستائر مطبخ · بلا بيانات → /blog/kitchen-curtains/", value: "ستائر مطبخ" }
+          - { label: "ستائر مكاتب · بلا بيانات → /curtains/office/", value: "ستائر مكاتب" }
+          - { label: "ستائر مكتبية · بلا بيانات → /curtains/office/", value: "ستائر مكتبية" }
+          - { label: "ستائر منزلية · بلا بيانات → /", value: "ستائر منزلية" }
+          - { label: "ستائر مودرن · بلا بيانات → /curtains/modern/", value: "ستائر مودرن" }
           - { label: "ستائر ويفي مع شيفون · بلا بيانات → /wave-curtains/", value: "ستائر ويفي مع شيفون" }
+          - { label: "ستارة · بلا بيانات → /", value: "ستارة" }
+          - { label: "ستاير · بلا بيانات → /", value: "ستاير" }
+          - { label: "سعر ستائر · بلا بيانات → /prices/", value: "سعر ستائر" }
           - { label: "سعر ستائر الرول · بلا بيانات → /prices/", value: "سعر ستائر الرول" }
           - { label: "سعر ستائر الكويت · بلا بيانات → /prices/", value: "سعر ستائر الكويت" }
+          - { label: "سعر متر ستائر الويفي · بلا بيانات → /prices/", value: "سعر متر ستائر الويفي" }
+          - { label: "شركة ستائر · بلا بيانات → /", value: "شركة ستائر" }
+          - { label: "صيانة الستائر · بلا بيانات", value: "صيانة الستائر" }
+          - { label: "فني ستائر الكويت · بلا بيانات → /services/installation/", value: "فني ستائر الكويت" }
+          - { label: "محل ستائر الكويت · بلا بيانات → /", value: "محل ستائر الكويت" }
+          - { label: "محلات ستائر · بلا بيانات → /", value: "محلات ستائر" }
+          - { label: "معلم ستائر الكويت · بلا بيانات → /services/installation/", value: "معلم ستائر الكويت" }
+          - { label: "ورشة ستائر الكويت · بلا بيانات → /", value: "ورشة ستائر الكويت" }
+          - { label: "bathroom curtains · بلا بيانات → /en/blog/types-of-curtains-and-blinds-kuwait/", value: "bathroom curtains" }
+          - { label: "blackout · بلا بيانات → /en/blackout-curtains/", value: "blackout" }
+          - { label: "blind curtain · بلا بيانات → /en/roller-blinds/", value: "blind curtain" }
+          - { label: "blinds · بلا بيانات → /en/roller-blinds/", value: "blinds" }
+          - { label: "blinds kuwait · بلا بيانات → /en/roller-blinds/", value: "blinds kuwait" }
+          - { label: "ceiling track curtain · بلا بيانات → /en/wave-curtains/", value: "ceiling track curtain" }
+          - { label: "curtain designs for living room · بلا بيانات → /en/blog/types-of-curtains-and-blinds-kuwait/", value: "curtain designs for living room" }
+          - { label: "curtain installation · بلا بيانات", value: "curtain installation" }
           - { label: "curtain installation kuwait · بلا بيانات", value: "curtain installation kuwait" }
+          - { label: "curtain prices · بلا بيانات", value: "curtain prices" }
           - { label: "curtain prices kuwait · بلا بيانات", value: "curtain prices kuwait" }
+          - { label: "curtain rod · بلا بيانات", value: "curtain rod" }
+          - { label: "curtain rod kuwait · بلا بيانات", value: "curtain rod kuwait" }
+          - { label: "curtain roll · بلا بيانات → /en/roller-blinds/", value: "curtain roll" }
+          - { label: "curtain shop kuwait · بلا بيانات → /en/", value: "curtain shop kuwait" }
+          - { label: "curtain shop near me · بلا بيانات → /en/contact/", value: "curtain shop near me" }
+          - { label: "curtain tailoring kuwait · بلا بيانات → /en/custom-curtains/", value: "curtain tailoring kuwait" }
+          - { label: "curtains · بلا بيانات → /en/", value: "curtains" }
+          - { label: "curtains mangaf · بلا بيانات → /en/curtains-mangaf-mahboula/", value: "curtains mangaf" }
+          - { label: "curtains salmiya · بلا بيانات → /en/curtains-salmiya/", value: "curtains salmiya" }
+          - { label: "custom curtains · بلا بيانات", value: "custom curtains" }
           - { label: "custom curtains kuwait · بلا بيانات", value: "custom curtains kuwait" }
+          - { label: "day and night blinds · بلا بيانات → /en/zebra-blinds/", value: "day and night blinds" }
+          - { label: "door curtains · بلا بيانات → /en/sheer-curtains/", value: "door curtains" }
+          - { label: "drapes · بلا بيانات → /en/blog/types-of-curtains-and-blinds-kuwait/", value: "drapes" }
+          - { label: "ikea curtains · بلا بيانات", value: "ikea curtains" }
+          - { label: "ikea curtains kuwait · بلا بيانات", value: "ikea curtains kuwait" }
+          - { label: "kitchen curtains · بلا بيانات → /en/blog/types-of-curtains-and-blinds-kuwait/", value: "kitchen curtains" }
+          - { label: "linen curtains · بلا بيانات → /en/blackout-curtains/", value: "linen curtains" }
+          - { label: "office curtains · بلا بيانات → /en/office-blinds/", value: "office curtains" }
+          - { label: "roller blinds · بلا بيانات → /en/roller-blinds/", value: "roller blinds" }
+          - { label: "sheer curtains · بلا بيانات → /en/sheer-curtains/", value: "sheer curtains" }
+          - { label: "types of curtains · بلا بيانات → /en/blog/types-of-curtains-and-blinds-kuwait/", value: "types of curtains" }
+          - { label: "wave curtains kuwait · بلا بيانات → /en/wave-curtains/", value: "wave curtains kuwait" }
+          - { label: "window blinds kuwait · بلا بيانات → /en/roller-blinds/", value: "window blinds kuwait" }
+          - { label: "window curtains · بلا بيانات → /en/", value: "window curtains" }
+          - { label: "wooden blinds · بلا بيانات → /en/wooden-blinds/", value: "wooden blinds" }
+          - { label: "zebra blinds · بلا بيانات → /en/zebra-blinds/", value: "zebra blinds" }
 # <<< keywords
       - {label: "🔎 عنوان جوجل (اختياري)", name: "seoTitle", widget: "string", required: false, hint: "اتركه فارغاً لاستعمال اسم المنتج. اسم النشاط يُضاف تلقائياً."}
       - {label: "🔎 عدم الفهرسة (noindex)", name: "noindex", widget: "boolean", default: false, hint: "مفعّل = تُنشر الصفحة لكن لا تظهر في جوجل ولا في sitemap. للصفحات الرفيعة بدل حذفها.", required: false}
