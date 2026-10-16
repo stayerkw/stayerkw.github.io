@@ -58,7 +58,7 @@ const products = defineCollection({
       gallery: z.array(image()).optional(),
       // I1: حقول موسعة اختيارية — تُعرض فقط إن عُبّئت (لا قيم افتراضية مخمّنة)
       fabricType: optStr(),
-      opacity: opt(z.enum(['شفاف', 'نصف معتم', 'بلاك أوت'])),
+      opacity: opt(z.enum(['شفاف', 'نصف معتم', 'بلاك اوت'])),
       colors: opt(z.array(z.string())),
       care: optStr(),
     }),

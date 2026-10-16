@@ -32,10 +32,10 @@
     },
     {
       "id": "wave-blackout",
-      "name": "ستائر ويفي مع بلاك أوت (طبقة واحدة)",
+      "name": "ستائر ويفي مع بلاك اوت (طبقة واحدة)",
       "href": "/wave-curtains/",
       "price": 6,
-      "short": "ويفي مع بلاك أوت"
+      "short": "ويفي مع بلاك اوت"
     },
     {
       "id": "eyelet",
@@ -46,17 +46,17 @@
     },
     {
       "id": "blackout",
-      "name": "ستائر بلاك أوت",
+      "name": "ستائر بلاك اوت",
       "href": "/curtains/blackout/",
       "price": 6,
-      "short": "بلاك أوت"
+      "short": "بلاك اوت"
     },
     {
       "id": "khaam-blackout",
-      "name": "ستائر خام بلاك أوت مع شيفون",
+      "name": "ستائر خام بلاك اوت مع شيفون",
       "href": "/curtains/blackout/",
       "price": 9,
-      "short": "خام بلاك أوت مع شيفون"
+      "short": "خام بلاك اوت مع شيفون"
     },
     {
       "id": "sheer",
