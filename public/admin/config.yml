@@ -114,13 +114,13 @@ collections:
           - { label: "تركيب ستائر حولي · 10 بحث/شهر → /areas/hawalli/", value: "تركيب ستائر حولي" }
           - { label: "تفصيل ستائر الفروانية · 10 بحث/شهر → /areas/farwaniya/", value: "تفصيل ستائر الفروانية" }
           - { label: "ستائر بلاك أوت · 10 بحث/شهر → /curtains/blackout/", value: "ستائر بلاك أوت" }
-          - { label: "ستائر خيطان · 10 بحث/شهر", value: "ستائر خيطان" }
+          - { label: "ستائر خيطان · 10 بحث/شهر → /areas/farwaniya/", value: "ستائر خيطان" }
           - { label: "ستائر زيبرا · 10 بحث/شهر → /curtains/zebra/", value: "ستائر زيبرا" }
-          - { label: "ستائر صالات · 10 بحث/شهر", value: "ستائر صالات" }
+          - { label: "ستائر صالات · 10 بحث/شهر → /blog/diwaniya-majlis-curtains/", value: "ستائر صالات" }
           - { label: "ستائر عازلة للضوء · 10 بحث/شهر → /curtains/blackout/", value: "ستائر عازلة للضوء" }
           - { label: "ستائر عمودية · 10 بحث/شهر", value: "ستائر عمودية" }
           - { label: "ستائر للشركات · 10 بحث/شهر → /curtains/office/", value: "ستائر للشركات" }
-          - { label: "ستائر مجالس · 10 بحث/شهر", value: "ستائر مجالس" }
+          - { label: "ستائر مجالس · 10 بحث/شهر → /blog/diwaniya-majlis-curtains/", value: "ستائر مجالس" }
           - { label: "ستائر ويفي الكويت · 10 بحث/شهر → /curtains/wave/", value: "ستائر ويفي الكويت" }
           - { label: "سعر متر الستائر · 10 بحث/شهر → /prices/", value: "سعر متر الستائر" }
           - { label: "قياس الستائر · 10 بحث/شهر → /blog/how-to-measure-window/", value: "قياس الستائر" }
@@ -146,13 +146,13 @@ collections:
           - { label: "تفصيل ستاير الكويت · بلا بيانات → /services/tailoring/", value: "تفصيل ستاير الكويت" }
           - { label: "ستائر · بلا بيانات → /", value: "ستائر" }
           - { label: "ستائر اطفال · بلا بيانات → /curtains/kids/", value: "ستائر اطفال" }
-          - { label: "ستائر الأحمدي · بلا بيانات", value: "ستائر الأحمدي" }
+          - { label: "ستائر الأحمدي · بلا بيانات → /areas/ahmadi/", value: "ستائر الأحمدي" }
           - { label: "ستائر السالمية · بلا بيانات → /areas/hawalli/", value: "ستائر السالمية" }
           - { label: "ستائر الشويخ · بلا بيانات → /areas/capital/", value: "ستائر الشويخ" }
           - { label: "ستائر العاصمة · بلا بيانات → /areas/capital/", value: "ستائر العاصمة" }
           - { label: "ستائر العدان · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر العدان" }
-          - { label: "ستائر الفحيحيل · بلا بيانات", value: "ستائر الفحيحيل" }
-          - { label: "ستائر الفروانية · بلا بيانات", value: "ستائر الفروانية" }
+          - { label: "ستائر الفحيحيل · بلا بيانات → /areas/ahmadi/", value: "ستائر الفحيحيل" }
+          - { label: "ستائر الفروانية · بلا بيانات → /areas/farwaniya/", value: "ستائر الفروانية" }
           - { label: "ستائر الكويت العاصمة · بلا بيانات → /areas/capital/", value: "ستائر الكويت العاصمة" }
           - { label: "ستائر ايكيا الكويت · بلا بيانات", value: "ستائر ايكيا الكويت" }
           - { label: "ستائر بلاك أوت الكويت · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك أوت الكويت" }
@@ -165,7 +165,7 @@ collections:
           - { label: "ستائر رول جاهزة الكويت · بلا بيانات → /ready-roll-curtains/", value: "ستائر رول جاهزة الكويت" }
           - { label: "ستائر زيبرا الكويت · بلا بيانات → /curtains/zebra/", value: "ستائر زيبرا الكويت" }
           - { label: "ستائر شيفون الكويت · بلا بيانات → /curtains/sheer/", value: "ستائر شيفون الكويت" }
-          - { label: "ستائر صالات الكويت · بلا بيانات", value: "ستائر صالات الكويت" }
+          - { label: "ستائر صالات الكويت · بلا بيانات → /blog/diwaniya-majlis-curtains/", value: "ستائر صالات الكويت" }
           - { label: "ستائر صالة · بلا بيانات", value: "ستائر صالة" }
           - { label: "ستائر صباح السالم · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر صباح السالم" }
           - { label: "ستائر عازلة للشمس · بلا بيانات → /curtains/blackout/", value: "ستائر عازلة للشمس" }
@@ -200,7 +200,7 @@ collections:
           - { label: "ceiling track curtain · بلا بيانات → /en/wave-curtains/", value: "ceiling track curtain" }
           - { label: "curtain designs for living room · بلا بيانات → /en/blog/types-of-curtains-and-blinds-kuwait/", value: "curtain designs for living room" }
           - { label: "curtain installation · بلا بيانات", value: "curtain installation" }
-          - { label: "curtain installation kuwait · بلا بيانات", value: "curtain installation kuwait" }
+          - { label: "curtain installation kuwait · بلا بيانات → /en/curtain-installation/", value: "curtain installation kuwait" }
           - { label: "curtain prices · بلا بيانات", value: "curtain prices" }
           - { label: "curtain prices kuwait · بلا بيانات", value: "curtain prices kuwait" }
           - { label: "curtain rod · بلا بيانات", value: "curtain rod" }

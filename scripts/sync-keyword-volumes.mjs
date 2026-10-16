@@ -43,6 +43,7 @@ const TARGETS = {
   "ستائر عازلة للضوء": "/curtains/blackout/", "أفضل ستائر لحجب الشمس": "/curtains/blackout/",
   "ستائر شيفون": "/curtains/sheer/", "ستائر شيفون الكويت": "/curtains/sheer/", "ستائر زيبرا": "/curtains/zebra/", "ستائر زيبرا الكويت": "/curtains/zebra/",
   "ستائر خشبية": "/curtains/wooden/", "ستائر خشبية الكويت": "/curtains/wooden/", "ستائر رومانية": "/curtains/roman/",
+  "ستائر غرف نوم": "/blog/bedroom-curtains/", "ستائر مجالس": "/blog/diwaniya-majlis-curtains/", "ستائر صالات": "/blog/diwaniya-majlis-curtains/", "ستائر صالات الكويت": "/blog/diwaniya-majlis-curtains/",
   "ستائر للمكاتب": "/curtains/office/", "ستائر للشركات": "/curtains/office/", "قياس الستائر": "/blog/how-to-measure-window/",
   "ستائر الجهراء": "/areas/jahra/", "تركيب ستائر حولي": "/areas/hawalli/", "تفصيل ستائر حولي": "/areas/hawalli/", "ستائر السالمية": "/areas/hawalli/",
   "تفصيل ستائر السالمية": "/areas/hawalli/", "ستائر الفروانية": "/areas/farwaniya/", "تفصيل ستائر الفروانية": "/areas/farwaniya/", "ستائر خيطان": "/areas/farwaniya/",
@@ -76,7 +77,7 @@ for (const s of src) {
     cpc_high: num(s["عرض أعلى الصفحة - أعلى (USD)"]),
     source: SOURCE + (s["ملاحظات"] ? ` — ${s["ملاحظات"]}` : ""),
   };
-  if (row) { Object.assign(row, fields); updated++; }
+  if (row) { Object.assign(row, fields); if (!row.target_url && TARGETS[kw]) row.target_url = TARGETS[kw]; updated++; }
   else {
     row = Object.fromEntries(head.map((h) => [h, ""]));
     Object.assign(row, fields, { keyword: kw, language: /[a-z]/i.test(kw) ? "en" : "ar", intent: "تجاري", cluster: s["الفئة"] || "", group: s["الفئة"] || "", target_url: TARGETS[kw] ?? "", status: "Open" });
