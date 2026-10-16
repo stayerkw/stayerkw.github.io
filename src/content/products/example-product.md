@@ -1,6 +1,6 @@
 ---
 urlSlug: "example-product"
-title: "ستارة بلاك أوت رمادية — غرفة نوم"
+title: "ستارة بلاك اوت رمادية — غرفة نوم"
 description: "استبدل هذا بمنتج حقيقي: اللون، القماش، والمقاس المتوفر."
 order: 1
 curtainType: "blackout"

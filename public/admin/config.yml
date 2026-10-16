@@ -72,7 +72,7 @@ collections:
       - {label: "صور إضافية", name: "gallery", widget: "list", required: false, field: {label: "صورة", name: "img", widget: "image", choose_url: false, required: false}}
       - {label: "الوصف التفصيلي", name: "body", widget: "markdown", required: false}
       - {label: "نوع القماش", name: "fabricType", widget: "string", required: false, hint: "فقط إن كنت متأكداً."}
-      - {label: "الشفافية", name: "opacity", widget: "select", required: false, options: ["شفاف", "نصف معتم", "بلاك أوت"]}
+      - {label: "الشفافية", name: "opacity", widget: "select", required: false, options: ["شفاف", "نصف معتم", "بلاك اوت"]}
       - {label: "الألوان المتاحة", name: "colors", widget: "list", required: false, field: {label: "لون", name: "color", widget: "string", required: false}}
       - {label: "العناية والتنظيف", name: "care", widget: "text", required: false}
       - {label: "🔎 وصف جوجل", name: "description", widget: "text", hint: "110–160 حرفاً يظهر تحت العنوان في نتائج البحث.", required: false}
@@ -153,7 +153,7 @@ collections:
           - { label: "ستائر العدان · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر العدان" }
           - { label: "ستائر الفحيحيل · بلا بيانات", value: "ستائر الفحيحيل" }
           - { label: "ستائر الفروانية · بلا بيانات", value: "ستائر الفروانية" }
-          - { label: "ستائر بلاك أوت الكويت · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك أوت الكويت" }
+          - { label: "ستائر بلاك اوت الكويت · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك اوت الكويت" }
           - { label: "ستائر ديوانية · بلا بيانات", value: "ستائر ديوانية" }
           - { label: "ستائر صالة · بلا بيانات", value: "ستائر صالة" }
           - { label: "ستائر مبارك الكبير · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر مبارك الكبير" }
@@ -291,7 +291,7 @@ collections:
     label: "أنواع الستائر"
     label_singular: "نوع"
     icon: "category"
-    description: "صفحة لكل نوع (رول، ويفي، بلاك أوت…)."
+    description: "صفحة لكل نوع (رول، ويفي، بلاك اوت…)."
     folder: "src/content/curtain-types"
     create: true
     slug: "{{fields.urlSlug}}"
