@@ -31,8 +31,15 @@ export const business = {
   fabricOrigin: "تركيا",
   // أكثر المناطق تنفيذاً فعلياً (مؤكد).
   priorityAreas: ["الجهراء", "العاصمة", "مبارك الكبير", "حولي"],
-  // الحسابات الاجتماعية: انستغرام فارغ عمداً الآن. لا تُضاف روابط قبل تأكيدها (تغذي sameAs في B1).
-  sameAs: [] as string[],
+  // الحسابات الاجتماعية الرسمية (مصدر واحد): تُعرض في تذييل الصفحات العربية والإنجليزية، وتغذي sameAs
+  // في JSON-LD فيربط جوجل الحساب بالنشاط. لا يُضاف حساب قبل تأكيده من المالك.
+  // إنستغرام: أكده المالك 17 أكتوبر 2026.
+  socials: [
+    { id: "instagram", labelAr: "إنستغرام", labelEn: "Instagram", handle: "@alamcurtainskw", url: "https://www.instagram.com/alamcurtainskw" },
+  ],
+  get sameAs(): string[] {
+    return this.socials.map((s) => s.url);
+  },
   // ساعات الدوام (مؤكدة من المالك): كل أيام الأسبوع من 8 صباحاً حتى 10 مساءً.
   hours: "يومياً من 8 صباحاً حتى 10 مساءً",
   hoursOpen: "08:00",
