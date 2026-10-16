@@ -19,6 +19,9 @@ import { nameEn, enNav, enTypes, enAreas } from "../data/i18n";
       <p class="mt-2">Phone &amp; WhatsApp: <a href={`tel:${business.phone}`} class="hover:text-gold">{business.phone.replace("+965", "+965 ")}</a></p>
       <p class="mt-1">Open daily, 8 am to 10 pm</p>
       <p class="mt-1">We speak English and Arabic</p>
+      {business.socials.map((s) => (
+        <p class="mt-1"><a href={s.url} target="_blank" rel="me noopener" class="hover:text-gold inline-flex items-center gap-1.5"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="inline-block align-[-3px]"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>{s.labelEn}: {s.handle}</span></a></p>
+      ))}
       <p class="mt-3 font-semibold text-ivory">Areas</p>
       <ul class="mt-1 space-y-1">{enAreas.map((a) => <li><a href={a.href} class="hover:text-gold">{a.label}</a></li>)}</ul>
       <p class="mt-3"><a href="/" hreflang="ar" lang="ar" class="hover:text-gold">الموقع بالعربية</a></p>
