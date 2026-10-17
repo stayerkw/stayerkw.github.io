@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import EnServiceLinks from "../../components/EnServiceLinks.astro";
 import { Picture } from "astro:assets";
 import img from "../../content/projects/images/sheer-white-pompom-sliding-door-1.jpg";
 const faqs = [{"question": "Do sheer curtains give privacy?", "answer": "During the day, yes: they let light in while blocking the view from outside. At night, with the lights on inside, shapes can show through, so many homes add a fabric or blackout layer on a second track."}, {"question": "How much are sheer curtains?", "answer": "5 KWD per square metre including fabric, track and tailoring. With a wave curtain on a double track it is 7 KWD per m²."}, {"question": "Which colour sheer should I choose?", "answer": "White gives the brightest light; beige or linen-tone sheers give a warmer glow."}];
@@ -23,6 +24,7 @@ const faqs = [{"question": "Do sheer curtains give privacy?", "answer": "During 
     <div class="mt-4 space-y-4">
       {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
     </div>
+    <EnServiceLinks />
     <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
   </article>
 </BaseLayout>

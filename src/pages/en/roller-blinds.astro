@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import EnServiceLinks from "../../components/EnServiceLinks.astro";
 import { Picture } from "astro:assets";
 import img from "../../content/projects/images/capital-roll-white-bathroom-1.jpg";
 const faqs = [{"question": "How much are roller blinds in Kuwait?", "answer": "Standard and blackout roller blinds cost 6 KWD per square metre, zebra blinds 9 KWD, and custom-printed roller blinds 13 KWD. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}, {"question": "What is a zebra blind?", "answer": "A roller blind with two layers of alternating sheer and solid stripes. Moving the chain lines the stripes up to let light in or offsets them for privacy, without raising the blind."}, {"question": "Are roller blinds good for bathrooms and kitchens?", "answer": "Yes. They have no folds to collect moisture or dust and wipe clean with a damp cloth."}];
@@ -32,6 +33,7 @@ const faqs = [{"question": "How much are roller blinds in Kuwait?", "answer": "S
     <div class="mt-4 space-y-4">
       {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
     </div>
+    <EnServiceLinks />
     <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
   </article>
 </BaseLayout>

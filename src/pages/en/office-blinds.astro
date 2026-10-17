@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import EnServiceLinks from "../../components/EnServiceLinks.astro";
 import { Picture } from "astro:assets";
 import img from "../../content/products/images/roller-office-grey.jpg";
 const faqs = [{"question": "Which blinds are best for offices?", "answer": "Roller blinds are the most common: tidy, easy to wipe and good at cutting screen glare. Zebra blinds suit clinics and meeting rooms, and wooden blinds suit executive offices."}, {"question": "Can you split a wide glass front?", "answer": "Yes. We divide wide facades into several blinds side by side, so each person adjusts the part in front of them."}, {"question": "Do you handle large office orders?", "answer": "Yes. Installation is free for 5 blinds or more, the measurement visit is free, and most orders are done in 2 to 3 days."}];
@@ -24,6 +25,7 @@ const faqs = [{"question": "Which blinds are best for offices?", "answer": "Roll
     <div class="mt-4 space-y-4">
       {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
     </div>
+    <EnServiceLinks />
     <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
   </article>
 </BaseLayout>

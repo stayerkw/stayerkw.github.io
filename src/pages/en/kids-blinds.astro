@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import EnServiceLinks from "../../components/EnServiceLinks.astro";
 import { Picture } from "astro:assets";
 import img from "../../content/curtain-types/images/kids-astronaut-room.jpg";
 const faqs = [{"question": "How much are kids’ curtains?", "answer": "Kids’ curtains start at 6 KWD per square metre. A roller blind printed with a custom design of your choice is 13 KWD per m²."}, {"question": "Can you print my own design?", "answer": "Yes. Send us the design or idea and we print it on the roller blind to your window size."}, {"question": "Are printed blinds dark enough for naps?", "answer": "A printed roller blind softens the light. For a darker room for naps, ask about blackout options."}];
@@ -22,6 +23,7 @@ const faqs = [{"question": "How much are kids’ curtains?", "answer": "Kids’ 
     <div class="mt-4 space-y-4">
       {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
     </div>
+    <EnServiceLinks />
     <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
   </article>
 </BaseLayout>

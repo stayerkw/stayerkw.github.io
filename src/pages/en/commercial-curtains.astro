@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import EnServiceLinks from "../../components/EnServiceLinks.astro";
 import { Picture } from "astro:assets";
 import img from "../../content/projects/images/capital-zebra-grey-clinic-1.jpg";
 const faqs = [{"question": "Do you supply schools and embassies?", "answer": "Yes, we tailor and install for any organisation: offices, schools, embassies, clinics and showrooms. Each project starts with a site visit to measure every window and agree the fabric and type."}, {"question": "Can you match one style across a whole building?", "answer": "Yes. We use the same fabric, colour and mechanism on every window so the building looks consistent from inside and out."}, {"question": "How long does a large order take?", "answer": "Most orders are tailored and installed within 2 to 3 days; larger buildings depend on the number of windows, which we confirm after the site visit."}, {"question": "What does it cost?", "answer": "Prices are per square metre everywhere in Kuwait: sheers 5 KWD, roller, wave and blackout 6 KWD, wave with sheer 7 KWD, zebra 9 KWD, wooden blinds 13 KWD. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}];
@@ -31,6 +32,7 @@ const faqs = [{"question": "Do you supply schools and embassies?", "answer": "Ye
     <div class="mt-4 space-y-4">
       {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
     </div>
+    <EnServiceLinks />
     <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
   </article>
 </BaseLayout>

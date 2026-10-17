@@ -57,6 +57,5 @@ export const enNav = [
   { label: "Prices", href: "/en/curtain-prices/" },
   { label: "Our Work", href: "/en/projects/" },
   { label: "Guides", href: "/en/blog/" },
-  { label: "Guides", href: "/en/blog/" },
   { label: "Contact", href: "/en/contact/" },
 ];

@@ -1,5 +1,6 @@
 ---
 // تفاصيل الطلب لصفحات المنتجات (P-PRODUCTS): كل القيم من مصدر واحد (business.ts وpricing.ts)
+// LINK-01 (SEO P4، 18 أكتوبر 2026): روابط التفصيل والتركيب بنص وصفي بدل «مدة التنفيذ» و«التركيب».
 // فلا تتكرر أرقام الأسعار والتركيب والضمان يدوياً داخل 24 ملف منتج (N-02).
 import { business } from "../data/business";
 import { installRule } from "../data/pricing";
@@ -13,9 +14,9 @@ const { price } = Astro.props;
   <h2 class="text-xl font-bold text-charcoal mb-3">تفاصيل الطلب</h2>
   <ul class="space-y-2 text-charcoal/80">
     {price && <li><strong>السعر:</strong> من {price} {business.priceUnit}، والسعر شامل القماش والتفصيل.</li>}
-    <li><strong><a href="/services/installation/" class="underline">التركيب</a>:</strong> مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة.</li>
+    <li><strong>التركيب:</strong> مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة. التفاصيل في <a href="/services/installation/" class="underline">تركيب ستائر في الكويت</a>.</li>
     {business.freeVisit && <li><strong>الزيارة والقياس:</strong> زيارة منزلية لأخذ المقاسات وعرض العينات، وهي مجانية (عدا العبدلي والصبية، فالمعاينة فيهما مدفوعة).</li>}
-    <li><strong><a href="/services/tailoring/" class="underline">مدة التنفيذ</a>:</strong> {business.leadTime}.</li>
+    <li><strong>مدة التنفيذ:</strong> {business.leadTime}، وتُفصَّل في ورشتنا ضمن خدمة <a href="/services/tailoring/" class="underline">تفصيل ستائر حسب المقاس</a>.</li>
     <li><strong>الأقمشة:</strong> {business.fabricPhrase}.</li>
     <li><strong>الضمان:</strong> {business.warranty}.</li>
   </ul>
