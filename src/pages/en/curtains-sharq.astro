@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import EnServiceLinks from "../../components/EnServiceLinks.astro";
 import { Picture } from "astro:assets";
 import img from "../../content/products/images/roller-office-grey.jpg";
 const faqs = [{"question": "Do you visit offices in Sharq outside working hours?", "answer": "We are available every day from 8 am to 10 pm, so the measurement visit can be arranged early, in the evening or at the weekend to avoid disturbing your staff."}, {"question": "How are large orders priced?", "answer": "Prices are per square metre everywhere in Kuwait: sheers 5 KWD, roller, wave and blackout 6 KWD, wave with sheer 7 KWD, zebra 9 KWD, wooden blinds 13 KWD. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}, {"question": "Can you split a wide glass facade?", "answer": "Yes. We divide wide glass fronts into several blinds side by side, so each section is raised or lowered on its own."}, {"question": "Can we talk to you in English?", "answer": "Yes, we speak English. Message us on WhatsApp with photos of the windows and approximate sizes."}];
@@ -25,6 +26,7 @@ const faqs = [{"question": "Do you visit offices in Sharq outside working hours?
     <div class="mt-4 space-y-4">
       {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
     </div>
+    <EnServiceLinks />
     <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
   </article>
 </BaseLayout>

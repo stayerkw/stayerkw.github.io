@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import EnServiceLinks from "../../components/EnServiceLinks.astro";
 import { Picture } from "astro:assets";
 import img from "../../content/projects/images/blackout-wave-beige-sheer-bedroom-1.jpg";
 // F3 المرحلة 2: صفحة منطقة إنجليزية فقط (بلا مقابل عربي). «نخدم» المنطقة؛ لا تُنسب لها أعمال لم تُنفَّذ فيها.
@@ -27,6 +28,7 @@ const areaServed = [{"type": "Place", "name": "Mangaf"}, {"type": "Place", "name
     <div class="mt-4 space-y-4">
       {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
     </div>
+    <EnServiceLinks />
     <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
   </article>
 </BaseLayout>

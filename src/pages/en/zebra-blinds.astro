@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import EnServiceLinks from "../../components/EnServiceLinks.astro";
 import { Picture } from "astro:assets";
 import img from "../../content/projects/images/capital-zebra-grey-clinic-1.jpg";
 const faqs = [{"question": "What is the difference between zebra and day and night blinds?", "answer": "They are the same blind. It has two layers of alternating sheer and solid stripes; some call it zebra after the stripes, others day and night because it gives daylight and privacy in one blind."}, {"question": "How much are zebra blinds in Kuwait?", "answer": "9 KWD per square metre including fabric and tailoring. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain."}, {"question": "Do zebra blinds block all light?", "answer": "No. Closed stripes block the view and cut a lot of light, especially in dark colours, but they are not blackout. For a fully dark bedroom choose blackout."}];
@@ -20,6 +21,7 @@ const faqs = [{"question": "What is the difference between zebra and day and nig
     <div class="mt-4 space-y-4">
       {faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
     </div>
+    <EnServiceLinks />
     <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
   </article>
 </BaseLayout>
