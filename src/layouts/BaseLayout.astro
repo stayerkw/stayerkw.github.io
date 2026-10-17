@@ -112,7 +112,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     {noindex
       ? <meta name="robots" content="noindex, nofollow" />
       : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
-    {alternates ? (
+    {/* TECH-02: صفحة noindex (مثل 404) لا تعلن نسخًا لغوية: كانت تشير إلى /404/ غير الموجودة */}
+    {noindex ? null : alternates ? (
       <>
         <link rel="alternate" hreflang="ar-KW" href={new URL(alternates.ar, Astro.site)} />
         <link rel="alternate" hreflang="en-KW" href={new URL(alternates.en, Astro.site)} />
