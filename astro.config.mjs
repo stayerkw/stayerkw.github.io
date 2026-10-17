@@ -43,6 +43,9 @@ const gitDate = (...files) => {
 const lastmodFor = (pathname) => {
   const parts = pathname.split('/').filter(Boolean);
   if (parts.length === 0) return gitDate('src/pages/index.astro');
+  // TECH-01: صفحات المشاريع الإنجليزية تُبنى من ملف المشروع العربي نفسه + نصوص projects-en.ts
+  if (parts[0] === 'en' && parts[1] === 'projects' && parts.length === 3)
+    return gitDate(`src/content/projects/${parts[2]}.md`, 'src/data/projects-en.ts', 'src/pages/en/projects/[slug].astro');
   const dir = contentDirs[parts[0]];
   if (dir && parts.length === 2) return gitDate(`src/content/${dir}/${parts[1]}.md`);
   if (dir && parts.length === 1) return gitDate(`src/content/${dir}`, `src/pages/${parts[0]}/index.astro`);
