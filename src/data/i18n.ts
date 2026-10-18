@@ -6,6 +6,7 @@ export const pagePairs: { key: string; ar: string; en: string }[] = [
   { key: "projects", ar: "/projects/", en: "/en/projects/" },
   ...projectsEn.map((p) => ({ key: `project-${p.slug}`, ar: `/projects/${p.slug}/`, en: `/en/projects/${p.slug}/` })),
   { key: "home", ar: "/", en: "/en/" },
+  { key: "curtain-types-guide", ar: "/blog/curtain-types-kuwait/", en: "/en/blog/types-of-curtains-and-blinds-kuwait/" },
   { key: "tailoring", ar: "/services/tailoring/", en: "/en/custom-curtains/" },
   { key: "installation", ar: "/services/installation/", en: "/en/curtain-installation/" },
   { key: "prices", ar: "/prices/", en: "/en/curtain-prices/" },

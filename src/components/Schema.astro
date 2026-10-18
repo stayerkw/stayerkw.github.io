@@ -20,9 +20,11 @@ export interface Props {
   serviceType?: string;
   // قائمة عناصر لصفحات التجميع (صفحات الأنواع): المنتجات المرتبطة
   itemList?: { name: string; url: string }[];
+  // SCHEMA-01: اسم المنتج كما في H1 (بدل عنوان الصفحة الذي ينتهي باسم الموقع)
+  productName?: string;
 }
 
-const { lang = "ar", type = "WebSite", title, description, url, faqs, price, image, pubDate, updatedDate, areaServed, serviceType, itemList } = Astro.props;
+const { lang = "ar", type = "WebSite", title, description, url, faqs, price, image, pubDate, updatedDate, areaServed, serviceType, itemList, productName } = Astro.props;
 const pageUrl = url ?? Astro.url.href;
 const absoluteImage = image ? new URL(image, business.domain).href : undefined;
 const origin = business.domain.replace(/\/$/, "");
@@ -114,7 +116,7 @@ if (type === "Service") {
   graph.push({
     "@type": "Product",
     "@id": `${pageUrl}#product`,
-    name: title,
+    name: productName ?? title,
     description,
     url: pageUrl,
     ...(absoluteImage ? { image: absoluteImage } : {}),
@@ -132,6 +134,12 @@ if (type === "Service") {
       availability: "https://schema.org/InStock",
       url: pageUrl,
       seller: { "@id": ids.business },
+      // SCHEMA-02: سياسة الإرجاع الحقيقية (business.warranty): التفصيل حسب المقاس بلا إرجاع، والضمان 3 أيام للتعديلات
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: business.country,
+        returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+      },
     },
   });
 } else if (type === "CollectionPage" && itemList?.length) {
