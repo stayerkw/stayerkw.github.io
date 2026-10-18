@@ -13,6 +13,7 @@ export interface Props {
   title: string;
   description?: string;
   schemaType?: "WebSite" | "Service" | "Product" | "Article" | "FAQPage" | "CollectionPage";
+  productName?: string;
   faqs?: { question: string; answer: string }[];
   ogImage?: string;
   noindex?: boolean;
@@ -38,6 +39,7 @@ const {
   faqs,
   ogImage = "/og/default.jpg",
   noindex = false,
+  productName,
   price,
   pubDate,
   updatedDate,
@@ -138,7 +140,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
 
-    <Schema type={schemaType} title={fullTitle} description={metaDescription} faqs={faqs} image={ogImage} price={price} pubDate={pubDate} updatedDate={updatedDate} areaServed={areaServed} serviceType={serviceType} itemList={itemList}  lang={isEn ? "en" : "ar"} />
+    <Schema type={schemaType} title={fullTitle} description={metaDescription} faqs={faqs} image={ogImage} price={price} pubDate={pubDate} updatedDate={updatedDate} areaServed={areaServed} serviceType={serviceType} itemList={itemList} productName={productName} lang={isEn ? "en" : "ar"} />
   </head>
   <body class="flex min-h-screen flex-col">
     <Header />
