@@ -13,6 +13,7 @@ export interface Props {
   url?: string;
   faqs?: { question: string; answer: string }[];
   price?: number;
+  priceUnit?: "m2" | "linear-m";
   image?: string;
   pubDate?: Date;
   updatedDate?: Date;
@@ -24,7 +25,7 @@ export interface Props {
   productName?: string;
 }
 
-const { lang = "ar", type = "WebSite", title, description, url, faqs, price, image, pubDate, updatedDate, areaServed, serviceType, itemList, productName } = Astro.props;
+const { lang = "ar", type = "WebSite", title, description, url, faqs, price, priceUnit = "m2", image, pubDate, updatedDate, areaServed, serviceType, itemList, productName } = Astro.props;
 const pageUrl = url ?? Astro.url.href;
 const absoluteImage = image ? new URL(image, business.domain).href : undefined;
 const origin = business.domain.replace(/\/$/, "");
@@ -124,12 +125,12 @@ if (type === "Service") {
       "@type": "Offer",
       price,
       priceCurrency: business.currency,
-      // أسعار المنتجات مُدخلة «د.ك للمتر المربع» (مؤكد من المالك) — نصرّح بالوحدة (MTK) كي لا يُقرأ الرقم سعراً للقطعة
+      // الوحدة من المنتج (المالك 30 أكتوبر 2026): الويفي للمتر الطولي (MTR)، والباقي للمتر المربع (MTK) — كي لا يُقرأ الرقم سعراً للقطعة
       priceSpecification: {
         "@type": "UnitPriceSpecification",
         price,
         priceCurrency: business.currency,
-        referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MTK" },
+        referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: priceUnit === "linear-m" ? "MTR" : "MTK" },
       },
       availability: "https://schema.org/InStock",
       url: pageUrl,
