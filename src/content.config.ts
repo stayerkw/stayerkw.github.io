@@ -53,6 +53,8 @@ const products = defineCollection({
       // ربط المنتج بنوع الستارة (يطابق اسم ملف داخل src/content/curtain-types)
       curtainType: optStr(),
       price: opt(z.number()),
+      // وحدة السعر (المالك 30 أكتوبر 2026): الويفي للمتر الطولي، وباقي الأنواع للمتر المربع (الافتراضي)
+      priceUnit: z.preprocess(blank, z.enum(['m2', 'linear-m']).default('m2')),
       priceNote: optStr(),
       // صور إضافية للمنتج الواحد (تظهر كمعرض أسفل الصورة الرئيسية)
       gallery: z.array(image()).optional(),

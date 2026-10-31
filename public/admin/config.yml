@@ -67,7 +67,8 @@ collections:
         value_field: "{{slug}}"
         display_fields: ["title"]
         required: false
-      - {label: "السعر (د.ك / م²)", name: "price", widget: "number", required: false, value_type: "float", min: 0, step: 0.5}
+      - {label: "السعر (د.ك)", name: "price", widget: "number", required: false, value_type: "float", min: 0, step: 0.5}
+      - {label: "وحدة السعر", name: "priceUnit", widget: "select", required: false, default: "m2", options: [{label: "للمتر المربع", value: "m2"}, {label: "للمتر الطولي (الويفي)", value: "linear-m"}], hint: "الويفي للمتر الطولي، وباقي الأنواع للمتر المربع."}
       - {label: "ملاحظة السعر", name: "priceNote", widget: "string", required: false}
       - {label: "صور إضافية", name: "gallery", widget: "list", required: false, field: {label: "صورة", name: "img", widget: "image", choose_url: false, required: false}}
       - {label: "الوصف التفصيلي", name: "body", widget: "markdown", required: false}

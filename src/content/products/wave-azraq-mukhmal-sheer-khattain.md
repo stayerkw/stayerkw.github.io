@@ -7,6 +7,7 @@ description: "ستارة ويفي خطين: قماش أزرق رمادي بمل�
 order: 0
 curtainType: "wave"
 price: 19
+priceUnit: "linear-m"
 priceNote: "للمتر الطولي — ستارة ويفي خطين (قماش مع شيفون)"
 image: "./images/wave-azraq-mukhmal-sheer-khattain.webp"
 gallery:
