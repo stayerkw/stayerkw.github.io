@@ -35,7 +35,8 @@ const decode = (s) =>
 const routeOf = (file) => "/" + path.relative(DIST, file).replace(/\\/g, "/").replace(/(^|\/)index\.html$/, "$1");
 
 const pages = walk(DIST)
-  .filter((f) => !/[\\/]admin[\\/]/.test(f) && !f.endsWith("404.html"))
+  // admin وinvoice أدوات داخلية noindex خارج sitemap — لا تخضع لفحص السيو
+  .filter((f) => !/[\\/](admin|invoice)[\\/]/.test(f) && !f.endsWith("404.html"))
   .map((file) => ({ file, route: routeOf(file), html: fs.readFileSync(file, "utf8") }));
 
 const titles = new Map();

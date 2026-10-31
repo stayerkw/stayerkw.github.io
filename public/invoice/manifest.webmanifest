@@ -1,0 +1,15 @@
+{
+  "name": "فواتير عالم ستائر الكويت",
+  "short_name": "فواتير الستائر",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/invoice/",
+  "scope": "/invoice/",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#5b6b3a",
+  "icons": [
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
