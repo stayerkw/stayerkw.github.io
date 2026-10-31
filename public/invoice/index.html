@@ -221,8 +221,8 @@ textarea{min-height:70px;resize:vertical}
   <div class="card">
     <h2>الترقيم والتركيب</h2>
     <div class="row">
-      <div><label>رقم الفاتورة التالي</label><input id="sNextInv" type="number" min="1"></div>
-      <div><label>رقم عرض السعر التالي</label><input id="sNextQt" type="number" min="1"></div>
+      <div><label>رقم المستند التالي (فاتورة أو عرض سعر)</label><input id="sNextNo" type="number" min="1"></div>
+      <div><label>&nbsp;</label><p class="muted" style="margin:6px 0 0">ترقيم واحد متسلسل للفواتير وعروض الأسعار بصيغة رقم/سنة</p></div>
     </div>
     <div class="row">
       <div><label>رسوم التركيب لكل ستارة (د.ك)</label><input id="sInstFee" type="number" step="0.001" min="0"></div>
@@ -302,7 +302,7 @@ const DEFAULT_TERMS_EN = [
 const DEFAULT_SETTINGS = {
   nameAr:"عالم ستائر الكويت", nameEn:"Alam Curtains Kuwait", phone:"65061072",
   web:"alamcurtainskw.com", insta:"@alamcurtainskw",
-  nextInv:1, nextQt:1, instFee:5, freeN:5,
+  nextNo:645, instFee:5, freeN:5,
   termsAr:DEFAULT_TERMS_AR, termsEn:DEFAULT_TERMS_EN
 };
 
@@ -311,6 +311,8 @@ const K = {docs:"alamInv.docs", settings:"alamInv.settings", draft:"alamInv.draf
 const load = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
 const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { toast("تعذر الحفظ على هذا الجهاز"); return false; } };
 let settings = Object.assign({}, DEFAULT_SETTINGS, load(K.settings, {}));
+// لا يرجع الترقيم أبداً إلى ما قبل 645
+settings.nextNo = Math.max(645, parseInt(settings.nextNo) || 0); delete settings.nextInv; delete settings.nextQt;
 let docs = load(K.docs, []);
 
 /* ================= أدوات ================= */
@@ -325,7 +327,8 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 
 const typeOf = (id) => TYPES.find((t) => t.id === id) || TYPES[TYPES.length - 1];
 let toastT;
 function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
-function docNumber(type, n){ const y = new Date().getFullYear(); return (type === "quote" ? "QT" : "INV") + "-" + y + "-" + String(n).padStart(4, "0"); }
+// ترقيم واحد مشترك للفواتير وعروض الأسعار بصيغة «رقم/سنة» (يكمل بعد الفاتورة 644/2026)
+function docNumber(n, iso){ const y = (iso || today()).slice(0, 4); return n + "/" + y; }
 
 /* ================= المستند الحالي ================= */
 function blankItem(){ return {id:uid(), type:"blackout", unit:"sqm", room:"", desc:"", w:"", h:"", count:1, price:""}; }
@@ -394,7 +397,7 @@ function renderTotals(){
 }
 function renderForm(){
   setSeg("segType", cur.type); setSeg("segLang", cur.lang);
-  $("fNumber").value = cur.number || docNumber(cur.type, cur.type === "quote" ? settings.nextQt : settings.nextInv) + " (جديد)";
+  $("fNumber").value = cur.number || docNumber(settings.nextNo, cur.date) + " (جديد)";
   $("fDate").value = cur.date; $("fValid").value = cur.valid;
   $("quoteOnly").style.display = cur.type === "quote" ? "" : "none";
   $("btnConvert").style.display = cur.type === "quote" && cur.id ? "" : "none";
@@ -462,8 +465,7 @@ function validate(){
 function commit(){
   if (!cur.id){
     cur.id = uid();
-    if (cur.type === "quote"){ cur.number = docNumber("quote", settings.nextQt); settings.nextQt++; }
-    else { cur.number = docNumber("invoice", settings.nextInv); settings.nextInv++; }
+    cur.number = docNumber(settings.nextNo, cur.date); settings.nextNo++;
     save(K.settings, settings);
   }
   cur.updated = Date.now();
@@ -517,7 +519,7 @@ function buildPaper(d){
   const payTxt = d.pay && PAY[d.pay] ? PAY[d.pay][ar ? 0 : 1] : "";
   const brandName = ar ? settings.nameAr : settings.nameEn;
   const brandSub = ar ? settings.nameEn : settings.nameAr;
-  const number = d.number || docNumber(d.type, d.type === "quote" ? settings.nextQt : settings.nextInv);
+  const number = d.number || docNumber(settings.nextNo, d.date);
   return `<div class="pdf" dir="${ar ? "rtl" : "ltr"}" lang="${lang}">
     <div class="ph">
       <div class="brand"><img src="/logo.png" alt=""><div><b>${esc(brandName)}</b><span>${esc(brandSub)}</span>
@@ -583,7 +585,7 @@ async function makePdf(d){
     if (i) pdf.addPage();
     pdf.addImage(c.toDataURL("image/jpeg", 0.9), "JPEG", 0, 0, 210, c.height * 210 / c.width);
   });
-  const fname = `${d.type === "quote" ? "Quotation" : "Invoice"}-${d.number}.pdf`;
+  const fname = `${d.type === "quote" ? "Quotation" : "Invoice"}-${String(d.number).replace(/\//g, "-")}.pdf`;
   return {blob:pdf.output("blob"), fname};
 }
 function busy(on){ ["btnPdf", "btnWa", "btnPreview"].forEach((id) => $(id).disabled = on); }
@@ -680,17 +682,17 @@ $("importFile").addEventListener("change", async (e) => {
     data.docs.forEach((d) => { if (!ids.has(d.id)){ docs.push(d); added++; } });
     docs.sort((a, b) => (b.updated || 0) - (a.updated || 0));
     // لا يرجع الترقيم إلى الخلف عند الاستيراد
-    if (data.settings){ settings.nextInv = Math.max(settings.nextInv, data.settings.nextInv || 1); settings.nextQt = Math.max(settings.nextQt, data.settings.nextQt || 1); save(K.settings, settings); }
+    if (data.settings){ settings.nextNo = Math.max(settings.nextNo, data.settings.nextNo || 1); save(K.settings, settings); }
     save(K.docs, docs); renderList(); toast(`تم استيراد ${added} مستند`);
   } catch { toast("الملف غير صالح"); }
   e.target.value = "";
 });
 
 /* ================= الإعدادات ================= */
-const SMAP = {sNameAr:"nameAr", sNameEn:"nameEn", sPhone:"phone", sWeb:"web", sInsta:"insta", sNextInv:"nextInv", sNextQt:"nextQt", sInstFee:"instFee", sFreeN:"freeN", sTermsAr:"termsAr", sTermsEn:"termsEn"};
+const SMAP = {sNameAr:"nameAr", sNameEn:"nameEn", sPhone:"phone", sWeb:"web", sInsta:"insta", sNextNo:"nextNo", sInstFee:"instFee", sFreeN:"freeN", sTermsAr:"termsAr", sTermsEn:"termsEn"};
 function renderSettings(){ Object.entries(SMAP).forEach(([id, k]) => $(id).value = settings[k]); }
 $("btnSaveSettings").addEventListener("click", () => {
-  Object.entries(SMAP).forEach(([id, k]) => { const v = $(id).value; settings[k] = ["nextInv", "nextQt", "freeN"].includes(k) ? Math.max(1, parseInt(v) || 1) : k === "instFee" ? num(v) : v; });
+  Object.entries(SMAP).forEach(([id, k]) => { const v = $(id).value; settings[k] = ["nextNo", "freeN"].includes(k) ? Math.max(1, parseInt(v) || 1) : k === "instFee" ? num(v) : v; });
   save(K.settings, settings); renderForm(); toast("تم حفظ الإعدادات");
 });
 $("btnResetTerms").addEventListener("click", () => { $("sTermsAr").value = DEFAULT_TERMS_AR; $("sTermsEn").value = DEFAULT_TERMS_EN; toast("اضغط «حفظ الإعدادات» لاعتمادها"); });
