@@ -1,6 +1,6 @@
 // عامل خدمة نظام الفواتير: يعمل دون إنترنت. الصفحة نفسها «الشبكة أولاً» كي تصل التحديثات فوراً،
 // والمكتبات والخطوط والشعار «الذاكرة أولاً». نطاقه /invoice/ فقط ولا يمس بقية الموقع.
-const CACHE = 'alam-invoice-v1';
+const CACHE = 'alam-invoice-v2';
 const SHELL = [
   '/invoice/',
   '/invoice/manifest.webmanifest',
