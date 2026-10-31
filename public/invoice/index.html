@@ -150,16 +150,21 @@ textarea{min-height:70px;resize:vertical}
   </div>
 
   <div class="card">
-    <h2>البنود</h2>
+    <h2>الستائر</h2>
     <div id="items"></div>
-    <button class="btn full" id="addItem">＋ إضافة بند</button>
+    <button class="btn full" id="addItem">＋ إضافة ستارة</button>
+  </div>
+
+  <div class="card">
+    <h2>أعمال إضافية</h2>
+    <div id="extras"></div>
+    <button class="btn full" id="addExtra">＋ إضافة عمل إضافي</button>
   </div>
 
   <div class="card">
     <h2>التركيب والخصم والدفع</h2>
-    <div class="check"><input type="checkbox" id="autoInstall" checked><label for="autoInstall" style="margin:0">احتساب التركيب تلقائياً (مجاني عند <span id="freeN">5</span> ستائر فأكثر)</label></div>
     <div class="row">
-      <div><label>رسوم التركيب (د.ك)</label><input id="fInstall" type="number" inputmode="decimal" step="0.001" min="0" value="0"></div>
+      <div><label>مبلغ التركيب (د.ك، 0 = مجاني)</label><input id="fInstall" type="number" inputmode="decimal" step="0.001" min="0" value="0"></div>
       <div><label>الخصم (د.ك)</label><input id="fDiscount" type="number" inputmode="decimal" step="0.001" min="0" value="0"></div>
     </div>
     <div class="row">
@@ -219,14 +224,10 @@ textarea{min-height:70px;resize:vertical}
     <label>إنستغرام</label><input id="sInsta">
   </div>
   <div class="card">
-    <h2>الترقيم والتركيب</h2>
+    <h2>الترقيم</h2>
     <div class="row">
       <div><label>رقم المستند التالي (فاتورة أو عرض سعر)</label><input id="sNextNo" type="number" min="1"></div>
       <div><label>&nbsp;</label><p class="muted" style="margin:6px 0 0">ترقيم واحد متسلسل للفواتير وعروض الأسعار بصيغة رقم/سنة</p></div>
-    </div>
-    <div class="row">
-      <div><label>رسوم التركيب لكل ستارة (د.ك)</label><input id="sInstFee" type="number" step="0.001" min="0"></div>
-      <div><label>التركيب مجاني ابتداءً من (عدد ستائر)</label><input id="sFreeN" type="number" min="1"></div>
     </div>
   </div>
   <div class="card">
@@ -266,17 +267,25 @@ textarea{min-height:70px;resize:vertical}
 "use strict";
 /* ================= البيانات الثابتة ================= */
 // unit: sqm = متر مربع، lm = متر طولي (الويفي فقط)، pc = قطعة/مبلغ مقطوع
+// قائمة أنواع الستائر (اختيار فقط). الحقل unit يبقى لقراءة المستندات القديمة المحفوظة بالمقاسات.
 const TYPES = [
-  {id:"wave",     ar:"ستائر ويفي",              en:"Wave curtains",               unit:"lm"},
-  {id:"blackout", ar:"ستائر بلاك اوت",          en:"Blackout curtains",           unit:"sqm"},
-  {id:"sheer",    ar:"ستائر شيفون",             en:"Sheer (chiffon) curtains",    unit:"sqm"},
-  {id:"eyelet",   ar:"ستائر حلقات",             en:"Eyelet curtains",             unit:"sqm"},
-  {id:"roller",   ar:"ستائر رول",               en:"Roller blinds",               unit:"sqm"},
-  {id:"zebra",    ar:"ستائر زيبرا (ليلي نهاري)", en:"Zebra (day & night) blinds",  unit:"sqm"},
-  {id:"office",   ar:"ستائر مكتبية",            en:"Office blinds",               unit:"sqm"},
-  {id:"wood",     ar:"ستائر خشبية",             en:"Wooden blinds",               unit:"sqm"},
-  {id:"shutter",  ar:"شتر داخلي",               en:"Interior shutters",           unit:"sqm"},
-  {id:"other",    ar:"بند آخر",                 en:"Other item",                  unit:"pc"}
+  {id:"wave",          ar:"ستائر ويفي",                    en:"Wave curtains",                       unit:"lm"},
+  {id:"wave-linen",    ar:"ستائر ويفي لينن",               en:"Linen wave curtains",                 unit:"lm"},
+  {id:"wave-sheer",    ar:"ستائر ويفي مع شيفون (خام)",     en:"Wave curtains with sheer",            unit:"lm"},
+  {id:"linen-sheer",   ar:"ستائر لينن مع خام تركي",        en:"Linen curtains with Turkish sheer",   unit:"sqm"},
+  {id:"wave-blackout", ar:"ستائر ويفي مع بلاك اوت",        en:"Wave curtains with blackout",         unit:"lm"},
+  {id:"blackout",      ar:"ستائر بلاك اوت",                en:"Blackout curtains",                   unit:"sqm"},
+  {id:"khaam-blackout",ar:"ستائر خام بلاك اوت مع شيفون",   en:"Blackout curtains with sheer",        unit:"sqm"},
+  {id:"sheer",         ar:"ستائر شيفون",                   en:"Sheer (chiffon) curtains",            unit:"sqm"},
+  {id:"eyelet",        ar:"ستائر حلقات",                   en:"Eyelet curtains",                     unit:"sqm"},
+  {id:"roller",        ar:"ستائر رول",                     en:"Roller blinds",                       unit:"sqm"},
+  {id:"zebra",         ar:"ستائر زيبرا (ليلي نهاري)",      en:"Zebra (day & night) blinds",          unit:"sqm"},
+  {id:"office",        ar:"ستائر مكتبية",                  en:"Office blinds",                       unit:"sqm"},
+  {id:"roman",         ar:"ستائر رومانية",                 en:"Roman blinds",                        unit:"sqm"},
+  {id:"kids",          ar:"ستائر أطفال",                   en:"Kids’ blinds",                        unit:"sqm"},
+  {id:"wood",          ar:"ستائر خشبية",                   en:"Wooden blinds",                       unit:"sqm"},
+  {id:"shutter",       ar:"شتر داخلي",                     en:"Interior shutters",                   unit:"sqm"},
+  {id:"other",         ar:"بند آخر",                       en:"Other item",                          unit:"pc"}
 ];
 const UNITS = {
   sqm:{ar:"م²", en:"m²", labelAr:"متر مربع", labelEn:"Square metre"},
@@ -325,20 +334,24 @@ const qtyFmt = (n) => (Math.round(n * 100) / 100).toString();
 const today = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 const typeOf = (id) => TYPES.find((t) => t.id === id) || TYPES[TYPES.length - 1];
+const PICK_TYPES = TYPES.filter((t) => t.id !== "other");
 let toastT;
 function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
 // ترقيم واحد مشترك للفواتير وعروض الأسعار بصيغة «رقم/سنة» (يكمل بعد الفاتورة 644/2026)
 function docNumber(n, iso){ const y = (iso || today()).slice(0, 4); return n + "/" + y; }
 
 /* ================= المستند الحالي ================= */
-function blankItem(){ return {id:uid(), type:"blackout", unit:"sqm", room:"", desc:"", w:"", h:"", count:1, price:""}; }
+// البند الجديد: نوع من القائمة + عدد + سعر كامل للبند. (المستندات القديمة بالمقاسات تُقرأ كما هي.)
+function blankItem(){ return {id:uid(), type:"wave", count:1, total:""}; }
+function blankExtra(){ return {id:uid(), desc:"", total:""}; }
 function blankDoc(type){
   type = type || "invoice";
   return {id:null, type, lang:"ar", number:"", date:today(), valid:7,
     customer:{name:"", phone:"", area:"", address:""},
-    items:[blankItem()], autoInstall:true, install:0, discount:0, deposit:0, pay:"", notes:"", fromQuote:null, status:""};
+    items:[blankItem()], extras:[], autoInstall:false, install:0, discount:0, deposit:0, pay:"", notes:"", fromQuote:null, status:""};
 }
 let cur = load(K.draft, null) || blankDoc();
+if (!Array.isArray(cur.extras)) cur.extras = [];
 
 // حساب البند: الكمية حسب الوحدة × العدد
 function lineQty(it){
@@ -347,10 +360,11 @@ function lineQty(it){
   if (it.unit === "lm") return w * c;
   return c;
 }
-function lineTotal(it){ return r3(lineQty(it) * num(it.price)); }
-function curtainCount(d){ return d.items.filter((i) => i.unit !== "pc").reduce((s, i) => s + Math.max(0, num(i.count)), 0); }
+function isNew(it){ return "total" in it; }
+function lineTotal(it){ return isNew(it) ? r3(num(it.total)) : r3(lineQty(it) * num(it.price)); }
+function curtainCount(d){ return d.items.filter((i) => isNew(i) || i.unit !== "pc").reduce((s, i) => s + Math.max(0, num(i.count)), 0); }
 function totals(d){
-  const sub = r3(d.items.reduce((s, i) => s + lineTotal(i), 0));
+  const sub = r3(d.items.reduce((s, i) => s + lineTotal(i), 0) + (d.extras || []).reduce((s, x) => s + num(x.total), 0));
   let inst = num(d.install);
   if (d.autoInstall){ const n = curtainCount(d); inst = n > 0 && n < num(settings.freeN) ? r3(n * num(settings.instFee)) : 0; }
   const disc = num(d.discount), dep = num(d.deposit);
@@ -361,39 +375,30 @@ function totals(d){
 /* ================= واجهة التحرير ================= */
 function setSeg(segId, v){ $(segId).querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.v === v)); }
 function renderItems(){
-  const box = $("items");
-  box.innerHTML = cur.items.map((it, i) => {
-    const t = typeOf(it.type), u = it.unit;
+  $("items").innerHTML = cur.items.map((it, i) => {
+    if (!isNew(it)) Object.assign(it, {total: money(lineTotal(it))});
     return `<div class="item" data-i="${i}">
-      <div class="head"><span>بند ${i + 1}</span>
-        <span><button class="btn sm" data-act="dup">نسخ</button> ${cur.items.length > 1 ? '<button class="btn sm del" data-act="del">حذف</button>' : ""}</span></div>
+      <div class="head"><span>ستارة ${i + 1}</span>${cur.items.length > 1 ? '<button class="btn sm del" data-act="del">حذف</button>' : ""}</div>
+      <label>نوع الستارة</label>
+      <select data-f="type">${PICK_TYPES.map((x) => `<option value="${x.id}"${x.id === it.type ? " selected" : ""}>${x.ar}</option>`).join("")}</select>
       <div class="row">
-        <div><label>النوع</label><select data-f="type">${TYPES.map((x) => `<option value="${x.id}"${x.id === it.type ? " selected" : ""}>${x.ar}</option>`).join("")}</select></div>
-        <div><label>وحدة التسعير</label><select data-f="unit">${Object.entries(UNITS).map(([k, x]) => `<option value="${k}"${k === u ? " selected" : ""}>${x.labelAr}</option>`).join("")}</select></div>
-      </div>
-      <div class="row">
-        <div><label>المكان</label><input data-f="room" list="roomsList" value="${esc(it.room)}"></div>
-        <div><label>${it.type === "other" ? "الوصف" : "القماش / اللون"}</label><input data-f="desc" value="${esc(it.desc)}"></div>
-      </div>
-      <div class="row3">
-        ${u !== "pc" ? `<div><label>العرض (م)</label><input data-f="w" type="number" inputmode="decimal" step="0.01" min="0" value="${esc(it.w)}"></div>` : ""}
-        ${u === "sqm" ? `<div><label>الارتفاع (م)</label><input data-f="h" type="number" inputmode="decimal" step="0.01" min="0" value="${esc(it.h)}"></div>` : ""}
         <div><label>العدد</label><input data-f="count" type="number" inputmode="numeric" min="0" step="1" value="${esc(it.count)}"></div>
-        <div><label>${{sqm:"سعر المتر المربع", lm:"سعر المتر الطولي", pc:"سعر القطعة"}[u]} (د.ك)</label><input data-f="price" type="number" inputmode="decimal" step="0.001" min="0" value="${esc(it.price)}"></div>
+        <div><label>السعر الكامل (د.ك)</label><input data-f="total" type="number" inputmode="decimal" step="0.001" min="0" value="${esc(it.total)}"></div>
       </div>
-      <div class="calc"><span>${u === "pc" ? "الكمية" : "الكمية"}: <b class="num">${qtyFmt(lineQty(it))}</b> ${UNITS[u].ar}</span><span>الإجمالي: <b class="num">${money(lineTotal(it))}</b> د.ك</span></div>
     </div>`;
   }).join("");
+}
+function renderExtras(){
+  $("extras").innerHTML = (cur.extras || []).map((x, i) => `<div class="item" data-x="${i}">
+      <div class="head"><span>عمل إضافي ${i + 1}</span><button class="btn sm del" data-act="delx">حذف</button></div>
+      <label>الوصف</label><input data-x-f="desc" value="${esc(x.desc)}" placeholder="مثال: فك وتركيب سكة قديمة">
+      <label>السعر (د.ك)</label><input data-x-f="total" type="number" inputmode="decimal" step="0.001" min="0" value="${esc(x.total)}">
+    </div>`).join("");
 }
 function renderTotals(){
   const t = totals(cur);
   $("tSub").textContent = money(t.sub); $("tInst").textContent = money(t.inst); $("tDisc").textContent = money(t.disc);
   $("tTotal").textContent = money(t.total); $("tDep").textContent = money(t.dep); $("tRem").textContent = money(t.rem);
-  if (cur.autoInstall) $("fInstall").value = money(t.inst);
-  document.querySelectorAll(".item").forEach((el) => {
-    const it = cur.items[+el.dataset.i]; if (!it) return;
-    const b = el.querySelectorAll(".calc b"); b[0].textContent = qtyFmt(lineQty(it)); b[1].textContent = money(lineTotal(it));
-  });
 }
 function renderForm(){
   setSeg("segType", cur.type); setSeg("segLang", cur.lang);
@@ -405,10 +410,10 @@ function renderForm(){
   $("fromQuote").style.display = cur.fromQuote ? "" : "none";
   $("fromQuote").textContent = cur.fromQuote ? "محوّلة من عرض السعر " + cur.fromQuote : "";
   $("cName").value = cur.customer.name; $("cPhone").value = cur.customer.phone; $("cArea").value = cur.customer.area; $("cAddress").value = cur.customer.address;
-  $("autoInstall").checked = cur.autoInstall; $("fInstall").readOnly = cur.autoInstall;
+  if (cur.autoInstall){ cur.install = money(totals(cur).inst); cur.autoInstall = false; }
   $("fInstall").value = cur.install; $("fDiscount").value = cur.discount; $("fDeposit").value = cur.deposit;
-  $("fPay").value = cur.pay; $("fNotes").value = cur.notes; $("freeN").textContent = settings.freeN;
-  renderItems(); renderTotals();
+  $("fPay").value = cur.pay; $("fNotes").value = cur.notes; 
+  renderItems(); renderExtras(); renderTotals();
 }
 let draftT;
 function touch(){ clearTimeout(draftT); draftT = setTimeout(() => save(K.draft, cur), 300); renderTotals(); }
@@ -421,30 +426,35 @@ bind("cName", (v) => cur.customer.name = v); bind("cPhone", (v) => cur.customer.
 bind("cArea", (v) => cur.customer.area = v); bind("cAddress", (v) => cur.customer.address = v);
 bind("fInstall", (v) => cur.install = v); bind("fDiscount", (v) => cur.discount = v); bind("fDeposit", (v) => cur.deposit = v);
 bind("fNotes", (v) => cur.notes = v); $("fPay").addEventListener("change", (e) => { cur.pay = e.target.value; touch(); });
-$("autoInstall").addEventListener("change", (e) => { cur.autoInstall = e.target.checked; $("fInstall").readOnly = cur.autoInstall; if (!cur.autoInstall) cur.install = num($("fInstall").value); touch(); });
 
 $("items").addEventListener("input", (e) => {
   const f = e.target.dataset.f, el = e.target.closest(".item"); if (!f || !el) return;
   const it = cur.items[+el.dataset.i];
-  if (f === "type"){ it.type = e.target.value; it.unit = typeOf(it.type).unit; renderItems(); }
-  else if (f === "unit"){ it.unit = e.target.value; renderItems(); }
-  else it[f] = e.target.value;
+  it[f] = e.target.value;
   touch();
 });
 $("items").addEventListener("click", (e) => {
   const act = e.target.dataset.act, el = e.target.closest(".item"); if (!act || !el) return;
   const i = +el.dataset.i;
   if (act === "del") cur.items.splice(i, 1);
-  if (act === "dup") cur.items.splice(i + 1, 0, Object.assign({}, cur.items[i], {id:uid()}));
   renderItems(); touch();
 });
 $("addItem").addEventListener("click", () => {
   const last = cur.items[cur.items.length - 1];
-  const it = blankItem(); if (last){ it.type = last.type; it.unit = last.unit; it.price = last.price; }
+  const it = blankItem(); if (last) it.type = last.type;
   cur.items.push(it); renderItems(); touch();
 });
+$("extras").addEventListener("input", (e) => {
+  const f = e.target.dataset.xF, el = e.target.closest("[data-x]"); if (!f || !el) return;
+  cur.extras[+el.dataset.x][f] = e.target.value; touch();
+});
+$("extras").addEventListener("click", (e) => {
+  if (e.target.dataset.act !== "delx") return;
+  cur.extras.splice(+e.target.closest("[data-x]").dataset.x, 1); renderExtras(); touch();
+});
+$("addExtra").addEventListener("click", () => { cur.extras.push(blankExtra()); renderExtras(); touch(); });
 $("btnNew").addEventListener("click", () => {
-  if (!cur.id && (cur.customer.name || cur.items.some((i) => num(i.price))) && !confirm("بدء مستند جديد؟ سيُفقد المستند غير المحفوظ.")) return;
+  if (!cur.id && (cur.customer.name || cur.items.some((i) => lineTotal(i) > 0)) && !confirm("بدء مستند جديد؟ سيُفقد المستند غير المحفوظ.")) return;
   cur = blankDoc(cur.type); save(K.draft, cur); renderForm(); window.scrollTo(0, 0);
 });
 $("btnConvert").addEventListener("click", () => {
@@ -457,11 +467,8 @@ $("btnConvert").addEventListener("click", () => {
 });
 
 /* ================= الحفظ في الأرشيف ================= */
-function validate(){
-  if (!cur.customer.name.trim()){ toast("اكتب اسم العميل"); $("cName").focus(); return false; }
-  if (!cur.items.some((i) => lineTotal(i) > 0)){ toast("أضف بنداً واحداً على الأقل بسعر"); return false; }
-  return true;
-}
+// التصدير مسموح دائماً حتى لو كانت البيانات ناقصة (طلب المالك 31 أكتوبر 2026)
+function validate(){ return true; }
 function commit(){
   if (!cur.id){
     cur.id = uid();
@@ -483,14 +490,14 @@ function L(lang){
   return ar ? {
     invoice:"فاتورة", quote:"عرض سعر", no:"الرقم", date:"التاريخ", valid:"صالح حتى", from:"مرجع عرض السعر",
     cust:"العميل", phone:"الهاتف", area:"المنطقة", addr:"العنوان", pay:"طريقة الدفع",
-    th:["#","البيان","المقاس (م)","العدد","الكمية","سعر الوحدة","الإجمالي"],
+    th:["#","البيان","العدد","السعر"],
     sub:"المجموع", inst:"التركيب", free:"مجاني", disc:"الخصم", total:"الإجمالي", depPaid:"العربون المدفوع", depReq:"العربون المطلوب", rem:"المتبقي",
     terms:"الشروط والأحكام", notes:"ملاحظات", sigC:"توقيع العميل", sigB:"الختم والتوقيع", cur:"د.ك",
     validLine:(n) => `هذا العرض صالح لمدة ${n} أيام من تاريخه.`, thanks:"شكراً لتعاملكم معنا"
   } : {
     invoice:"INVOICE", quote:"QUOTATION", no:"No.", date:"Date", valid:"Valid until", from:"Quotation ref.",
     cust:"Customer", phone:"Phone", area:"Area", addr:"Address", pay:"Payment method",
-    th:["#","Description","Size (m)","Qty","Quantity","Unit price","Total"],
+    th:["#","Description","Qty","Price"],
     sub:"Subtotal", inst:"Installation", free:"Free", disc:"Discount", total:"Total", depPaid:"Deposit paid", depReq:"Deposit required", rem:"Balance due",
     terms:"Terms & conditions", notes:"Notes", sigC:"Customer signature", sigB:"Stamp & signature", cur:"KWD",
     validLine:(n) => `This quotation is valid for ${n} days from its date.`, thanks:"Thank you for your business"
@@ -503,17 +510,22 @@ function buildPaper(d){
   const tr = (s, map) => (!ar && map[String(s).trim()]) ? map[String(s).trim()] : s;
   const termsRaw = (ar ? settings.termsAr : settings.termsEn).split("\n").map((s) => s.trim()).filter(Boolean);
   if (d.type === "quote") termsRaw.unshift(t.validLine(d.valid));
-  const rows = d.items.filter((i) => lineTotal(i) > 0 || num(i.price) > 0).map((it, k) => {
-    const ty = typeOf(it.type), u = UNITS[it.unit];
+  const rows = d.items.filter((i) => lineTotal(i) > 0 || num(i.count) > 0).map((it) => {
+    const ty = typeOf(it.type);
     const isOther = it.type === "other" && String(it.desc || "").trim();
     const name = isOther ? it.desc : (ar ? ty.ar : ty.en);
-    const sub = [tr(it.room, ROOMS), isOther ? "" : it.desc].filter((s) => String(s || "").trim()).map(esc).join(" — ");
-    const size = it.unit === "sqm" ? `${qtyFmt(num(it.w))} × ${qtyFmt(num(it.h))}` : it.unit === "lm" ? qtyFmt(num(it.w)) : "—";
-    return `<tr><td>${k + 1}</td><td class="d"><b>${esc(name)}</b>${sub ? `<small>${sub}</small>` : ""}</td>
-      <td><span class="num">${size}</span></td><td><span class="num">${qtyFmt(num(it.count))}</span></td>
-      <td><span class="num">${qtyFmt(lineQty(it))}</span> ${ar ? u.ar : u.en}</td>
-      <td><span class="num">${money(num(it.price))}</span></td><td><b class="num">${money(lineTotal(it))}</b></td></tr>`;
-  }).join("");
+    // مستند قديم بالمقاسات: تظهر المقاسات تحت الاسم
+    let sub = "";
+    if (!isNew(it)){
+      const u = UNITS[it.unit] || UNITS.pc;
+      const size = it.unit === "sqm" ? `${qtyFmt(num(it.w))} × ${qtyFmt(num(it.h))} m` : it.unit === "lm" ? `${qtyFmt(num(it.w))} m` : "";
+      sub = [tr(it.room, ROOMS), isOther ? "" : it.desc, size].filter((x) => String(x || "").trim()).map(esc).join(" — ");
+    }
+    return {name: esc(name), sub, count: qtyFmt(num(it.count)), total: lineTotal(it)};
+  }).concat((d.extras || []).filter((x) => String(x.desc || "").trim() || num(x.total) > 0).map((x) => ({
+    name: esc(String(x.desc || "").trim() || (ar ? "عمل إضافي" : "Additional work")), sub: ar ? "عمل إضافي" : "Additional work", count: "—", total: r3(num(x.total))
+  }))).map((r, k) => `<tr><td>${k + 1}</td><td class="d"><b>${r.name}</b>${r.sub ? `<small>${r.sub}</small>` : ""}</td>
+      <td><span class="num">${r.count}</span></td><td><b class="num">${money(r.total)}</b></td></tr>`).join("");
   const c = d.customer;
   const area = tr(c.area, AREAS_EN);
   const payTxt = d.pay && PAY[d.pay] ? PAY[d.pay][ar ? 0 : 1] : "";
@@ -689,7 +701,7 @@ $("importFile").addEventListener("change", async (e) => {
 });
 
 /* ================= الإعدادات ================= */
-const SMAP = {sNameAr:"nameAr", sNameEn:"nameEn", sPhone:"phone", sWeb:"web", sInsta:"insta", sNextNo:"nextNo", sInstFee:"instFee", sFreeN:"freeN", sTermsAr:"termsAr", sTermsEn:"termsEn"};
+const SMAP = {sNameAr:"nameAr", sNameEn:"nameEn", sPhone:"phone", sWeb:"web", sInsta:"insta", sNextNo:"nextNo", sTermsAr:"termsAr", sTermsEn:"termsEn"};
 function renderSettings(){ Object.entries(SMAP).forEach(([id, k]) => $(id).value = settings[k]); }
 $("btnSaveSettings").addEventListener("click", () => {
   Object.entries(SMAP).forEach(([id, k]) => { const v = $(id).value; settings[k] = ["nextNo", "freeN"].includes(k) ? Math.max(1, parseInt(v) || 1) : k === "instFee" ? num(v) : v; });
@@ -705,6 +717,7 @@ function showTab(name){
   if (name === "archive") renderList(); if (name === "settings") renderSettings();
 }
 document.querySelector("nav.tabs").addEventListener("click", (e) => { if (e.target.dataset.tab) showTab(e.target.dataset.tab); });
+// (قائمة الغرف للمستندات القديمة فقط)
 $("roomsList").innerHTML = Object.keys(ROOMS).map((r) => `<option value="${r}">`).join("");
 renderForm();
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/invoice/sw.js", {scope:"/invoice/"}).catch(() => {});
