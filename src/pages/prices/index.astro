@@ -4,22 +4,23 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import { business } from "../../data/business";
 import { waTrackingAttrs } from "../../data/whatsapp";
-import { priceList, installRule, priceOf, priceSummary } from "../../data/pricing";
+import { priceList, installRule, priceOf, priceSummary, unitAr } from "../../data/pricing";
 
 const pageUrl = new URL("/prices/", Astro.site).href;
-const metaDescription = `أسعار الستائر في الكويت للمتر المربع: ${priceSummary(["roll", "wave", "blackout", "kids", "office", "sheer", "wave-sheer", "wooden"])}.`;
+const metaDescription = `أسعار الستائر في الكويت: ${priceSummary(["roll", "blackout", "kids", "office", "sheer", "wooden"])} للمتر المربع، والويفي ${priceOf("wave")} د.ك للمتر الطولي.`;
 const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
 import FAQ from "../../components/FAQ.astro";
 
 // مثال حسابي يتولد من بيانات الأسعار نفسها فلا يتقادم عند تغيير سعر
 const exW = 2, exH = 2.5, exArea = exW * exH, exCount = 3;
-const exWave = priceOf("wave") * exArea;
+// الويفي بالمتر الطولي: السعر × عرض النافذة
+const exWave = (priceOf("wave") as number) * exW;
 const exInstall = exCount * installRule.fee;
-const cheapest = [...priceList].sort((a, b) => a.price - b.price)[0];
+const cheapest = [...priceList].filter((r) => r.unit !== "linear-m").sort((a, b) => a.price - b.price)[0];
 const faqs = [
   {
     question: "كم سعر متر الستائر في الكويت؟",
-    answer: `السعر بالمتر المربع ويختلف حسب النوع: ${priceSummary(["sheer", "roll", "wave", "blackout", "wave-sheer", "zebra", "wooden"])}.`,
+    answer: `السعر بالمتر المربع ويختلف حسب النوع: ${priceSummary(["sheer", "roll", "blackout", "zebra", "wooden"])}. أما الويفي فيُسعَّر بالمتر الطولي (عرض الستارة): ${priceOf("wave")} د.ك للمتر الطولي.`,
   },
   {
     question: "ما أرخص نوع ستائر لديكم؟",
@@ -48,7 +49,7 @@ const faqs = [
     <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الأسعار" }]} />
     <h1 class="text-3xl font-bold text-charcoal mb-6">أسعار الستائر في الكويت</h1>
     <p class="text-charcoal/70 mb-6">
-      أسعارنا تُحسب بالمتر المربع، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة. والزيارة المنزلية وأخذ المقاسات مجانية (عدا العبدلي والصبية، فالمعاينة فيهما مدفوعة).
+      أسعارنا تُحسب بالمتر المربع، عدا الويفي فيُحسب بالمتر الطولي (عرض الستارة)، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة. والزيارة المنزلية وأخذ المقاسات مجانية (عدا العبدلي والصبية، فالمعاينة فيهما مدفوعة).
     </p>
 
     <h2 class="text-xl font-bold text-charcoal mb-3">سعر متر الستائر حسب النوع</h2>
@@ -64,7 +65,7 @@ const faqs = [
           {priceList.map((row) => (
             <tr class="border-t border-sand">
               <th scope="row" class="px-4 py-3 text-right font-normal"><a href={row.href} class="text-olive underline hover:text-charcoal">{row.name}</a></th>
-              <td class="px-4 py-3">تبدأ من {row.price} د.ك للمتر المربع</td>
+              <td class="px-4 py-3">تبدأ من {row.price} د.ك {unitAr(row.id)}</td>
             </tr>
           ))}
         </tbody>
@@ -72,13 +73,13 @@ const faqs = [
     </div>
 
     <p class="text-charcoal/70 mb-6">
-      ستائر «الخام» هي قماش أمامي مع شيفون: الويفي مع الشيفون {priceOf("wave-sheer")} د.ك، وبقماش بلاك اوت مع الشيفون {priceOf("khaam-blackout")} د.ك. والتركيب في كل الأنواع مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
+      ستائر «الخام» هي قماش أمامي مع شيفون: الويفي مع الشيفون {priceOf("wave-sheer")} د.ك للمتر الطولي، وبقماش بلاك اوت مع الشيفون {priceOf("khaam-blackout")} د.ك {unitAr("khaam-blackout")}. والتركيب في كل الأنواع مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
     </p>
 
     <section class="mb-10" aria-labelledby="example-title">
       <h2 id="example-title" class="text-xl font-bold text-charcoal mb-2">مثال: كم تكلف ستائر غرفة فيها {exCount} نوافذ؟</h2>
       <p class="text-charcoal/70">
-        نافذة عرضها {exW} م وارتفاعها {exH} م مساحتها {exArea} م². بستائر الويفي ({priceOf("wave")} د.ك للمتر المربع) تكلف النافذة نحو {exWave} د.ك،
+        نافذة عرضها {exW} م وارتفاعها {exH} م. الويفي يُحسب بعرض الستارة، فبسعر {priceOf("wave")} د.ك للمتر الطولي تكلف النافذة نحو {exWave} د.ك،
         فتكون {exCount} نوافذ نحو {exWave * exCount} د.ك، ويُضاف {exInstall} د.ك للتركيب لأن العدد أقل من {installRule.freeFrom} ستائر، فالإجمالي نحو {exWave * exCount + exInstall} د.ك.
         وهذا تقدير مبدئي يُؤكَّد بعد القياس. جرّب مقاساتك في الحاسبة أدناه.
       </p>
@@ -87,14 +88,14 @@ const faqs = [
     <section id="calculator" class="rounded-2xl border border-sand bg-white p-5 mb-10" aria-labelledby="calc-title">
       <h2 id="calc-title" class="text-xl font-bold text-charcoal mb-2">حاسبة تقدير السعر</h2>
       <p class="text-sm text-charcoal/70 mb-4">
-        أدخل مقاس النافذة بالمتر لتحصل على تقدير مبدئي. المساحة = العرض × الارتفاع، والسعر النهائي يُؤكَّد بعد القياس.
+        أدخل مقاس النافذة بالمتر لتحصل على تقدير مبدئي. أغلب الأنواع: العرض × الارتفاع (متر مربع)، والويفي: العرض فقط (متر طولي). والسعر النهائي يُؤكَّد بعد القياس.
       </p>
       <form id="calc" class="grid gap-4 sm:grid-cols-2" novalidate>
         <label class="sm:col-span-2 block text-sm font-semibold text-charcoal">
           نوع الستارة
           <select name="type" class="mt-1 w-full rounded-lg border border-sand bg-white px-3 py-2 font-normal">
             {priceList.map((row) => (
-              <option value={row.id} data-price={row.price} data-install="1">{row.name} — {row.price} د.ك/م²</option>
+              <option value={row.id} data-price={row.price} data-install="1" data-linear={row.unit === "linear-m" ? "1" : undefined}>{row.name} — {row.price} {row.unit === "linear-m" ? "د.ك/متر طولي" : "د.ك/م²"}</option>
             ))}
           </select>
         </label>
@@ -170,7 +171,8 @@ const faqs = [
       const height = Number(field("height").value);
       const count = Number(field("count").value);
       const name = (opt.textContent ?? "").split(" — ")[0].trim();
-      const res = estimate({ price, width, height, count, install: opt.dataset.install === "1" ? installRule : undefined });
+      const linear = opt.dataset.linear === "1";
+      const res = estimate({ price, width, height, count, linear, install: opt.dataset.install === "1" ? installRule : undefined });
 
       if (!res) {
         out.textContent = "أدخل العرض والارتفاع لعرض التقدير.";
@@ -178,14 +180,17 @@ const faqs = [
         wa.removeAttribute("data-wa-product");
         return;
       }
+      const base = linear
+        ? `العرض ${formatNumber(res.area)} متر طولي × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك`
+        : `المساحة ${formatNumber(res.area)} م² × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك`;
       out.textContent = res.installFee > 0
-        ? `المساحة ${formatNumber(res.area)} م² × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك + تركيب ${count} × ${installRule.fee} = ${formatNumber(res.installFee)} د.ك، الإجمالي ≈ ${formatNumber(res.grand)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`
-        : `المساحة ${formatNumber(res.area)} م² × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`;
+        ? `${base} + تركيب ${count} × ${installRule.fee} = ${formatNumber(res.installFee)} د.ك، الإجمالي ≈ ${formatNumber(res.grand)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`
+        : `${base} (تقدير مبدئي، يُؤكَّد بعد القياس).`;
       const text = [
         "السلام عليكم، أرغب بعرض سعر مبدئي للستائر.",
         `الصفحة التي زرتها: ${waPage}`,
         `النوع: ${name}`,
-        `المقاس لكل نافذة: ${width} × ${height} م`,
+        linear ? `عرض كل نافذة: ${width} م` : `المقاس لكل نافذة: ${width} × ${height} م`,
         `عدد النوافذ: ${count}`,
         `تقدير الحاسبة: ${formatNumber(res.grand)} د.ك${res.installFee > 0 ? ` (يشمل تركيب ${formatNumber(res.installFee)} د.ك)` : ""}`,
         "المنطقة:",

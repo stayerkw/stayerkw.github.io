@@ -4,26 +4,26 @@ import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import pricing from "../../data/pricing.json";
 // F1: أسماء إنجليزية لصفوف pricing.json (الأسعار من المصدر نفسه فلا تتكرر الأرقام)
 const en: Record<string, string> = {
-  roll: "Roller blinds", zebra: "Zebra blinds (day and night)", wave: "Wave curtains", "wave-sheer": "Wave curtains with sheer",
+  roll: "Roller blinds", zebra: "Zebra blinds (day and night)", wave: "Wave curtains (single layer)", "wave-sheer": "Wave curtains, two layers with sheer",
   "wave-blackout": "Wave blackout (single layer)", eyelet: "Eyelet curtains", blackout: "Blackout roller blinds",
-  "khaam-blackout": "Blackout with sheer (double track)", sheer: "Sheer curtains", kids: "Kids' curtains",
+  "khaam-blackout": "Wave blackout with sheer (two layers)", sheer: "Sheer curtains", kids: "Kids' curtains",
   "kids-print": "Custom-printed roller blinds", office: "Office blinds", roman: "Roman blinds", wooden: "Wooden blinds",
 };
-const rows = pricing.rows.filter((r: any) => en[r.id]).map((r: any) => ({ name: en[r.id], price: r.price }));
+const rows = pricing.rows.filter((r: any) => en[r.id]).map((r: any) => ({ name: en[r.id], price: r.price, linear: r.unit === "linear-m" }));
 const faqs = [
-  { question: "Is installation included in the price?", answer: "The price per square metre includes fabric, track and tailoring. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain." },
-  { question: "How do I calculate the price?", answer: "Multiply the width by the height in metres, then by the price per square metre. For example, a 2 × 2.5 m window with wave curtains and sheer is 5 m² × 7 = 35 KWD." },
+  { question: "Is installation included in the price?", answer: "The price includes fabric, track and tailoring. Installation is free for orders of 5 curtains or more; below that it is 5 KWD per curtain." },
+  { question: "How do I calculate the price?", answer: "Multiply the width by the height in metres, then by the price per square metre. For example, a 2 × 2.5 m roller blind is 5 m² × 6 = 30 KWD. Wave curtains are priced by width only: a 2 m wide wave curtain with sheer is 2 × 19 = 38 KWD." },
   { question: "Is the measurement visit free?", answer: "Yes, the home visit to take measurements and show samples is free, except in Abdali and Subiya where the visit is paid." },
 ];
 ---
-<BaseLayout title="Curtain Prices Kuwait — Per m²" description="Curtain prices in Kuwait per square metre: sheers 5 KWD, roller, wave and blackout 6 KWD, zebra 9 KWD, wooden blinds 13 KWD. Fabric and track included." schemaType="WebSite" faqs={faqs}>
+<BaseLayout title="Curtain Prices Kuwait — Per m² and Per Metre" description="Curtain prices in Kuwait: sheers 5 KWD, roller and blackout 6 KWD, zebra 9 KWD, wooden blinds 13 KWD per m²; wave curtains 12 KWD (single layer) or 19 KWD (with sheer) per linear metre. Fabric and track included." schemaType="WebSite" faqs={faqs}>
   <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
     <h1 class="text-4xl font-bold text-charcoal leading-tight">Curtain Prices in Kuwait</h1>
-    <p class="mt-4 text-charcoal/85 leading-8">All our prices are per square metre (width × height) and include the fabric, the track and the tailoring, so the number you see is the number you pay, plus installation on small orders.</p>
+    <p class="mt-4 text-charcoal/85 leading-8">All our prices are per square metre (width × height), except wave curtains, which are per linear metre (width only). Prices include the fabric, the track and the tailoring, so the number you see is the number you pay, plus installation on small orders.</p>
     <div class="mt-6 overflow-x-auto">
       <table class="w-full text-left text-sm">
-        <thead><tr class="border-b border-sand"><th class="py-2 pe-4">Type</th><th class="py-2">Price per m²</th></tr></thead>
-        <tbody>{rows.map((r) => <tr class="border-b border-sand/60"><td class="py-2 pe-4">{r.name}</td><td class="py-2 font-semibold">{r.price} KWD</td></tr>)}</tbody>
+        <thead><tr class="border-b border-sand"><th class="py-2 pe-4">Type</th><th class="py-2">Price</th></tr></thead>
+        <tbody>{rows.map((r) => <tr class="border-b border-sand/60"><td class="py-2 pe-4">{r.name}</td><td class="py-2 font-semibold">{r.price} KWD {r.linear ? "per linear metre" : "per m²"}</td></tr>)}</tbody>
       </table>
     </div>
     <h2 class="mt-10 text-2xl font-bold text-charcoal">Installation and visit</h2>

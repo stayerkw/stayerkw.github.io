@@ -4,7 +4,7 @@ import { Picture, getImage } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
 import FAQ from "../components/FAQ.astro";
-import { priceList } from "../data/pricing";
+import { priceList, unitAr } from "../data/pricing";
 import { business } from "../data/business";
 
 import imgRoll from "../content/products/images/roll-ready-white-living.jpg";
@@ -70,7 +70,7 @@ const faqs = [
 <BaseLayout
   preloadImage={{ srcset: lcpWebp.srcSet.attribute, sizes: TILE_SIZES, type: "image/webp" }}
   title="محل ستائر في الكويت – تفصيل وتركيب ستائر | عالم ستائر الكويت"
-  description={`محل ستائر في الكويت منذ ${business.foundedYear} لتفصيل وتركيب الستائر حسب المقاس: رول وبلاك اوت وويفي وشيفون، من ${price("sheer")} د.ك للمتر المربع، وزيارة منزلية لأخذ المقاسات في كل المحافظات.`}
+  description={`محل ستائر في الكويت منذ ${business.foundedYear} لتفصيل وتركيب الستائر حسب المقاس: رول وبلاك اوت وشيفون من ${price("sheer")} د.ك للمتر المربع، وويفي بالمتر الطولي، وزيارة منزلية لأخذ المقاسات في كل المحافظات.`}
 >
   <section class="mx-auto max-w-6xl px-4 pt-10 md:pt-16">
     <div class="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
@@ -124,7 +124,7 @@ const faqs = [
               )}
             </div>
             <h3 class="mt-4 text-xl font-bold text-charcoal">{t.name}</h3>
-            <p class="text-sm text-charcoal/65">من {t.price} د.ك للمتر المربع</p>
+            <p class="text-sm text-charcoal/65">من {t.price} د.ك {unitAr(t.id)}</p>
           </a>
           <WhatsAppButton label="اطلب هذا النوع عبر واتساب" product={t.name} placement="type-tile" class="mt-3 px-5! py-2! text-sm" />
         </li>
@@ -149,7 +149,7 @@ const faqs = [
                   )}
                 </div>
                 <h3 class="mt-3 font-bold text-charcoal">{p.data.title}</h3>
-                {p.data.price && <p class="text-sm text-charcoal/65">{p.data.price} د.ك للمتر المربع</p>}
+                {p.data.price && <p class="text-sm text-charcoal/65">{p.data.price} {p.data.priceUnit === "linear-m" ? "د.ك للمتر الطولي" : "د.ك للمتر المربع"}</p>}
               </a>
             </li>
           ))}

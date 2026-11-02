@@ -144,7 +144,7 @@ const minPrice = priceList.find((r) => r.id === "roll")?.price;
                 <h3 class="font-bold text-charcoal">{product.data.title}</h3>
                 <p class="mt-1 text-sm text-charcoal/75 line-clamp-2">{product.data.description}</p>
                 {product.data.price !== undefined && (
-                  <p class="mt-2 text-sm font-semibold text-olive">من {product.data.price} د.ك للمتر المربع</p>
+                  <p class="mt-2 text-sm font-semibold text-olive">من {product.data.price} {product.data.priceUnit === "linear-m" ? "د.ك للمتر الطولي" : "د.ك للمتر المربع"}</p>
                 )}
               </div>
             </a>

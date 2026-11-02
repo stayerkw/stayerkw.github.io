@@ -88,3 +88,6 @@ body {
   html { scroll-behavior: auto; }
   * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* عند ظهور شريط «View this page in English» يرتفع زر واتساب العائم فوقه بدل أن يختفي تحته */
+body:has(#lang-suggest:not([hidden])) .wa-float { bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.25rem); }

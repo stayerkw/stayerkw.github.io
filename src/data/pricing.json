@@ -18,24 +18,27 @@
     },
     {
       "id": "wave",
-      "name": "ستائر ويفي",
+      "name": "ستائر ويفي (طبقة واحدة)",
       "href": "/curtains/wave/",
-      "price": 6,
-      "short": "ويفي"
+      "price": 12,
+      "short": "ويفي",
+      "unit": "linear-m"
     },
     {
       "id": "wave-sheer",
-      "name": "ستائر ويفي مع شيفون (الخام)",
+      "name": "ستائر ويفي خطين مع شيفون (الخام)",
       "href": "/wave-curtains/",
-      "price": 7,
-      "short": "ويفي مع شيفون (الخام)"
+      "price": 19,
+      "short": "ويفي مع شيفون (الخام)",
+      "unit": "linear-m"
     },
     {
       "id": "wave-blackout",
       "name": "ستائر ويفي مع بلاك اوت (طبقة واحدة)",
       "href": "/wave-curtains/",
-      "price": 6,
-      "short": "ويفي مع بلاك اوت"
+      "price": 12,
+      "short": "ويفي مع بلاك اوت",
+      "unit": "linear-m"
     },
     {
       "id": "eyelet",
@@ -53,10 +56,11 @@
     },
     {
       "id": "khaam-blackout",
-      "name": "ستائر خام بلاك اوت مع شيفون",
+      "name": "ستائر ويفي خام بلاك اوت مع شيفون (خطين)",
       "href": "/curtains/blackout/",
-      "price": 9,
-      "short": "خام بلاك اوت مع شيفون"
+      "price": 19,
+      "short": "خام بلاك اوت مع شيفون",
+      "unit": "linear-m"
     },
     {
       "id": "sheer",

@@ -343,10 +343,11 @@ collections:
           - label: "الأنواع وأسعارها"
             name: "rows"
             widget: "list"
-            summary: "{{fields.name}} · {{fields.price}} د.ك/م²"
+            summary: "{{fields.name}} · {{fields.price}} د.ك"
             fields:
               - {label: "اسم النوع في الجدول", name: "name", widget: "string"}
-              - {label: "السعر (د.ك / م²)", name: "price", widget: "number", value_type: "float", min: 0, step: 0.5}
+              - {label: "السعر (د.ك)", name: "price", widget: "number", value_type: "float", min: 0, step: 0.5}
+              - {label: "وحدة السعر", name: "unit", widget: "select", options: [{label: "للمتر المربع", value: "m2"}, {label: "للمتر الطولي (الويفي)", value: "linear-m"}], default: "m2", required: false, hint: "الويفي دائماً للمتر الطولي."}
               - {label: "اسم مختصر للنصوص", name: "short", widget: "string", hint: "مثل: رول، شيفون. يُستعمل في جملة الأسعار المجمّعة.", required: false}
               - {label: "رابط صفحة النوع", name: "href", widget: "string", required: false}
               - {label: "⚙️ المعرّف (لا تغيّره)", name: "id", widget: "string", hint: "تعتمد عليه النصوص والحاسبة؛ إن غيّرته يظهر «—» مكان السعر في تلك النصوص.", required: false}
