@@ -79,6 +79,9 @@ const curtainType = entry.data.curtainType
     ) : entry.data.priceNote ? (
       <p class="text-xl font-semibold text-olive mb-6">{entry.data.priceNote}</p>
     ) : null}
+    <div class="mb-8">
+      <WhatsAppButton label="اطلب هذه الستارة عبر واتساب" topic="product" product={entry.data.title} />
+    </div>
     <div class="prose prose-neutral max-w-none prose-headings:text-charcoal">
       <Content />
     </div>

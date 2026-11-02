@@ -51,7 +51,7 @@ const switchLang = isEn ? "ar" : "en";
   <details class="md:hidden border-t border-sand group">
     <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-semibold text-charcoal">
       <span>{isEn ? "Menu" : "القائمة"}</span>
-      <span aria-hidden="true" class="transition-transform group-open:rotate-180">▾</span>
+      <svg aria-hidden="true" class="h-4 w-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></svg>
     </summary>
     <nav aria-label={isEn ? "Mobile menu" : "قائمة الجوال"} class="grid grid-cols-2 gap-x-4 gap-y-1 px-4 pb-4 text-sm">
       {nav.map((item) => (
