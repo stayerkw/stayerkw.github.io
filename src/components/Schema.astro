@@ -1,6 +1,7 @@
 ---
 import { business } from "../data/business";
 import { kuwaitAreas } from "../data/areas";
+import { installRule } from "../data/pricing";
 
 // B1: كل صفحة تُخرج كتلة JSON-LD واحدة بصيغة @graph. كيان النشاط (#business) يُعرَّف مرة واحدة
 // وتشير إليه بقية العقد بـ @id بدل تكرار بياناته. لا تُكتب هنا حقول غير مؤكدة (ساعات، عنوان، sameAs،
@@ -113,6 +114,9 @@ if (type === "Service") {
     areaServed: pageAreaServed,
   });
 } else if (type === "Product" && price) {
+  // معرّف المنتج: رابط الصفحة الثابت (slug) — نحن المصنّع (تفصيل في مشغلنا)، فالعلامة التجارية هي اسم النشاط
+  const productId = new URL(pageUrl).pathname.split("/").filter(Boolean).pop() ?? "";
+  const installFee = installRule.fee;
   // "offers" لا تُضاف إلا عند وجود سعر فعلي — المنتج بلا سعر لا يُعلَن Product (تحذيرات Search Console)
   graph.push({
     "@type": "Product",
@@ -121,6 +125,10 @@ if (type === "Service") {
     description,
     url: pageUrl,
     ...(absoluteImage ? { image: absoluteImage } : {}),
+    // يحل تحذير «لم يتم توفير معرّف عمومي (GTIN أو العلامة التجارية)»: المنتج تفصيل خاص بلا GTIN
+    brand: { "@type": "Brand", name: business.name },
+    sku: productId,
+    mpn: productId,
     offers: {
       "@type": "Offer",
       price,
@@ -135,6 +143,13 @@ if (type === "Service") {
       availability: "https://schema.org/InStock",
       url: pageUrl,
       seller: { "@id": ids.business },
+      // التوصيل = التركيب في موقع العميل داخل الكويت (pricing.json): مجاني من 5 ستائر، وأقل من ذلك رسوم لكل ستارة.
+      // نُعلن أعلى رسم (حالة أقل من 5 ستائر) حتى لا يُعرض سعر توصيل أقل من الحقيقي.
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: { "@type": "MonetaryAmount", value: installFee, currency: business.currency },
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: business.country },
+      },
       // SCHEMA-02: سياسة الإرجاع الحقيقية (business.warranty): التفصيل حسب المقاس بلا إرجاع، والضمان 3 أيام للتعديلات
       hasMerchantReturnPolicy: {
         "@type": "MerchantReturnPolicy",
