@@ -5,7 +5,8 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import { business } from "../../data/business";
-import { approvedReviews, ratingSummary, stars, dateAr } from "../../lib/reviews";
+import { approvedReviews, ratingSummary, stars } from "../../lib/reviews";
+import ReviewList from "../../components/ReviewList.astro";
 import ReviewForm from "../../components/ReviewForm.astro";
 
 const reviews = await approvedReviews();
@@ -15,29 +16,16 @@ const titleOf = new Map(products.map((p) => [p.id, p.data.title]));
 ---
 <BaseLayout
   title="آراء العملاء ومراجعاتهم"
-  description={`مراجعات عملاء ${business.name} الحقيقية عن تفصيل وتركيب الستائر في الكويت. اكتب مراجعتك عن ستارتك وأرسلها مباشرة من الموقع.`}
   noindex={reviews.length === 0}
+  description={`مراجعات عملاء ${business.name} الحقيقية عن تفصيل وتركيب الستائر في الكويت. اكتب مراجعتك عن ستارتك وأرسلها مباشرة من الموقع.`}
 >
   <div class="mx-auto max-w-3xl px-4 py-12">
     <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "آراء العملاء" }]} />
     <h1 class="text-3xl font-bold text-charcoal mb-3">آراء عملاء {business.name}</h1>
-    <p class="text-charcoal/70">كل المراجعات هنا من عملاء حقيقيين بعد تركيب ستائرهم، وننشرها كما كتبوها.</p>
+    <p class="text-charcoal/70">كل المراجعات هنا من عملاء حقيقيين، وتُنشر كما كتبوها.</p>
     {summary && <p class="mt-3 text-lg"><span class="text-gold-deep" aria-hidden="true">{stars(summary.average)}</span> {summary.average} من 5 — {summary.count} {summary.count === 1 ? "مراجعة" : "مراجعات"}</p>}
 
-    {reviews.length > 0 && (
-      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
-        {reviews.map((r) => (
-          <li class="rounded-2xl border border-sand bg-white p-4">
-            <p class="text-gold-deep" aria-label={`${r.data.rating} من 5`}>{stars(r.data.rating)}</p>
-            <p class="mt-2 leading-7 text-charcoal/85">{r.data.text}</p>
-            {r.data.product && titleOf.has(r.data.product) && (
-              <p class="mt-2 text-sm"><a class="text-olive underline" href={`/products/${r.data.product}/`}>{titleOf.get(r.data.product)}</a></p>
-            )}
-            <p class="mt-1 text-sm text-charcoal/55">{r.data.name}{r.data.area ? ` — ${r.data.area}` : ""} · {dateAr(r.data.date)}</p>
-          </li>
-        ))}
-      </ul>
-    )}
+    <ReviewList reviews={reviews} titles={titleOf} />
 
     <div id="form" class="mt-10 rounded-2xl border border-sand bg-white p-5">
       <h2 class="text-xl font-bold text-charcoal">اكتب ملاحظتك</h2>
