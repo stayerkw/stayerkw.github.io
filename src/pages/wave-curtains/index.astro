@@ -17,7 +17,7 @@ const products = (await getCollection("products", ({ data }) => !data.draft))
   .filter((p) => p.data.curtainType === "wave")
   .sort((a, b) => a.data.order - b.data.order);
 
-// أسعار الويفي من مصدر الأسعار الواحد (د.ك للمتر المربع).
+// أسعار الويفي من مصدر الأسعار الواحد (د.ك للمتر الطولي — الويفي لا يُسعَّر بالمتر المربع).
 const priceOf = (id: string) => priceList.find((r) => r.id === id)?.price;
 const wavePrice = priceOf("wave");
 const khaamPrice = priceOf("wave-sheer");
@@ -51,7 +51,7 @@ const khaamBlackoutPrice = priceOf("khaam-blackout");
       <>
         <h2 class="text-2xl font-bold text-charcoal mb-3">كم سعر الويفي مع الشيفون؟</h2>
         <p class="leading-8 text-charcoal/80 mb-12">
-          الويفي مع الشيفون («الخام») {khaamPrice} د.ك للمتر المربع، والويفي وحده {wavePrice} د.ك، والويفي مع بلاك اوت بطبقة واحدة {waveBlackoutPrice} د.ك، والخام بلاك اوت مع شيفون {khaamBlackoutPrice} د.ك. والتركيب مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
+          الويفي خطين مع الشيفون («الخام») {khaamPrice} د.ك للمتر الطولي، والويفي بخط واحد {wavePrice} د.ك للمتر الطولي، والويفي بلاك اوت بخط واحد {waveBlackoutPrice} د.ك، والخام بلاك اوت مع شيفون (خطين) {khaamBlackoutPrice} د.ك للمتر الطولي. ويُحسب المتر الطولي بعرض الستارة فقط. والتركيب مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
           أرسل مقاس نافذتك عبر واتساب لعرض سعر مبدئي، أو قدّره من
           <a href="/prices/" class="text-gold-deep underline">حاسبة الأسعار</a>.
         </p>
@@ -78,7 +78,7 @@ const khaamBlackoutPrice = priceOf("khaam-blackout");
                 <h3 class="font-bold text-charcoal">{product.data.title}</h3>
                 <p class="mt-1 text-sm text-charcoal/75 line-clamp-2">{product.data.description}</p>
                 {product.data.price !== undefined && (
-                  <p class="mt-2 text-sm font-semibold text-olive">من {product.data.price} د.ك للمتر المربع</p>
+                  <p class="mt-2 text-sm font-semibold text-olive">{product.data.price} د.ك للمتر الطولي</p>
                 )}
               </div>
             </a>

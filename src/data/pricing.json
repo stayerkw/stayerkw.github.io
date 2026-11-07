@@ -7,98 +7,112 @@
       "name": "ستائر رول",
       "href": "/curtains/roll/",
       "price": 6,
-      "short": "رول"
+      "short": "رول",
+      "unit": "m2"
     },
     {
       "id": "zebra",
       "name": "ستائر زيبرا (ليلي نهاري)",
       "href": "/curtains/zebra/",
       "price": 9,
-      "short": "زيبرا"
+      "short": "زيبرا",
+      "unit": "m2"
     },
     {
       "id": "wave",
-      "name": "ستائر ويفي",
+      "name": "ستائر ويفي (خط واحد)",
       "href": "/curtains/wave/",
-      "price": 6,
-      "short": "ويفي"
+      "price": 12,
+      "short": "ويفي خط واحد",
+      "unit": "linear-m"
     },
     {
       "id": "wave-sheer",
-      "name": "ستائر ويفي مع شيفون (الخام)",
+      "name": "ستائر ويفي خطين مع شيفون (الخام)",
       "href": "/wave-curtains/",
-      "price": 7,
-      "short": "ويفي مع شيفون (الخام)"
+      "price": 19,
+      "short": "ويفي خطين مع شيفون (الخام)",
+      "unit": "linear-m"
     },
     {
       "id": "wave-blackout",
-      "name": "ستائر ويفي مع بلاك اوت (طبقة واحدة)",
+      "name": "ستائر ويفي بلاك اوت (خط واحد)",
       "href": "/wave-curtains/",
-      "price": 6,
-      "short": "ويفي مع بلاك اوت"
+      "price": 12,
+      "short": "ويفي بلاك اوت",
+      "unit": "linear-m"
     },
     {
       "id": "eyelet",
       "name": "ستائر حلقات",
       "href": "/blog/wave-vs-eyelet-curtains/",
       "price": 6,
-      "short": "حلقات"
+      "short": "حلقات",
+      "unit": "m2"
     },
     {
       "id": "blackout",
       "name": "ستائر بلاك اوت",
       "href": "/curtains/blackout/",
       "price": 6,
-      "short": "بلاك اوت"
+      "short": "بلاك اوت",
+      "unit": "m2"
     },
     {
       "id": "khaam-blackout",
-      "name": "ستائر خام بلاك اوت مع شيفون",
+      "name": "ستائر ويفي خطين: بلاك اوت مع شيفون",
       "href": "/curtains/blackout/",
-      "price": 9,
-      "short": "خام بلاك اوت مع شيفون"
+      "price": 19,
+      "short": "ويفي خطين بلاك اوت مع شيفون",
+      "unit": "linear-m"
     },
     {
       "id": "sheer",
       "name": "ستائر شيفون",
       "href": "/curtains/sheer/",
       "price": 5,
-      "short": "شيفون"
+      "short": "شيفون",
+      "unit": "m2"
     },
     {
       "id": "kids",
       "name": "ستائر أطفال",
       "href": "/curtains/kids/",
       "price": 6,
-      "short": "أطفال"
+      "short": "أطفال",
+      "unit": "m2"
     },
     {
       "id": "kids-print",
       "name": "رول بطباعة مخصصة",
       "href": "/curtains/kids/",
       "price": 13,
-      "short": "طباعة مخصصة"
+      "short": "طباعة مخصصة",
+      "unit": "m2"
     },
     {
       "id": "office",
       "name": "ستائر مكتبية (رول)",
       "href": "/curtains/office/",
       "price": 6,
-      "short": "مكتبي"
+      "short": "مكتبي",
+      "unit": "m2"
     },
     {
       "id": "roman",
       "name": "ستائر رومانية",
       "href": "/curtains/roman/",
       "price": 7,
-      "short": "رومانية"
+      "short": "رومانية",
+      "unit": "m2"
     },
     {
       "id": "wooden",
       "name": "ستائر خشبية (بليندات)",
       "href": "/curtains/wooden/",
       "price": 13,
-      "short": "خشبية"
+      "short": "خشبية",
+      "unit": "m2"
     }
   ]
 }
