@@ -1,0 +1,24 @@
+---
+// قائمة المراجعات: المنشورة وقت البناء + قالب تملؤه الصفحة فوراً بالمراجعات الجديدة (من النموذج أو من الخادم)
+// قبل أن يُعاد بناء الموقع. بلا صور، والسكربت في ReviewForm مؤجَّل، فلا أثر على LCP.
+import { stars, dateAr, recentImportedIds, type Review } from "../lib/reviews";
+export interface Props { reviews: Review[]; product?: string; titles?: Map<string, string> }
+const { reviews, product = "", titles } = Astro.props;
+---
+<ul class="review-list mt-4 grid gap-3 empty:hidden" data-product={product} data-known={recentImportedIds().join(",")}>{reviews.map((r) => (
+  <li class="rounded-xl border border-sand bg-white p-4">
+    <p class="text-gold-deep" aria-label={`${r.data.rating} من 5`}>{stars(r.data.rating)}</p>
+    <p class="mt-2 leading-7 text-charcoal/85">{r.data.text}</p>
+    {!product && r.data.product && titles?.has(r.data.product) && (
+      <p class="mt-2 text-sm"><a class="text-olive underline" href={`/products/${r.data.product}/`}>{titles.get(r.data.product)}</a></p>
+    )}
+    <p class="mt-1 text-sm text-charcoal/55">{r.data.name}{r.data.area ? ` — ${r.data.area}` : ""} · {dateAr(r.data.date)}</p>
+  </li>
+))}</ul>
+<template class="review-tpl">
+  <li class="rounded-xl border border-sand bg-white p-4">
+    <p class="text-gold-deep" data-stars></p>
+    <p class="mt-2 leading-7 text-charcoal/85" data-text></p>
+    <p class="mt-1 text-sm text-charcoal/55" data-meta></p>
+  </li>
+</template>
