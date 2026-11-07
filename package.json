@@ -26,5 +26,9 @@
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@netlify/blobs": "^10.7.13",
+    "@netlify/functions": "^4.3.0"
   }
 }

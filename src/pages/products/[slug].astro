@@ -5,6 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import ProductOrderInfo from "../../components/ProductOrderInfo.astro";
+import { reviewsFor, ratingSummary, stars, dateAr, REVIEWS_PATH } from "../../lib/reviews";
 
 export async function getStaticPaths() {
   const products = await getCollection("products", ({ data }) => !data.draft);
@@ -22,6 +23,10 @@ const ogImage = entry.data.image
 
 const gallery = entry.data.gallery ?? [];
 
+// مراجعات هذا المنتج المقبولة فقط — تُعرض هنا وتُعلن في Schema (لا نجوم بلا مراجعات حقيقية)
+const reviews = await reviewsFor(entry.id);
+const rating = ratingSummary(reviews);
+
 // مواصفات اختيارية (I1): تُعرض فقط ما عبّأه المالك فعلاً — لا قيم افتراضية
 const specs = [
   entry.data.fabricType ? ["نوع القماش", entry.data.fabricType] : null,
@@ -35,7 +40,7 @@ const curtainType = entry.data.curtainType
   ? (await getCollection("curtainTypes", ({ id }) => id === entry.data.curtainType))[0]
   : undefined;
 ---
-<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} noindex={entry.data.noindex} schemaType="Product" productName={entry.data.title} price={entry.data.price} priceUnit={entry.data.priceUnit} ogImage={ogImage} waTopic="product" waProduct={entry.data.title}>
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} noindex={entry.data.noindex} schemaType="Product" productName={entry.data.title} price={entry.data.price} priceUnit={entry.data.priceUnit} ogImage={ogImage} waTopic="product" waProduct={entry.data.title} reviews={reviews.map((r) => ({ name: r.data.name, rating: r.data.rating, text: r.data.text, date: r.data.date.toISOString().slice(0, 10) }))}>
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[
@@ -72,6 +77,7 @@ const curtainType = entry.data.curtainType
       </ul>
     )}
     <h1 class="text-3xl font-bold text-charcoal mb-2">{entry.data.title}</h1>
+    {rating && <p class="mb-3 text-sm"><a href="#reviews" class="text-olive"><span class="text-gold-deep" aria-hidden="true">{stars(rating.average)}</span> {rating.average} من 5 ({rating.count} {rating.count === 1 ? "مراجعة" : "مراجعات"})</a></p>}
     {entry.data.price ? (
       <p class="text-xl font-semibold text-olive mb-6">
         من {entry.data.price} د.ك {entry.data.priceNote && <span class="text-sm text-charcoal/50">({entry.data.priceNote})</span>}
@@ -96,6 +102,21 @@ const curtainType = entry.data.curtainType
     <div class="mt-10">
       <WhatsAppButton label={`اطلب ${entry.data.title} الآن`} topic="product" product={entry.data.title} />
     </div>
+    <section id="reviews" class="mt-10 rounded-2xl border border-sand bg-white p-5">
+      <h2 class="text-xl font-bold text-charcoal">آراء العملاء</h2>
+      {reviews.length > 0 ? (
+        <ul class="mt-4 space-y-3">
+          {reviews.map((r) => (
+            <li class="rounded-xl bg-sand/30 p-4">
+              <p class="text-gold-deep" aria-label={`${r.data.rating} من 5`}>{stars(r.data.rating)}</p>
+              <p class="mt-2 leading-7 text-charcoal/85">{r.data.text}</p>
+              <p class="mt-2 text-sm text-charcoal/55">{r.data.name}{r.data.area ? ` — ${r.data.area}` : ""} · {dateAr(r.data.date)}</p>
+            </li>
+          ))}
+        </ul>
+      ) : <p class="mt-2 text-sm text-charcoal/65">فصّلت هذه الستارة عندنا؟ شاركنا رأيك.</p>}
+      <a href={`${REVIEWS_PATH}?p=${entry.id}#form`} class="mt-4 inline-block rounded-full bg-charcoal px-5 py-2 text-sm font-semibold text-white hover:bg-olive">اكتب مراجعتك</a>
+    </section>
     {curtainType && (
       <p class="mt-6 text-sm text-charcoal/60">
         من نوع

@@ -1,0 +1,142 @@
+---
+// آراء العملاء: المراجعات المقبولة + نموذج يرسل المراجعة مباشرة إلى دالة Netlify «بانتظار الموافقة».
+// المالك يقبلها أو يحذفها من لوحة التحكم (قسم «مراجعات العملاء»). لا تُضاف مراجعة بلا عميل حقيقي.
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { business } from "../../data/business";
+import { approvedReviews, ratingSummary, stars, dateAr, REVIEWS_API } from "../../lib/reviews";
+
+const reviews = await approvedReviews();
+const summary = ratingSummary(reviews);
+const products = (await getCollection("products", ({ data }) => !data.draft && !data.noindex)).sort((a, b) => a.data.title.localeCompare(b.data.title, "ar"));
+const titleOf = new Map(products.map((p) => [p.id, p.data.title]));
+const wa = business.whatsapp;
+---
+<BaseLayout
+  title="آراء العملاء ومراجعاتهم"
+  description={`مراجعات عملاء ${business.name} الحقيقية عن تفصيل وتركيب الستائر في الكويت. اكتب مراجعتك عن ستارتك وأرسلها مباشرة من الموقع.`}
+  noindex={reviews.length === 0}
+>
+  <div class="mx-auto max-w-3xl px-4 py-12">
+    <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "آراء العملاء" }]} />
+    <h1 class="text-3xl font-bold text-charcoal mb-3">آراء عملاء {business.name}</h1>
+    <p class="text-charcoal/70">كل المراجعات هنا من عملاء حقيقيين بعد تركيب ستائرهم، وننشرها كما كتبوها.</p>
+    {summary && <p class="mt-3 text-lg"><span class="text-gold-deep" aria-hidden="true">{stars(summary.average)}</span> {summary.average} من 5 — {summary.count} {summary.count === 1 ? "مراجعة" : "مراجعات"}</p>}
+
+    {reviews.length > 0 && (
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+        {reviews.map((r) => (
+          <li class="rounded-2xl border border-sand bg-white p-4">
+            <p class="text-gold-deep" aria-label={`${r.data.rating} من 5`}>{stars(r.data.rating)}</p>
+            <p class="mt-2 leading-7 text-charcoal/85">{r.data.text}</p>
+            {r.data.product && titleOf.has(r.data.product) && (
+              <p class="mt-2 text-sm"><a class="text-olive underline" href={`/products/${r.data.product}/`}>{titleOf.get(r.data.product)}</a></p>
+            )}
+            <p class="mt-1 text-sm text-charcoal/55">{r.data.name}{r.data.area ? ` — ${r.data.area}` : ""} · {dateAr(r.data.date)}</p>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <div id="form" class="mt-10 rounded-2xl border border-sand bg-white p-5">
+      <h2 class="text-xl font-bold text-charcoal">اكتب مراجعتك</h2>
+      <p class="mt-1 text-sm text-charcoal/65">تصلنا مراجعتك مباشرة، ونراجعها ثم ننشرها في الموقع.</p>
+      <form id="review-form" class="mt-4 space-y-4" data-wa={wa} data-site={business.domain.replace(/\/$/, "")} data-api={REVIEWS_API}>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <fieldset>
+          <legend class="font-semibold text-charcoal">التقييم</legend>
+          <div class="mt-2 flex flex-row-reverse justify-end gap-1 text-3xl" dir="ltr">
+            {[5, 4, 3, 2, 1].map((n) => (
+              <label class="cursor-pointer">
+                <input class="sr-only" type="radio" name="rating" value={n} required />
+                <span class="star text-sand" data-n={n} aria-label={`${n} من 5`}>★</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <label class="block">
+          <span class="font-semibold text-charcoal">اسمك</span>
+          <input name="name" required maxlength="40" class="mt-1 w-full rounded-lg border border-sand px-3 py-2" />
+        </label>
+        <label class="block">
+          <span class="font-semibold text-charcoal">المنطقة (اختياري)</span>
+          <input name="area" maxlength="30" class="mt-1 w-full rounded-lg border border-sand px-3 py-2" />
+        </label>
+        <label class="block">
+          <span class="font-semibold text-charcoal">الستارة أو العمل (اختياري)</span>
+          <select name="product" class="mt-1 w-full rounded-lg border border-sand bg-white px-3 py-2">
+            <option value="">— بدون —</option>
+            {products.map((p) => <option value={p.id}>{p.data.title}</option>)}
+          </select>
+        </label>
+        <label class="block">
+          <span class="font-semibold text-charcoal">رأيك</span>
+          <textarea name="text" required minlength="10" maxlength="600" rows="4" class="mt-1 w-full rounded-lg border border-sand px-3 py-2"></textarea>
+        </label>
+        <button type="submit" class="w-full rounded-full bg-charcoal px-6 py-3 font-semibold text-white hover:bg-olive">أرسل المراجعة</button>
+        <p id="review-status" class="text-sm" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .star.on { color: var(--color-gold-deep); }
+</style>
+
+<script>
+  const form = document.getElementById("review-form") as HTMLFormElement | null;
+  if (form) {
+    const select = form.querySelector('select[name="product"]') as HTMLSelectElement;
+    const p = new URLSearchParams(location.search).get("p");
+    if (p && [...select.options].some((o) => o.value === p)) select.value = p;
+
+    const paint = () => {
+      const v = Number((form.querySelector('input[name="rating"]:checked') as HTMLInputElement | null)?.value || 0);
+      form.querySelectorAll<HTMLElement>(".star").forEach((s) => s.classList.toggle("on", Number(s.dataset.n) <= v));
+    };
+    form.addEventListener("change", paint);
+    paint();
+
+    const status = document.getElementById("review-status")!;
+    const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    // احتياط: إن تعذّر الإرسال المباشر تُفتح رسالة واتساب جاهزة بنفس المراجعة
+    const viaWhatsApp = (f: FormData) => {
+      const productId = String(f.get("product") || "");
+      const lines = [
+        "مراجعة جديدة لموقع عالم ستائر الكويت",
+        `التقييم: ${Number(f.get("rating"))} من 5`,
+        `الاسم: ${String(f.get("name")).trim()}`,
+        ...(String(f.get("area") || "").trim() ? [`المنطقة: ${String(f.get("area")).trim()}`] : []),
+        ...(productId ? [`الستارة: ${select.selectedOptions[0].text}`, `${form.dataset.site}/products/${productId}/`] : []),
+        `الرأي: ${String(f.get("text")).trim()}`,
+      ];
+      window.open(`https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener");
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const f = new FormData(form);
+      button.disabled = true;
+      status.textContent = "جارٍ الإرسال…";
+      try {
+        const res = await fetch(form.dataset.api!, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(f.entries())),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        paint();
+        status.textContent = "شكراً لك! وصلتنا مراجعتك، وستظهر في الموقع بعد مراجعتها.";
+      } catch {
+        status.textContent = "تعذّر الإرسال المباشر، فتحنا لك واتساب لإرسال المراجعة.";
+        viaWhatsApp(f);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>

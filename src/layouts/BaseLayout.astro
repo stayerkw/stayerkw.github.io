@@ -31,6 +31,8 @@ export interface Props {
   waArea?: string;
   // أداء: صورة LCP تُحمَّل مسبقاً بنفس srcset الصورة المعروضة (لا تحميل مزدوج)
   preloadImage?: { srcset: string; sizes: string; type: string };
+  /** مراجعات العملاء المقبولة لهذا المنتج (للبيانات المنظمة فقط؛ تُعرض في الصفحة نفسها) */
+  reviews?: { name: string; rating: number; text: string; date: string }[];
 }
 
 const {
@@ -52,6 +54,7 @@ const {
   waTopic,
   waProduct,
   waArea,
+  reviews,
 } = Astro.props;
 // وصف احتياطي إن تُرك «وصف جوجل» فارغاً من اللوحة: الصفحة تُنشر، وseo-lint ينبّه لكتابة وصف حقيقي
 // F1: اللغة من المسار (/en/ = إنجليزي)
@@ -143,7 +146,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
 
-    <Schema type={schemaType} title={fullTitle} description={metaDescription} faqs={faqs} image={ogImage} price={price} priceUnit={priceUnit} pubDate={pubDate} updatedDate={updatedDate} areaServed={areaServed} serviceType={serviceType} itemList={itemList} productName={productName} lang={isEn ? "en" : "ar"} />
+    <Schema type={schemaType} title={fullTitle} description={metaDescription} faqs={faqs} image={ogImage} price={price} priceUnit={priceUnit} pubDate={pubDate} updatedDate={updatedDate} areaServed={areaServed} serviceType={serviceType} itemList={itemList} productName={productName} reviews={reviews} lang={isEn ? "en" : "ar"} />
   </head>
   <body class="flex min-h-screen flex-col">
     <Header />

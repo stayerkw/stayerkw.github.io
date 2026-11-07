@@ -24,9 +24,11 @@ export interface Props {
   itemList?: { name: string; url: string }[];
   // SCHEMA-01: اسم المنتج كما في H1 (بدل عنوان الصفحة الذي ينتهي باسم الموقع)
   productName?: string;
+  // مراجعات عملاء حقيقية مقبولة لهذا المنتج فقط (ظاهرة في الصفحة نفسها) — تُعلن النجوم في جوجل حسب سياسته
+  reviews?: { name: string; rating: number; text: string; date: string }[];
 }
 
-const { lang = "ar", type = "WebSite", title, description, url, faqs, price, priceUnit = "m2", image, pubDate, updatedDate, areaServed, serviceType, itemList, productName } = Astro.props;
+const { lang = "ar", type = "WebSite", title, description, url, faqs, price, priceUnit = "m2", image, pubDate, updatedDate, areaServed, serviceType, itemList, productName, reviews = [] } = Astro.props;
 const pageUrl = url ?? Astro.url.href;
 const absoluteImage = image ? new URL(image, business.domain).href : undefined;
 const origin = business.domain.replace(/\/$/, "");
@@ -129,6 +131,24 @@ if (type === "Service") {
     brand: { "@type": "Brand", name: business.name },
     sku: productId,
     mpn: productId,
+    ...(reviews.length
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: (reviews.reduce((a, r) => a + r.rating, 0) / reviews.length).toFixed(1),
+            reviewCount: reviews.length,
+            bestRating: 5,
+            worstRating: 1,
+          },
+          review: reviews.map((r) => ({
+            "@type": "Review",
+            author: { "@type": "Person", name: r.name },
+            datePublished: r.date,
+            reviewBody: r.text,
+            reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+          })),
+        }
+      : {}),
     offers: {
       "@type": "Offer",
       price,

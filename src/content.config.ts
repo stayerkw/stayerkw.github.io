@@ -133,4 +133,19 @@ const projects = defineCollection({
     }),
 });
 
-export const collections = { curtainTypes, services, uses, products, blog, areas, projects };
+// مراجعات عملاء حقيقية: تصل من نموذج الموقع (دالة Netlify) ويستوردها GitHub Actions «بانتظار الموافقة»،
+// ولا تظهر في الموقع ولا في بيانات جوجل إلا بعد أن يفعّل المالك «مقبولة» من اللوحة.
+const reviews = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/reviews' }),
+  schema: z.object({
+    name: z.string(),
+    rating: z.number().int().min(1).max(5),
+    text: z.string(),
+    product: optStr(), // معرّف المنتج (اسم ملفه) إن كانت المراجعة عن منتج محدد
+    area: optStr(),
+    date: z.coerce.date(),
+    approved: z.boolean().default(false),
+  }),
+});
+
+export const collections = { curtainTypes, services, uses, products, blog, areas, projects, reviews };
