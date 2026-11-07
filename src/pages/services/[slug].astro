@@ -5,6 +5,7 @@ import FAQ from "../../components/FAQ.astro";
 import RelatedLinks from "../../components/RelatedLinks.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import ProjectsStrip from "../../components/ProjectsStrip.astro";
 
 export async function getStaticPaths() {
   const services = await getCollection("services", ({ data }) => !data.draft);
@@ -13,6 +14,13 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+// صفحة التركيب: روابط «تركيب ستائر + المحافظة» إلى صفحات المحافظات المنشورة (كلمات مطلوبة في seo/keyword-master.csv)
+const govNames: Record<string, string> = { capital: "العاصمة", hawalli: "حولي", farwaniya: "الفروانية", "mubarak-al-kabeer": "مبارك الكبير", ahmadi: "الأحمدي", jahra: "الجهراء" };
+const areas = entry.id === "installation"
+  ? (await getCollection("areas", ({ data }) => !data.draft && !data.noindex)).filter((a) => govNames[a.id])
+  : [];
+const worksTitle: Record<string, string> = { installation: "صور تركيب ستائر من أعمالنا", tailoring: "ستائر فصّلناها وركّبناها في الكويت" };
 ---
 <BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} noindex={entry.data.noindex} faqs={entry.data.faqs.length ? entry.data.faqs : undefined} schemaType="Service" waTopic="service" waProduct={entry.data.title}>
   <article class="mx-auto max-w-3xl px-4 py-10">
@@ -27,6 +35,17 @@ const { Content } = await render(entry);
     <div class="prose prose-neutral max-w-none prose-headings:text-charcoal prose-img:mx-auto prose-img:max-w-xs prose-img:rounded-xl">
       <Content />
     </div>
+    {areas.length > 0 && (
+      <section class="mt-10" aria-labelledby="install-areas">
+        <h2 id="install-areas" class="text-xl font-bold text-charcoal mb-3">تركيب ستائر حسب المحافظة</h2>
+        <ul class="flex flex-wrap gap-2">
+          {areas.map((a) => (
+            <li><a href={`/areas/${a.id}/`} class="inline-block rounded-full border border-sand bg-white px-4 py-2 text-sm text-charcoal hover:border-gold">تركيب ستائر {govNames[a.id]}</a></li>
+          ))}
+        </ul>
+      </section>
+    )}
+    <ProjectsStrip title={worksTitle[entry.id] ?? "من أعمالنا"} limit={6} />
     <div class="mt-10">
       <WhatsAppButton label="اطلب هذه الخدمة الآن" topic="service" product={entry.data.title} />
     </div>
