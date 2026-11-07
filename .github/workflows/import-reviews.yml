@@ -21,12 +21,12 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/import-reviews.mjs
-      - name: حفظ المراجعات الجديدة (بانتظار الموافقة)
+      - name: نشر المراجعات الجديدة
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "alamcurtains-reviews"
             git config user.email "reviews@users.noreply.github.com"
             git add src/content/reviews src/data/reviews-imported.json
-            git commit -m "مراجعات عملاء جديدة بانتظار الموافقة"
+            git commit -m "مراجعات عملاء جديدة (منشورة مباشرة)"
             git push
           fi

@@ -39,6 +39,9 @@ export default async (req: Request, context: Context) => {
     if (!Number.isInteger(rating) || rating < 1 || rating > 5 || name.length < 2 || text.length < 10)
       return json({ ok: false, error: "invalid" }, 400, h);
     if (product && !/^[a-z0-9-]+$/.test(product)) return json({ ok: false, error: "invalid" }, 400, h);
+    // النشر تلقائي بلا موافقة: نرفض الروابط وأرقام الهواتف في الاسم والنص (أكثر أشكال السبام والإعلانات)
+    const spam = /(https?:\/\/|www\.|\.(com|net|org|xyz|link|shop|ru)\b|@[a-z0-9_]{3,}|\d{7,})/i;
+    if (spam.test(name) || spam.test(text) || spam.test(area)) return json({ ok: false, error: "invalid" }, 400, h);
     const id = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
     await store().setJSON(`pending/${id}`, { id, name, rating, text, area, product, date: new Date().toISOString().slice(0, 10), country: context.geo?.country?.code || "" });
     return json({ ok: true }, 200, h);
