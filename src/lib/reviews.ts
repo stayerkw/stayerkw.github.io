@@ -17,4 +17,5 @@ export const ratingSummary = (list: Review[]) => {
 export const stars = (n: number) => "★".repeat(Math.round(n)) + "☆".repeat(5 - Math.round(n));
 export const dateAr = (d: Date) => d.toLocaleDateString("ar-KW", { year: "numeric", month: "long", day: "numeric" });
 export const REVIEWS_PATH = "/reviews/";
-export const REVIEWS_API = "https://alamcurtains-reviews.netlify.app/api/review";
+// دالة استقبال المراجعات المشتركة مع موقع الكنب (تحفظ مراجعات الستائر في مجلد مستقل alam/)
+export const REVIEWS_API = "https://dajeejsofa-reviews.netlify.app/api/review";

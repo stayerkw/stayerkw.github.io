@@ -5,7 +5,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import ProductOrderInfo from "../../components/ProductOrderInfo.astro";
-import { reviewsFor, ratingSummary, stars, dateAr, REVIEWS_PATH } from "../../lib/reviews";
+import { reviewsFor, ratingSummary, stars, dateAr } from "../../lib/reviews";
+import ReviewForm from "../../components/ReviewForm.astro";
 
 export async function getStaticPaths() {
   const products = await getCollection("products", ({ data }) => !data.draft);
@@ -115,7 +116,7 @@ const curtainType = entry.data.curtainType
           ))}
         </ul>
       ) : <p class="mt-2 text-sm text-charcoal/65">فصّلت هذه الستارة عندنا؟ شاركنا رأيك.</p>}
-      <a href={`${REVIEWS_PATH}?p=${entry.id}#form`} class="mt-4 inline-block rounded-full bg-charcoal px-5 py-2 text-sm font-semibold text-white hover:bg-olive">اكتب مراجعتك</a>
+      <ReviewForm product={entry.id} />
     </section>
     {curtainType && (
       <p class="mt-6 text-sm text-charcoal/60">

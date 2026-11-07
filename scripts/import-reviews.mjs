@@ -3,7 +3,7 @@
 // يسجّل كل معرّف مستورد في src/data/reviews-imported.json حتى لا تعود مراجعة رفضها المالك (حذفها).
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 
-const API = 'https://alamcurtains-reviews.netlify.app/api/review';
+const API = 'https://dajeejsofa-reviews.netlify.app/api/review?site=alam';
 const LEDGER = 'src/data/reviews-imported.json';
 const DIR = 'src/content/reviews';
 
