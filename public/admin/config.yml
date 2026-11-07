@@ -238,6 +238,29 @@ collections:
       - {label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int", hint: "الأصغر يظهر أولاً.", required: false}
       - {label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false, required: false}
 
+  - name: "reviews"
+    label: "مراجعات العملاء"
+    label_singular: "مراجعة"
+    icon: "star"
+    description: "مراجعات العملاء تُنشر في الموقع تلقائياً فور وصولها. لإخفاء مراجعة: ألغِ «منشورة» أو احذفها. لا تضف مراجعة بلا عميل حقيقي."
+    folder: "src/content/reviews"
+    create: true
+    slug: "review-{{year}}{{month}}{{day}}-{{uuid_short}}"
+    identifier_field: name
+    summary: "{{name}} · {{rating}}/5 · {{approved}}"
+    view_filters:
+      - {label: "المنشورة", field: approved, pattern: true}
+      - {label: "المخفية", field: approved, pattern: false}
+    sortable_fields: ["date", "rating", "name"]
+    fields:
+      - {label: "اسم العميل", name: "name", widget: "string"}
+      - {label: "التقييم (1–5)", name: "rating", widget: "number", value_type: "int", min: 1, max: 5, default: 5}
+      - {label: "نص المراجعة", name: "text", widget: "text"}
+      - {label: "المنتج", name: "product", widget: "relation", collection: "products", value_field: "{{slug}}", search_fields: ["title"], display_fields: ["title"], required: false, hint: "بدون منتج تظهر المراجعة في صفحة آراء العملاء فقط."}
+      - {label: "المنطقة", name: "area", widget: "string", required: false}
+      - {label: "تاريخ المراجعة", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
+      - {label: "✅ منشورة (تظهر في الموقع)", name: "approved", widget: "boolean", default: true}
+
   - name: "projects"
     label: "أعمالنا"
     label_singular: "مشروع"

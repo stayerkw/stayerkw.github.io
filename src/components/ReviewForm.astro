@@ -1,0 +1,61 @@
+---
+// نموذج مراجعة بسيط: النجوم + الاسم + الملاحظة. بلا صور ولا خطوط إضافية، ويُوضع أسفل الصفحة،
+// والسكربت صغير ومؤجَّل (module) فلا يؤثر على LCP. المراجعة تُنشر في الموقع تلقائياً.
+import { REVIEWS_API } from "../lib/reviews";
+export interface Props { product?: string }
+const { product } = Astro.props;
+---
+<form class="review-form mt-4 space-y-3" data-api={REVIEWS_API}>
+  <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+  {product && <input type="hidden" name="product" value={product} />}
+  <fieldset>
+    <legend class="text-sm font-semibold text-charcoal">تقييمك</legend>
+    <div class="stars mt-1 flex flex-row-reverse justify-end gap-1 text-3xl leading-none" dir="ltr">
+      {[5, 4, 3, 2, 1].map((n) => (
+        <label class="cursor-pointer"><input class="sr-only" type="radio" name="rating" value={n} required /><span aria-label={`${n} من 5`}>★</span></label>
+      ))}
+    </div>
+  </fieldset>
+  <input name="name" required minlength="2" maxlength="40" placeholder="اسمك" aria-label="اسمك" class="w-full rounded-lg border border-sand px-3 py-2" />
+  <textarea name="text" required minlength="10" maxlength="600" rows="3" placeholder="اكتب ملاحظتك" aria-label="ملاحظتك" class="w-full rounded-lg border border-sand px-3 py-2"></textarea>
+  <button type="submit" class="w-full rounded-full bg-charcoal px-6 py-3 font-semibold text-white hover:bg-olive">أرسل</button>
+  <p class="review-status text-sm" role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  /* النجوم بـ CSS فقط: النجمة المختارة وما قبلها تتلون بلا سكربت */
+  .stars span { color: var(--color-sand, #e8dfd2); }
+  .stars label:has(input:checked) span,
+  .stars label:has(input:checked) ~ label span,
+  .stars label:hover span,
+  .stars label:hover ~ label span { color: var(--color-gold-deep); }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>(".review-form").forEach((form) => {
+    const status = form.querySelector(".review-status")!;
+    const button = form.querySelector("button")!;
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      button.disabled = true;
+      status.textContent = "جارٍ الإرسال…";
+      try {
+        const res = await fetch(form.dataset.api!, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
+        });
+        if (res.status === 400) throw new Error("invalid");
+        if (!res.ok) throw new Error("net");
+        form.reset();
+        status.textContent = "شكراً لك! ستظهر ملاحظتك في الموقع خلال نصف ساعة تقريباً.";
+      } catch (err) {
+        status.textContent = (err as Error).message === "invalid"
+          ? "تأكد من اختيار النجوم وكتابة اسمك وملاحظتك (بدون روابط أو أرقام هواتف)."
+          : "تعذّر الإرسال، حاول مرة أخرى.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>
