@@ -4,26 +4,27 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
 import { business } from "../../data/business";
 import { waTrackingAttrs } from "../../data/whatsapp";
-import { priceList, installRule, priceOf, priceSummary } from "../../data/pricing";
+import { priceList, installRule, priceOf, priceSummary, unitText, unitShort } from "../../data/pricing";
 
 const pageUrl = new URL("/prices/", Astro.site).href;
-const metaDescription = `أسعار الستائر في الكويت للمتر المربع: ${priceSummary(["roll", "wave", "blackout", "kids", "office", "sheer", "wave-sheer", "wooden"])}.`;
+const metaDescription = `أسعار الستائر في الكويت: ${priceSummary(["sheer", "roll", "blackout", "wave", "wave-sheer", "wooden"])}، شامل القماش والسكة والتفصيل.`;
 const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
 import FAQ from "../../components/FAQ.astro";
 
 // مثال حسابي يتولد من بيانات الأسعار نفسها فلا يتقادم عند تغيير سعر
+// الويفي للمتر الطولي: يُحسب بعرض النافذة فقط (لا بالمساحة)
 const exW = 2, exH = 2.5, exArea = exW * exH, exCount = 3;
-const exWave = priceOf("wave") * exArea;
+const exWave = Number(priceOf("wave")) * exW;
 const exInstall = exCount * installRule.fee;
 const cheapest = [...priceList].sort((a, b) => a.price - b.price)[0];
 const faqs = [
   {
     question: "كم سعر متر الستائر في الكويت؟",
-    answer: `السعر بالمتر المربع ويختلف حسب النوع: ${priceSummary(["sheer", "roll", "wave", "blackout", "wave-sheer", "zebra", "wooden"])}.`,
+    answer: `السعر يختلف حسب النوع: الويفي للمتر الطولي (عرض الستارة فقط) وباقي الأنواع للمتر المربع: ${priceSummary(["sheer", "roll", "wave", "blackout", "wave-sheer", "zebra", "wooden"])}.`,
   },
   {
     question: "ما أرخص نوع ستائر لديكم؟",
-    answer: `${cheapest.name} بسعر يبدأ من ${cheapest.price} د.ك للمتر المربع. والأنسب لنافذتك يتحدد حسب الغرفة ودرجة حجب الضوء المطلوبة.`,
+    answer: `${cheapest.name} بسعر يبدأ من ${cheapest.price} د.ك ${unitText(cheapest.unit)}. والأنسب لنافذتك يتحدد حسب الغرفة ودرجة حجب الضوء المطلوبة.`,
   },
   {
     question: "هل السعر يشمل القماش والتفصيل والتركيب؟",
@@ -48,7 +49,7 @@ const faqs = [
     <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "الأسعار" }]} />
     <h1 class="text-3xl font-bold text-charcoal mb-6">أسعار الستائر في الكويت</h1>
     <p class="text-charcoal/70 mb-6">
-      أسعارنا تُحسب بالمتر المربع، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة. والزيارة المنزلية وأخذ المقاسات مجانية (عدا العبدلي والصبية، فالمعاينة فيهما مدفوعة).
+      أسعار الويفي تُحسب بالمتر الطولي (عرض الستارة فقط)، وباقي الأنواع بالمتر المربع (العرض × الارتفاع)، والسعر شامل القماش والسكة والتفصيل. والتركيب مجاني عند {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لكل ستارة. والزيارة المنزلية وأخذ المقاسات مجانية (عدا العبدلي والصبية، فالمعاينة فيهما مدفوعة).
     </p>
 
     <h2 class="text-xl font-bold text-charcoal mb-3">سعر متر الستائر حسب النوع</h2>
@@ -64,7 +65,7 @@ const faqs = [
           {priceList.map((row) => (
             <tr class="border-t border-sand">
               <th scope="row" class="px-4 py-3 text-right font-normal"><a href={row.href} class="text-olive underline hover:text-charcoal">{row.name}</a></th>
-              <td class="px-4 py-3">تبدأ من {row.price} د.ك للمتر المربع</td>
+              <td class="px-4 py-3">تبدأ من {row.price} د.ك {unitText(row.unit)}</td>
             </tr>
           ))}
         </tbody>
@@ -72,13 +73,13 @@ const faqs = [
     </div>
 
     <p class="text-charcoal/70 mb-6">
-      ستائر «الخام» هي قماش أمامي مع شيفون: الويفي مع الشيفون {priceOf("wave-sheer")} د.ك، وبقماش بلاك اوت مع الشيفون {priceOf("khaam-blackout")} د.ك. والتركيب في كل الأنواع مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
+      ستائر «الخام» هي ويفي خطين: قماش أمامي مع شيفون بسعر {priceOf("wave-sheer")} د.ك للمتر الطولي، وكذلك بقماش بلاك اوت مع الشيفون {priceOf("khaam-blackout")} د.ك للمتر الطولي. والويفي بخط واحد {priceOf("wave")} د.ك للمتر الطولي. والتركيب في كل الأنواع مجاني عند طلب {installRule.freeFrom} ستائر فأكثر، وأقل من ذلك يُضاف {installRule.fee} د.ك لتركيب كل ستارة.
     </p>
 
     <section class="mb-10" aria-labelledby="example-title">
       <h2 id="example-title" class="text-xl font-bold text-charcoal mb-2">مثال: كم تكلف ستائر غرفة فيها {exCount} نوافذ؟</h2>
       <p class="text-charcoal/70">
-        نافذة عرضها {exW} م وارتفاعها {exH} م مساحتها {exArea} م². بستائر الويفي ({priceOf("wave")} د.ك للمتر المربع) تكلف النافذة نحو {exWave} د.ك،
+        نافذة عرضها {exW} م وارتفاعها {exH} م. بستائر الويفي خط واحد ({priceOf("wave")} د.ك للمتر الطولي) يُحسب العرض فقط: {exW} × {priceOf("wave")} = {exWave} د.ك للنافذة،
         فتكون {exCount} نوافذ نحو {exWave * exCount} د.ك، ويُضاف {exInstall} د.ك للتركيب لأن العدد أقل من {installRule.freeFrom} ستائر، فالإجمالي نحو {exWave * exCount + exInstall} د.ك.
         وهذا تقدير مبدئي يُؤكَّد بعد القياس. جرّب مقاساتك في الحاسبة أدناه.
       </p>
@@ -87,14 +88,14 @@ const faqs = [
     <section id="calculator" class="rounded-2xl border border-sand bg-white p-5 mb-10" aria-labelledby="calc-title">
       <h2 id="calc-title" class="text-xl font-bold text-charcoal mb-2">حاسبة تقدير السعر</h2>
       <p class="text-sm text-charcoal/70 mb-4">
-        أدخل مقاس النافذة بالمتر لتحصل على تقدير مبدئي. المساحة = العرض × الارتفاع، والسعر النهائي يُؤكَّد بعد القياس.
+        أدخل مقاس النافذة بالمتر لتحصل على تقدير مبدئي. الويفي يُحسب بالعرض فقط (متر طولي)، وباقي الأنواع بالمساحة (العرض × الارتفاع). والسعر النهائي يُؤكَّد بعد القياس.
       </p>
       <form id="calc" class="grid gap-4 sm:grid-cols-2" novalidate>
         <label class="sm:col-span-2 block text-sm font-semibold text-charcoal">
           نوع الستارة
           <select name="type" class="mt-1 w-full rounded-lg border border-sand bg-white px-3 py-2 font-normal">
             {priceList.map((row) => (
-              <option value={row.id} data-price={row.price} data-install="1">{row.name} — {row.price} د.ك/م²</option>
+              <option value={row.id} data-price={row.price} data-unit={row.unit ?? "m2"} data-install="1">{row.name} — {row.price} د.ك/{unitShort(row.unit)}</option>
             ))}
           </select>
         </label>
@@ -102,7 +103,7 @@ const faqs = [
           العرض (م)
           <input name="width" type="number" inputmode="decimal" min="0.1" max="20" step="0.01" placeholder="مثال: 2.5" class="mt-1 w-full rounded-lg border border-sand px-3 py-2 font-normal" />
         </label>
-        <label class="block text-sm font-semibold text-charcoal">
+        <label id="height-field" class="block text-sm font-semibold text-charcoal">
           الارتفاع (م)
           <input name="height" type="number" inputmode="decimal" min="0.1" max="10" step="0.01" placeholder="مثال: 2.6" class="mt-1 w-full rounded-lg border border-sand px-3 py-2 font-normal" />
         </label>
@@ -170,22 +171,26 @@ const faqs = [
       const height = Number(field("height").value);
       const count = Number(field("count").value);
       const name = (opt.textContent ?? "").split(" — ")[0].trim();
-      const res = estimate({ price, width, height, count, install: opt.dataset.install === "1" ? installRule : undefined });
+      const linear = opt.dataset.unit === "linear-m";
+      // الويفي للمتر الطولي: الارتفاع لا يدخل في السعر فيُخفى حقله
+      document.getElementById("height-field")?.toggleAttribute("hidden", linear);
+      const res = estimate({ price, width, height, count, unit: linear ? "linear-m" : "m2", install: opt.dataset.install === "1" ? installRule : undefined });
 
       if (!res) {
-        out.textContent = "أدخل العرض والارتفاع لعرض التقدير.";
+        out.textContent = linear ? "أدخل عرض الستارة لعرض التقدير." : "أدخل العرض والارتفاع لعرض التقدير.";
         wa.href = waLink;
         wa.removeAttribute("data-wa-product");
         return;
       }
+      const qty = linear ? `الطول ${formatNumber(res.area)} م طولي` : `المساحة ${formatNumber(res.area)} م²`;
       out.textContent = res.installFee > 0
-        ? `المساحة ${formatNumber(res.area)} م² × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك + تركيب ${count} × ${installRule.fee} = ${formatNumber(res.installFee)} د.ك، الإجمالي ≈ ${formatNumber(res.grand)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`
-        : `المساحة ${formatNumber(res.area)} م² × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`;
+        ? `${qty} × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك + تركيب ${count} × ${installRule.fee} = ${formatNumber(res.installFee)} د.ك، الإجمالي ≈ ${formatNumber(res.grand)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`
+        : `${qty} × ${price} د.ك ≈ ${formatNumber(res.total)} د.ك (تقدير مبدئي، يُؤكَّد بعد القياس).`;
       const text = [
         "السلام عليكم، أرغب بعرض سعر مبدئي للستائر.",
         `الصفحة التي زرتها: ${waPage}`,
         `النوع: ${name}`,
-        `المقاس لكل نافذة: ${width} × ${height} م`,
+        linear ? `عرض كل ستارة: ${width} م` : `المقاس لكل نافذة: ${width} × ${height} م`,
         `عدد النوافذ: ${count}`,
         `تقدير الحاسبة: ${formatNumber(res.grand)} د.ك${res.installFee > 0 ? ` (يشمل تركيب ${formatNumber(res.installFee)} د.ك)` : ""}`,
         "المنطقة:",
