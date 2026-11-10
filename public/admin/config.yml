@@ -340,6 +340,15 @@ collections:
       - {label: "الصورة", name: "image", widget: "image", required: false, choose_url: false}
       - {label: "وصف الصورة", name: "imageAlt", widget: "string", required: false}
       - {label: "نص المقال", name: "body", widget: "markdown", required: false}
+      - label: "أسئلة شائعة"
+        name: "faqs"
+        widget: "list"
+        required: false
+        summary: "{{fields.question}}"
+        hint: "تظهر أسفل المقال وتُضاف بيانات FAQ المنظمة تلقائياً. اكتب أسئلة حقيقية يسألها العملاء."
+        fields:
+          - {label: "السؤال", name: "question", widget: "string", required: false}
+          - {label: "الجواب", name: "answer", widget: "text", required: false}
       - {label: "🔗 منتجات ذات صلة", name: "relatedProducts", widget: "relation", collection: "products", search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], multiple: true, required: false, max: 6, hint: "روابط داخلية تظهر أسفل الصفحة."}
       - {label: "🔗 مقالات ذات صلة", name: "relatedPosts", widget: "relation", collection: "blog", search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], multiple: true, required: false, max: 4}
       - {label: "تاريخ آخر تحديث", name: "updatedDate", widget: "datetime", required: false}

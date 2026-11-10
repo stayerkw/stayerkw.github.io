@@ -68,7 +68,7 @@ const products = defineCollection({
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: ({ image }) => withImage(image()).extend({ pubDate: z.preprocess(blank, z.date().default(() => new Date())), updatedDate: opt(z.date()), ...related }),
+  schema: ({ image }) => withImage(image()).extend({ pubDate: z.preprocess(blank, z.date().default(() => new Date())), updatedDate: opt(z.date()), faqs: faqList, ...related }),
 });
 
 // صفحات مناطق الخدمة — تُنشأ فقط للمناطق التي لها حجم بحث فعلي (حسب Google Keyword Planner)

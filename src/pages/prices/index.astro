@@ -6,8 +6,9 @@ import { business } from "../../data/business";
 import { waTrackingAttrs } from "../../data/whatsapp";
 import { priceList, installRule, priceOf, priceSummary, unitText, unitShort } from "../../data/pricing";
 
+const cheapestPrice = Math.min(...priceList.map((r) => r.price));
 const pageUrl = new URL("/prices/", Astro.site).href;
-const metaDescription = `أسعار الستائر في الكويت: ${priceSummary(["sheer", "roll", "blackout", "wave", "wave-sheer", "wooden"])}، شامل القماش والسكة والتفصيل.`;
+const metaDescription = `أسعار الستائر في الكويت تبدأ من ${cheapestPrice} د.ك للمتر: شيفون ${priceOf("sheer")}، رول وبلاك اوت ${priceOf("roll")}، ويفي ${priceOf("wave")} للمتر الطولي. شامل القماش والسكة والتفصيل، مع حاسبة.`;
 const calcTrack = waTrackingAttrs({ topic: "prices", placement: "calculator" });
 import FAQ from "../../components/FAQ.astro";
 
@@ -41,7 +42,7 @@ const faqs = [
 ];
 ---
 <BaseLayout
-  title="أسعار الستائر في الكويت – سعر المتر | عالم ستائر الكويت"
+  title={`أسعار الستائر في الكويت من ${cheapestPrice} د.ك للمتر | عالم ستائر الكويت`}
   description={metaDescription}
   faqs={faqs}
 >
