@@ -65,6 +65,7 @@ const metaDescription = description?.trim() ? description : `${title} — ${busi
 
 const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+import { waSrcScript } from '../lib/wa-src';
 ---
 <!doctype html>
 <html lang={isEn ? "en" : "ar"} dir={isEn ? "ltr" : "rtl"}>
@@ -220,5 +221,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         }
       });
     </script>
-  </body>
+  <script is:inline set:html={waSrcScript("عالم ستائر الكويت")}></script>
+</body>
 </html>
