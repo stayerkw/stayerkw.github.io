@@ -6,7 +6,7 @@
       "id": "roll",
       "name": "ستائر رول",
       "href": "/curtains/roll/",
-      "price": 6,
+      "price": 8,
       "short": "رول",
       "unit": "m2"
     },
@@ -54,7 +54,7 @@
       "id": "blackout",
       "name": "ستائر بلاك اوت",
       "href": "/curtains/blackout/",
-      "price": 6,
+      "price": 8,
       "short": "بلاك اوت",
       "unit": "m2"
     },
@@ -94,7 +94,7 @@
       "id": "office",
       "name": "ستائر مكتبية (رول)",
       "href": "/curtains/office/",
-      "price": 6,
+      "price": 8,
       "short": "مكتبي",
       "unit": "m2"
     },
