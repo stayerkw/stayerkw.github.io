@@ -155,6 +155,7 @@ collections:
           - { label: "ستائر الفحيحيل · بلا بيانات → /areas/ahmadi/", value: "ستائر الفحيحيل" }
           - { label: "ستائر الفروانية · بلا بيانات → /areas/farwaniya/", value: "ستائر الفروانية" }
           - { label: "ستائر الكويت العاصمة · بلا بيانات → /areas/capital/", value: "ستائر الكويت العاصمة" }
+          - { label: "ستائر المنيوم · بلا بيانات → /projects/sataer-maadaniya-aluminium-ramadi-ghamiq-work/", value: "ستائر المنيوم" }
           - { label: "ستائر ايكيا الكويت · بلا بيانات", value: "ستائر ايكيا الكويت" }
           - { label: "ستائر بلاك أوت الكويت · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك أوت الكويت" }
           - { label: "ستائر بلاك أوت رول · بلا بيانات → /curtains/blackout/", value: "ستائر بلاك أوت رول" }
@@ -175,12 +176,40 @@ collections:
           - { label: "ستائر للمنازل الجديدة · بلا بيانات", value: "ستائر للمنازل الجديدة" }
           - { label: "ستائر مبارك الكبير · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر مبارك الكبير" }
           - { label: "ستائر مطبخ · بلا بيانات → /blog/kitchen-curtains/", value: "ستائر مطبخ" }
+          - { label: "ستائر معدنية · بلا بيانات → /products/sataer-maadaniya-aluminium-ramadi-ghamiq/", value: "ستائر معدنية" }
           - { label: "ستائر مكاتب · بلا بيانات → /curtains/office/", value: "ستائر مكاتب" }
           - { label: "ستائر مكتبية · بلا بيانات → /curtains/office/", value: "ستائر مكتبية" }
           - { label: "ستائر منزلية · بلا بيانات → /", value: "ستائر منزلية" }
           - { label: "ستائر مودرن · بلا بيانات → /curtains/modern/", value: "ستائر مودرن" }
+          - { label: "ستائر ويفي بيج · بلا بيانات → /products/wave-beige-full-wall-living-room/", value: "ستائر ويفي بيج" }
+          - { label: "ستائر ويفي خطين لصالة كبيرة · بلا بيانات → /products/wave-khattain-beige-sheer-saala-kabira/", value: "ستائر ويفي خطين لصالة كبيرة" }
+          - { label: "ستائر ويفي خطين مع شيفون · بلا بيانات → /projects/wave-khattain-beige-sheer-saala-kabira-work/", value: "ستائر ويفي خطين مع شيفون" }
+          - { label: "ستائر ويفي شفافة · بلا بيانات → /projects/wave-linen-shafaf-abyad-zawiya-work/", value: "ستائر ويفي شفافة" }
+          - { label: "ستائر ويفي كتان · بلا بيانات → /products/wave-linen-camel-brown-lining-white-sheer/", value: "ستائر ويفي كتان" }
+          - { label: "ستائر ويفي كتان مع شيفون · بلا بيانات → /projects/wave-linen-camel-brown-lining-white-sheer-work/", value: "ستائر ويفي كتان مع شيفون" }
+          - { label: "ستائر ويفي لصالة · بلا بيانات → /projects/wave-linen-natural-beige-living-majlis-work/", value: "ستائر ويفي لصالة" }
+          - { label: "ستائر ويفي لغرفة نوم · بلا بيانات → /projects/wave-beige-turkish-lining-sheer-bedroom-work/", value: "ستائر ويفي لغرفة نوم" }
+          - { label: "ستائر ويفي لينن · بلا بيانات → /products/wave-linen-natural-beige-living-majlis/", value: "ستائر ويفي لينن" }
           - { label: "ستائر ويفي مع شيفون · بلا بيانات → /wave-curtains/", value: "ستائر ويفي مع شيفون" }
+          - { label: "ستائر ويفي مع عازل · بلا بيانات → /products/wave-beige-turkish-lining-sheer-bedroom/", value: "ستائر ويفي مع عازل" }
           - { label: "ستارة · بلا بيانات → /", value: "ستارة" }
+          - { label: "ستارة فاصل مدخل · بلا بيانات → /projects/wave-mudkhal-mauve-sabah-alsalem-work/", value: "ستارة فاصل مدخل" }
+          - { label: "ستارة كتان وشيفون · بلا بيانات → /products/wave-kattan-bunni-sheer-kremi-tieback/", value: "ستارة كتان وشيفون" }
+          - { label: "ستارة لينن شفاف لغرفة طعام · بلا بيانات → /projects/wave-linen-shafaf-dining-room-work/", value: "ستارة لينن شفاف لغرفة طعام" }
+          - { label: "ستارة مدخل البيت · بلا بيانات → /products/wave-mudkhal-mauve-sabah-alsalem/", value: "ستارة مدخل البيت" }
+          - { label: "ستارة ويفي الشويخ · بلا بيانات → /projects/wave-bunni-sheer-kremi-shuwaikh-work/", value: "ستارة ويفي الشويخ" }
+          - { label: "ستارة ويفي بني غامق · بلا بيانات → /products/wave-khattain-bunni-ghamiq-sheer-mukhattat-sabah-alsalem/", value: "ستارة ويفي بني غامق" }
+          - { label: "ستارة ويفي بني فاتح · بلا بيانات → /products/wave-khattain-bunni-fateh-sheer-sabah-alsalem/", value: "ستارة ويفي بني فاتح" }
+          - { label: "ستارة ويفي خطين · بلا بيانات → /products/wave-azraq-mukhmal-sheer-khattain/", value: "ستارة ويفي خطين" }
+          - { label: "ستارة ويفي خطين بيج · بلا بيانات → /products/wave-beige-khattain-sheer-dining-room/", value: "ستارة ويفي خطين بيج" }
+          - { label: "ستارة ويفي خطين رمادي · بلا بيانات → /products/wave-grey-khattain-white-sheer-living/", value: "ستارة ويفي خطين رمادي" }
+          - { label: "ستارة ويفي رمادي لصالة · بلا بيانات → /projects/wave-grey-khattain-white-sheer-living-work/", value: "ستارة ويفي رمادي لصالة" }
+          - { label: "ستارة ويفي سقف عالي · بلا بيانات → /products/wave-bunni-sheer-kremi-shuwaikh/", value: "ستارة ويفي سقف عالي" }
+          - { label: "ستارة ويفي شفاف أبيض · بلا بيانات → /products/wave-linen-shafaf-abyad-zawiya/", value: "ستارة ويفي شفاف أبيض" }
+          - { label: "ستارة ويفي صباح السالم · بلا بيانات → /projects/wave-khattain-bunni-fateh-sheer-sabah-alsalem-work/", value: "ستارة ويفي صباح السالم" }
+          - { label: "ستارة ويفي لغرفة طعام · بلا بيانات → /projects/wave-beige-khattain-sheer-dining-room-work/", value: "ستارة ويفي لغرفة طعام" }
+          - { label: "ستارة ويفي لينن شفاف · بلا بيانات → /products/wave-linen-shafaf-dining-room/", value: "ستارة ويفي لينن شفاف" }
+          - { label: "ستارة ويفي مع شيفون مخطط · بلا بيانات → /projects/wave-khattain-bunni-ghamiq-sheer-mukhattat-sabah-alsalem-work/", value: "ستارة ويفي مع شيفون مخطط" }
           - { label: "ستاير · بلا بيانات → /", value: "ستاير" }
           - { label: "سعر ستائر · بلا بيانات → /prices/", value: "سعر ستائر" }
           - { label: "سعر ستائر الرول · بلا بيانات → /prices/", value: "سعر ستائر الرول" }
