@@ -6,7 +6,7 @@ seoTitle: "ستائر شيفون في الكويت | تفصيل حسب المق�
 description: "ستائر شيفون في الكويت بتفصيل حسب المقاس: بيضاء وبيج، سادة أو بخطوط لامعة. زيارة منزلية مجانية لأخذ المقاسات وعرض العينات."
 order: 3
 imageAlt: "ستائر شيفون بيضاء شفافة بطيات ناعمة"
-relatedPosts: ["double-track-with-sheer", "bedroom-curtains"]
+relatedPosts: ["double-track-with-sheer", "bedroom-curtains", "curtain-types-kuwait"]
 faqs:
   - question: "كم سعر متر ستائر الشيفون؟"
     answer: "5 د.ك للمتر المربع للشيفون وحده، وعند دمجه مع الويفي (الخام، خطين) 19 د.ك للمتر الطولي، والسعر شامل القماش والسكة والتفصيل."

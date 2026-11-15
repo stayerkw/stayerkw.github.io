@@ -1,5 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
+import { getImage } from "astro:assets";
+import { inlineFaqs, firstBodyImage } from "../../lib/article-meta";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import RelatedLinks from "../../components/RelatedLinks.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
@@ -14,9 +16,16 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+// GEO-03: صورة المقال في المشاركة والبيانات المنظمة = حقل «الصورة» إن عُبّئ، وإلا أول صورة في نص المقال
+// (كانت كل المقالات تعلن الصورة الافتراضية للموقع). والأسئلة المكتوبة داخل النص تُعلن FAQPage دون تغيير ما يظهر.
+const articleImage = entry.data.image ?? (await firstBodyImage(entry.body, entry.filePath));
+const ogImage = articleImage
+  ? (await getImage({ src: articleImage, width: 1200, height: 630, fit: "cover", format: "jpg" })).src
+  : undefined;
+const schemaFaqs = entry.data.faqs.length ? entry.data.faqs : inlineFaqs(entry.body);
 const fmt = (d: Date) => d.toLocaleDateString("ar-KW", { year: "numeric", month: "long", day: "numeric" });
 ---
-<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} noindex={entry.data.noindex} schemaType="Article" faqs={entry.data.faqs.length ? entry.data.faqs : undefined} pubDate={entry.data.pubDate} updatedDate={entry.data.updatedDate} waTopic="general">
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} description={entry.data.description} noindex={entry.data.noindex} schemaType="Article" faqs={schemaFaqs.length ? schemaFaqs : undefined} ogImage={ogImage} pubDate={entry.data.pubDate} updatedDate={entry.data.updatedDate} waTopic="general">
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[

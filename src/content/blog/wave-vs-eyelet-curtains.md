@@ -7,7 +7,7 @@ order: 7
 pubDate: 2026-10-04
 updatedDate: 2026-10-04
 draft: false
-relatedPosts: ["double-track-with-sheer", "roll-vs-fabric-curtains"]
+relatedPosts: ["double-track-with-sheer", "roll-vs-fabric-curtains", "curtain-types-kuwait"]
 ---
 
 الويفي أنسب لمعظم صالات الكويت، خاصة مع السقف الجبس والنوافذ العريضة، لأنه يُركَّب على سكة يمكن إخفاؤها في الكورنيش ويعطي طيات متساوية على طول الجدار. أما الحلقات فتُعلَّق على عمود ظاهر فوق النافذة، وتناسب من يريد هذا المظهر ولديه مكان لتثبيت العمود. ونحن نفصّل النوعين.
