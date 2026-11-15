@@ -15,7 +15,8 @@
     "lint:keywords": "node scripts/keyword-check.mjs",
     "cms:keywords": "node scripts/cms-keywords.mjs",
     "lint": "npm run lint:seo && npm run lint:links",
-    "lint:images": "node scripts/image-weight-check.mjs"
+    "lint:images": "node scripts/image-weight-check.mjs",
+    "lint:prices": "node scripts/price-check.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

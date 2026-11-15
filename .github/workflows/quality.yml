@@ -33,6 +33,8 @@ jobs:
         run: node scripts/check-links.mjs --report-only
       - name: وزن الصور المنشورة (تنبيهات فقط)
         run: node scripts/image-weight-check.mjs --report-only
+      - name: اتساق الأسعار مع pricing.json (عربي وإنجليزي)
+        run: node scripts/price-check.mjs --report-only   # ينبّه ولا يمنع النشر
 
   lighthouse:
     # استشاري: لا يمنع الدمج (continue-on-error) حتى تُضبط العتبات على بيانات النشر الفعلية.
