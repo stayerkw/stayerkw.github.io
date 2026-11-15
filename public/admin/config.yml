@@ -167,6 +167,7 @@ collections:
           - { label: "ستائر رول جاهزة الكويت · بلا بيانات → /ready-roll-curtains/", value: "ستائر رول جاهزة الكويت" }
           - { label: "ستائر زيبرا الكويت · بلا بيانات → /curtains/zebra/", value: "ستائر زيبرا الكويت" }
           - { label: "ستائر شيفون الكويت · بلا بيانات → /curtains/sheer/", value: "ستائر شيفون الكويت" }
+          - { label: "ستائر شيفون وردي · بلا بيانات → /products/wave-shifon-wardi/", value: "ستائر شيفون وردي" }
           - { label: "ستائر صالات الكويت · بلا بيانات → /blog/diwaniya-majlis-curtains/", value: "ستائر صالات الكويت" }
           - { label: "ستائر صالة · بلا بيانات", value: "ستائر صالة" }
           - { label: "ستائر صباح السالم · بلا بيانات → /areas/mubarak-al-kabeer/", value: "ستائر صباح السالم" }
@@ -193,6 +194,7 @@ collections:
           - { label: "ستائر ويفي مع شيفون · بلا بيانات → /wave-curtains/", value: "ستائر ويفي مع شيفون" }
           - { label: "ستائر ويفي مع عازل · بلا بيانات → /products/wave-beige-turkish-lining-sheer-bedroom/", value: "ستائر ويفي مع عازل" }
           - { label: "ستارة · بلا بيانات → /", value: "ستارة" }
+          - { label: "ستارة شيفون وردي · بلا بيانات → /projects/wave-shifon-wardi-work/", value: "ستارة شيفون وردي" }
           - { label: "ستارة فاصل مدخل · بلا بيانات → /projects/wave-mudkhal-mauve-sabah-alsalem-work/", value: "ستارة فاصل مدخل" }
           - { label: "ستارة كتان وشيفون · بلا بيانات → /products/wave-kattan-bunni-sheer-kremi-tieback/", value: "ستارة كتان وشيفون" }
           - { label: "ستارة لينن شفاف لغرفة طعام · بلا بيانات → /projects/wave-linen-shafaf-dining-room-work/", value: "ستارة لينن شفاف لغرفة طعام" }
