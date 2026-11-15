@@ -6,7 +6,7 @@ order: 10
 pubDate: 2026-10-04
 updatedDate: 2026-10-04
 draft: false
-relatedPosts: ["blackout-sun-heat", "curtain-cleaning-care"]
+relatedPosts: ["blackout-sun-heat", "curtain-cleaning-care", "curtain-types-kuwait"]
 ---
 
 في جو الكويت، الأقمشة الصناعية مثل **البوليستر** أو المخلوطة به هي الأكثر عملية: تقاوم بهتان اللون من الشمس أكثر من القطن والكتان، ولا تنكمش بسهولة، وتنظيفها أسهل. والقطن والكتان جميلان، لكنهما يبهتان أسرع على النوافذ المشمسة إن لم تُحمَ ببطانة.

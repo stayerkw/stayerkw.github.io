@@ -27,6 +27,12 @@ const hasPublishedProjects = existsSync(projectsDir) && readdirSync(projectsDir)
     return !/^draft:\s*true\s*$/m.test(fm) && /^consent:\s*true\s*$/m.test(fm) && /^images:\s*\n\s*-/m.test(fm);
   });
 
+// TECH-03: صفحة /reviews/ تُنشر noindex ما دام لا توجد مراجعة مقبولة (نفس قاعدة الصفحة)، فتُستبعد من sitemap أيضاً
+const reviewsDir = fileURLToPath(new URL('./src/content/reviews/', import.meta.url));
+const hasApprovedReviews = existsSync(reviewsDir) && readdirSync(reviewsDir)
+  .filter((f) => f.endsWith('.md'))
+  .some((f) => /^approved:\s*true\s*$/m.test(frontmatter(reviewsDir + f)));
+
 // B5: lastmod حقيقي من تاريخ آخر commit للملف المصدر (لا تواريخ مختلقة). الصفحات التي لا نجد لها
 // مصدراً أو لا يوجد git (مثلاً داخل zip) تُترك بلا lastmod بدل تخمينه. يتطلب في CI: fetch-depth: 0.
 const contentDirs = { products: 'products', curtains: 'curtain-types', services: 'services', areas: 'areas', blog: 'blog', projects: 'projects' };
@@ -89,6 +95,35 @@ function firstContentImageEager() {
   };
 }
 
+// GEO-02: صور sitemap. بعد أن يكتب @astrojs/sitemap ملفاته، نضيف لكل رابط صورته الحقيقية (og:image
+// المولّدة من صورة المنتج/العمل/المقال) بوسم image:image. الصفحات التي تستخدم الصورة الافتراضية تُترك بلا صورة.
+function sitemapImages() {
+  return {
+    name: 'sitemap-images',
+    hooks: {
+      'astro:build:done': ({ dir, logger }) => {
+        const root = fileURLToPath(dir);
+        const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        let n = 0;
+        for (const name of readdirSync(root).filter((f) => /^sitemap-\d+\.xml$/.test(f))) {
+          let xml = readFileSync(root + name, 'utf8');
+          if (!xml.includes('xmlns:image=')) xml = xml.replace('<urlset ', '<urlset xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" ');
+          xml = xml.replace(/<url><loc>([^<]+)<\/loc>/g, (m, loc) => {
+            const file = root + decodeURIComponent(new URL(loc).pathname).replace(/^\//, '') + 'index.html';
+            if (!existsSync(file)) return m;
+            const og = readFileSync(file, 'utf8').match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+            if (!og || og.includes('/og/default')) return m;
+            n++;
+            return `${m}<image:image><image:loc>${esc(og.replace(/&amp;/g, '&'))}</image:loc></image:image>`;
+          });
+          writeFileSync(root + name, xml);
+        }
+        logger.info(`sitemap-images: ${n} صورة`);
+      },
+    },
+  };
+}
+
 // موقع GitHub Pages من نوع <username>.github.io يُنشر على الجذر مباشرة (بدون base path)
 export default defineConfig({
   site: 'https://alamcurtainskw.com',
@@ -102,6 +137,7 @@ export default defineConfig({
       filter: (page) => {
         const path = decodeURIComponent(new URL(page).pathname).replace(/\/$/, '');
         if (!hasPublishedProjects && path === '/projects') return false;
+        if (!hasApprovedReviews && path === '/reviews') return false;
         return !noindexPaths.includes(path);
       },
       serialize(item) {
@@ -110,6 +146,7 @@ export default defineConfig({
         return item;
       },
     }),
+    sitemapImages(),
   ],
   vite: {
     plugins: [tailwindcss()],

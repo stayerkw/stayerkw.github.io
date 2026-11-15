@@ -5,7 +5,7 @@ description: "متى تحتاج سكة مزدوجة مع شيفون؟ الحال
 order: 11
 pubDate: 2026-10-04
 draft: false
-relatedPosts: ["bedroom-curtains", "wave-vs-eyelet-curtains"]
+relatedPosts: ["bedroom-curtains", "wave-vs-eyelet-curtains", "curtain-types-kuwait"]
 ---
 
 تحتاج سكة مزدوجة عندما تريد أمرين من النافذة نفسها: **ضوء النهار مع الخصوصية** بالشيفون، و**العتمة أو الستر الكامل** بالطبقة القماشية. فكل طبقة على سكة مستقلة، تفتح إحداهما وتترك الأخرى كما تريد.

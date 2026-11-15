@@ -1,7 +1,7 @@
 ---
 import { publishableProject } from "../../lib/projects";
 import { getCollection, render } from "astro:content";
-import { Picture } from "astro:assets";
+import { Picture, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WhatsAppButton from "../../components/WhatsAppButton.astro";
@@ -31,8 +31,17 @@ const facts = [
   d.fabric ? ["القماش/النظام", d.fabric] : null,
   d.duration ? ["مدة التنفيذ", d.duration] : null,
 ].filter(Boolean) as string[][];
+
+// GEO-02: صورة المشاركة والبيانات المنظمة من صور العمل نفسها (كانت الصورة الافتراضية للموقع)
+const ogImage = d.images.length
+  ? (await getImage({ src: d.images[0].src, width: 1200, height: 630, fit: "cover", format: "jpg" })).src
+  : "/og/default.jpg";
+const gallery = await Promise.all(
+  d.images.map(async (img) => ({ url: (await getImage({ src: img.src, width: 1200, format: "jpg" })).src, caption: img.alt }))
+);
+const place = d.governorate ? `${d.area ? `${d.area}، ` : ""}${d.governorate}، الكويت` : undefined;
 ---
-<BaseLayout title={d.title} description={d.description} waTopic="project" waProduct={d.title} waArea={d.governorate} ogImage="/og/default.jpg">
+<BaseLayout title={d.title} description={d.description} waTopic="project" waProduct={d.title} waArea={d.governorate} ogImage={ogImage} gallery={gallery} contentLocation={place}>
   <article class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       items={[

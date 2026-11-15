@@ -6,7 +6,7 @@ seoTitle: "ستائر مودرن في الكويت — ويفي ورول وزي�
 description: "ستائر مودرن في الكويت بخطوط بسيطة وألوان هادئة: ويفي مع شيفون على سكة سقف، رول وزيبرا للنوافذ الحديثة. تفصيل حسب المقاس: رول من 8 د.ك للمتر المربع، وويفي من 12 د.ك للمتر الطولي."
 order: 7
 imageAlt: "ستائر ويفي بيج مع شيفون أبيض على سكة سقف بتصميم مودرن"
-relatedPosts: ["double-track-with-sheer", "wave-vs-eyelet-curtains", "bedroom-curtains"]
+relatedPosts: ["double-track-with-sheer", "wave-vs-eyelet-curtains", "bedroom-curtains", "curtain-types-kuwait"]
 faqs:
   - question: "ما أفضل نوع ستائر مودرن للصالة؟"
     answer: "الأكثر طلباً للصالات الحديثة ستائر الويفي مع شيفون على سكة مخفية في السقف: طيات موجية متساوية بلا حلقات ظاهرة، والشيفون يمرّر الضوء نهاراً. وسعرها 19 د.ك للمتر الطولي."

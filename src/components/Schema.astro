@@ -26,9 +26,13 @@ export interface Props {
   productName?: string;
   // مراجعات عملاء حقيقية مقبولة لهذا المنتج فقط (ظاهرة في الصفحة نفسها) — تُعلن النجوم في جوجل حسب سياسته
   reviews?: { name: string; rating: number; text: string; date: string }[];
+  // GEO-02: صور الصفحة الحقيقية (صفحات الأعمال): تُعلن كـ ImageObject بوصفها ومكان التنفيذ
+  gallery?: { url: string; caption: string }[];
+  // مكان التنفيذ (المحافظة/المنطقة) لصفحات الأعمال
+  contentLocation?: string;
 }
 
-const { lang = "ar", type = "WebSite", title, description, url, faqs, price, priceUnit = "m2", image, pubDate, updatedDate, areaServed, serviceType, itemList, productName, reviews = [] } = Astro.props;
+const { lang = "ar", type = "WebSite", title, description, url, faqs, price, priceUnit = "m2", image, pubDate, updatedDate, areaServed, serviceType, itemList, productName, reviews = [], gallery = [], contentLocation } = Astro.props;
 const pageUrl = url ?? Astro.url.href;
 const absoluteImage = image ? new URL(image, business.domain).href : undefined;
 const origin = business.domain.replace(/\/$/, "");
@@ -45,6 +49,9 @@ const graph: Record<string, unknown>[] = [
     name: business.name,
     alternateName: [business.alternateName, "Alam Curtains Kuwait"],
     url: `${origin}/`,
+    // GEO-04: وصف النشاط وصورته (من business.ts) ليتعرّف محرك البحث ومساعدات الذكاء الاصطناعي على الكيان
+    description: business.description,
+    image: `${origin}/og/default.jpg`,
     foundingDate: String(business.foundedYear),
     // اللوجو الرسمي (5 أكتوبر 2026) — نفسه في إنستغرام لتوحيد الهوية
     logo: { "@type": "ImageObject", url: `${origin}/logo.png`, width: 600, height: 600 },
@@ -94,6 +101,17 @@ if (!isHome) {
     isPartOf: { "@id": ids.website },
     about: { "@id": ids.business },
     ...(absoluteImage ? { primaryImageOfPage: { "@type": "ImageObject", url: absoluteImage } } : {}),
+    ...(gallery.length
+      ? {
+          image: gallery.map((g) => ({
+            "@type": "ImageObject",
+            contentUrl: new URL(g.url, business.domain).href,
+            caption: g.caption,
+            creator: { "@id": ids.business },
+            ...(contentLocation ? { contentLocation: { "@type": "Place", name: contentLocation, address: { "@type": "PostalAddress", addressCountry: business.country } } } : {}),
+          })),
+        }
+      : {}),
     ...(pageType === "FAQPage" ? { mainEntity: faqEntities } : {}),
   });
 }
