@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { Picture } from "astro:assets";
+import { Picture, getImage } from "astro:assets";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import WhatsAppButton from "../../../components/WhatsAppButton.astro";
 import { projectsEn } from "../../../data/projects-en";
@@ -11,8 +11,15 @@ export async function getStaticPaths() {
 }
 const { p, entry } = Astro.props;
 const images = entry.data.images ?? [];
+// GEO-02: صورة المشاركة والبيانات المنظمة من صور العمل نفسها (كما في الصفحة العربية)
+const ogImage = images.length
+  ? (await getImage({ src: images[0].src, width: 1200, height: 630, fit: "cover", format: "jpg" })).src
+  : "/og/default.jpg";
+const gallery = await Promise.all(
+  images.map(async (im, i) => ({ url: (await getImage({ src: im.src, width: 1200, format: "jpg" })).src, caption: i === 0 ? `${p.title} — ${p.location}` : `${p.title}, another view` }))
+);
 ---
-<BaseLayout title={p.title} description={p.description} schemaType="WebSite">
+<BaseLayout title={p.title} description={p.description} schemaType="WebSite" ogImage={ogImage} gallery={gallery} contentLocation={`${p.location}, Kuwait`}>
   <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
     <p class="text-sm text-charcoal/60"><a href="/en/" class="hover:text-olive">Home</a> / <a href="/en/projects/" class="hover:text-olive">Our work</a></p>
     <h1 class="mt-2 text-4xl font-bold text-charcoal leading-tight">{p.title}</h1>
