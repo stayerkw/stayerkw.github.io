@@ -63,6 +63,8 @@ const products = defineCollection({
       opacity: opt(z.enum(['شفاف', 'نصف معتم', 'بلاك اوت'])),
       colors: opt(z.array(z.string())),
       care: optStr(),
+      // النشر المجدول: تاريخ ظهور المنتج (بتوقيت الكويت). فارغ = منشور فوراً. انظر src/lib/live.ts
+      publishDate: opt(z.coerce.date()),
     }),
 });
 
@@ -130,6 +132,8 @@ const projects = defineCollection({
       consentNote: optStr(),
       order: z.number().default(0),
       draft: z.boolean().default(false),
+      // النشر المجدول: تاريخ ظهور العمل (بتوقيت الكويت). فارغ = منشور فوراً. انظر src/lib/live.ts
+      publishDate: opt(z.coerce.date()),
     }),
 });
 

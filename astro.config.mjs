@@ -46,6 +46,15 @@ const gitDate = (...files) => {
     return undefined;
   }
 };
+// النشر المجدول: الملف يُرفع قبل موعده بأيام، فتاريخ آخر commit أقدم من ظهور الصفحة. lastmod = الأحدث
+// بين تاريخ الـcommit وتاريخ النشر publishDate (إن وُجد في frontmatter) — حتى يعكس sitemap يوم ظهورها الفعلي.
+const withPublishDate = (git, file) => {
+  if (!existsSync(file)) return git;
+  const m = /^publishDate:\s*["']?(\d{4}-\d{2}-\d{2})/m.exec(readFileSync(file, 'utf8').split(/^---\s*$/m)[1] ?? '');
+  if (!m) return git;
+  const pub = `${m[1]}T06:00:00+03:00`;
+  return !git || new Date(pub) > new Date(git) ? pub : git;
+};
 const lastmodFor = (pathname) => {
   const parts = pathname.split('/').filter(Boolean);
   if (parts.length === 0) return gitDate('src/pages/index.astro');
@@ -53,7 +62,7 @@ const lastmodFor = (pathname) => {
   if (parts[0] === 'en' && parts[1] === 'projects' && parts.length === 3)
     return gitDate(`src/content/projects/${parts[2]}.md`, 'src/data/projects-en.ts', 'src/pages/en/projects/[slug].astro');
   const dir = contentDirs[parts[0]];
-  if (dir && parts.length === 2) return gitDate(`src/content/${dir}/${parts[1]}.md`);
+  if (dir && parts.length === 2) return withPublishDate(gitDate(`src/content/${dir}/${parts[1]}.md`), `src/content/${dir}/${parts[1]}.md`);
   if (dir && parts.length === 1) return gitDate(`src/content/${dir}`, `src/pages/${parts[0]}/index.astro`);
   return gitDate(`src/pages/${parts.join('/')}/index.astro`, `src/pages/${parts.join('/')}.astro`, `src/pages/${parts.join('/')}/[slug].astro`);
 };

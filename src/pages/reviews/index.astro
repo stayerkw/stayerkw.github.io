@@ -1,4 +1,5 @@
 ---
+import { liveProduct } from "../../lib/live";
 // آراء العملاء: المراجعات المنشورة + نموذج بسيط (نجوم، اسم، ملاحظة) تُنشر تلقائياً بلا موافقة مسبقة.
 // المالك يخفي أو يحذف أي مراجعة من لوحة التحكم (قسم «مراجعات العملاء»). لا تُضاف مراجعة بلا عميل حقيقي.
 import { getCollection } from "astro:content";
@@ -11,7 +12,7 @@ import ReviewForm from "../../components/ReviewForm.astro";
 
 const reviews = await approvedReviews();
 const summary = ratingSummary(reviews);
-const products = (await getCollection("products", ({ data }) => !data.draft && !data.noindex)).sort((a, b) => a.data.title.localeCompare(b.data.title, "ar"));
+const products = (await getCollection("products", (e) => liveProduct(e) && !e.data.noindex)).sort((a, b) => a.data.title.localeCompare(b.data.title, "ar"));
 const titleOf = new Map(products.map((p) => [p.id, p.data.title]));
 ---
 <BaseLayout
