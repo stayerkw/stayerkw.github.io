@@ -10,3 +10,6 @@ export const isDue = (publishDate?: Date | string) => !publishDate || dayOf(publ
 
 // المرشّح الموحّد للمنتجات: غير مسودة + حان تاريخ نشرها
 export const liveProduct = ({ data }: { data: { draft?: boolean; publishDate?: Date } }) => !data.draft && isDue(data.publishDate);
+
+// المقالات: تظهر صباح يوم pubDate بتوقيت الكويت (المقال المجدول يُكتب مسبقاً بتاريخ قادم)
+export const livePost = ({ data }: { data: { draft?: boolean; pubDate?: Date } }) => !data.draft && isDue(data.pubDate);

@@ -1,3 +1,4 @@
+import { livePost } from "../lib/live";
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { business } from "../data/business";
@@ -12,7 +13,7 @@ export const GET: APIRoute = async ({ site }) => {
   const u = (path: string) => `${origin}${path}`;
   const phone = business.phone.replace("+965", "");
   const types = (await getCollection("curtainTypes", ({ data }) => !data.draft && !data.noindex)).sort((a, b) => a.data.order - b.data.order);
-  const posts = (await getCollection("blog", ({ data }) => !data.draft && !data.noindex)).sort((a, b) => a.data.order - b.data.order);
+  const posts = (await getCollection("blog", (e) => livePost(e) && !e.data.noindex)).sort((a, b) => a.data.order - b.data.order);
   const governorates = kuwaitAreas.map((g) => g.governorate.replace("محافظة ", "")).join("، ");
 
   const body = `# ${business.name} (Alam Curtains Kuwait)

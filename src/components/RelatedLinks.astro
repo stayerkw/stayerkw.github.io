@@ -1,5 +1,5 @@
 ---
-import { liveProduct } from "../lib/live";
+import { liveProduct, livePost } from "../lib/live";
 // روابط داخلية يختارها المالك من اللوحة (حقلا «منتجات ذات صلة» و«مقالات ذات صلة»).
 // تُتجاهل المعرّفات غير الموجودة أو المسودات بصمت كي لا يُنشر رابط مكسور.
 import { getCollection } from "astro:content";
@@ -16,7 +16,7 @@ const pick = <T extends { id: string }>(all: T[], ids: string[]) =>
   ids.filter((id, i) => ids.indexOf(id) === i && !exclude.includes(id)).map((id) => all.find((e) => e.id === id)).filter((e): e is T => Boolean(e));
 
 const products = productIds.length ? pick(await getCollection("products", liveProduct), productIds) : [];
-const posts = postIds.length ? pick(await getCollection("blog", ({ data }) => !data.draft), postIds) : [];
+const posts = postIds.length ? pick(await getCollection("blog", livePost), postIds) : [];
 ---
 {products.length > 0 && (
   <section class="mt-14" aria-labelledby="related-products">
