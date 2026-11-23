@@ -268,6 +268,7 @@ collections:
       - {label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "مثل roll-ready-grey. لا تغيّره بعد النشر."}
       - {label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int", hint: "الأصغر يظهر أولاً.", required: false}
       - {label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false, required: false}
+      - {label: "📅 تاريخ النشر (فارغ = فوراً، تاريخ قادم = يظهر تلقائياً صباح ذلك اليوم)", name: "publishDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", picker_utc: true, required: false}
 
   - name: "reviews"
     label: "مراجعات العملاء"
@@ -347,6 +348,7 @@ collections:
       - {label: "⚙️ رابط الصفحة (إنجليزي)", name: "urlSlug", widget: "string", pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "أحرف إنجليزية صغيرة وأرقام وشرطات فقط"], hint: "مثل jahra-wave-living. لا تغيّره بعد النشر."}
       - {label: "⚙️ الترتيب", name: "order", widget: "number", default: 1, value_type: "int", required: false}
       - {label: "⚙️ مسودة (مخفي عن الموقع)", name: "draft", widget: "boolean", default: false, required: false}
+      - {label: "📅 تاريخ النشر (فارغ = فوراً، تاريخ قادم = يظهر تلقائياً صباح ذلك اليوم)", name: "publishDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", picker_utc: true, required: false}
 
   - name: "blog"
     label: "المقالات"

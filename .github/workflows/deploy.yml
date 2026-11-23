@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # النشر المجدول: بناء يومي 6:00 صباحاً بتوقيت الكويت (03:00 UTC) لإظهار المنتجات والأعمال التي حان
+  # publishDate لها (src/lib/live.ts). البناء بلا تغيير لا يضر: IndexNow يرسل الصفحات المتغيرة فقط.
+  schedule:
+    - cron: "7 3 * * *"
 
 permissions:
   contents: read
@@ -93,3 +97,17 @@ jobs:
           mkdir -p .indexnow
           printf '%s\n' "$URLS" > .indexnow/urls.txt
           node scripts/indexnow.mjs submit
+
+  # GitHub يوقف الجداول تلقائياً بعد 60 يوماً بلا commits في المستودعات العامة، وغياب المالك قد يتجاوزها.
+  # إعادة تفعيل هذا الـworkflow عبر الـAPI مع كل تشغيل مجدول تُبقي النشر اليومي يعمل (بلا commits وهمية).
+  keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      actions: write
+    steps:
+      - name: إبقاء الجدول اليومي فعّالاً
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/deploy.yml/enable"
