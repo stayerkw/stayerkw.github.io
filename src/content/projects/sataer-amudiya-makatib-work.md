@@ -1,0 +1,41 @@
+---
+urlSlug: "sataer-amudiya-makatib-work"
+title: "ستائر عمودية شريطية لمكاتب وشركات"
+description: "ستائر مكاتب شركات عمودية شريطية (فيرتكال) ركّبناها في الكويت: واجهات زجاجية ونوافذ عريضة وطويلة بالرمادي والبيج والأبيض. 12 د.ك للمتر المربع."
+focusKeyword: "ستائر مكاتب شركات"
+curtainType: "vertical"
+room: "office"
+fabric: "قماش شرائح طولية بملمس كتان — رمادي وبيج وكريمي وأبيض"
+solution: "ستائر عمودية على سكك علوية بعرض النوافذ والواجهات الزجاجية، تدور شرائحها لضبط الضوء على الشاشات وتنسحب جانبًا عند الحاجة."
+tip: "في المكاتب ذات الواجهات الزجاجية، الستارة العمودية من السقف إلى الأرض تغطي الزجاج كاملًا وتبقى سهلة الفتح لكل نافذة على حدة."
+images:
+  - src: "./images/sataer-amudiya-makatib-work-1.webp"
+    alt: "ستائر عمودية شريطية رمادية تغطي جدار مكتب زجاجي من السقف إلى الأرض بجانب نبتة"
+    label: "gallery"
+  - src: "./images/sataer-amudiya-makatib-work-2.webp"
+    alt: "ستائر عمودية رمادية مفتوحة الشرائح في مكتب مطل على الشارع"
+    label: "gallery"
+  - src: "./images/sataer-amudiya-makatib-work-3.webp"
+    alt: "ستائر شريطية رمادي فاتح خلف مكتب مدير مع رفوف ملفات"
+    label: "gallery"
+  - src: "./images/sataer-amudiya-makatib-work-4.webp"
+    alt: "ستائر عمودية بيج على نافذتين في مكتب بأرضية رخام وسقف مستعار"
+    label: "gallery"
+  - src: "./images/sataer-amudiya-makatib-work-5.webp"
+    alt: "ستارة عمودية كريمية في ممر انتظار مكتب مع كرسيين"
+    label: "gallery"
+  - src: "./images/sataer-amudiya-makatib-work-6.webp"
+    alt: "ستارة عمودية بيضاء على نافذة طويلة ضيقة في مكتب"
+    label: "gallery"
+  - src: "./images/sataer-amudiya-makatib-work-7.webp"
+    alt: "ستائر عمودية رمادي فاتح بعرض جدار استقبال شركة خلف كنب الانتظار"
+    label: "gallery"
+  - src: "./images/sataer-amudiya-makatib-work-8.webp"
+    alt: "ستارة عمودية بيج مركّبة على جدار غرفة مكتب"
+    label: "gallery"
+consent: true
+consentNote: "طلب المالك نشرها ضمن المنتجات وآخر الأعمال (23 نوفمبر 2026)"
+order: 0
+---
+
+السعر والألوان في صفحة المنتج: [كتالوج ستائر عمودية شريطية (فيرتكال) بألوان متعددة](/products/sataer-amudiya-sharitiya-katalog/).
