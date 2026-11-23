@@ -1,0 +1,36 @@
+---
+// مقالات إنجليزية مجدولة (2026-11-23): تُكتب في src/data/en-posts.json وتظهر صباح pubDate بتوقيت الكويت فقط.
+// المقالات الإنجليزية الأقدم صفحات ثابتة مستقلة في هذا المجلد ولا تتأثر.
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import WhatsAppButton from "../../../components/WhatsAppButton.astro";
+import { Picture } from "astro:assets";
+import { isDue } from "../../../lib/live";
+import posts from "../../../data/en-posts.json";
+
+const images = import.meta.glob<{ default: ImageMetadata }>("/src/content/*/images/*.{jpg,jpeg,png,webp}", { eager: true });
+
+export function getStaticPaths() {
+  return posts.filter((p) => isDue(p.pubDate)).map((p) => ({ params: { slug: p.slug }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const img = images[post.image]?.default;
+---
+<BaseLayout title={post.title} description={post.description} schemaType="Article" faqs={post.faqs} pubDate={new Date(post.pubDate)}>
+  <article class="mx-auto max-w-3xl px-4 py-10" lang="en" dir="ltr">
+    <h1 class="text-4xl font-bold text-charcoal leading-tight">{post.title}</h1>
+    {img && <Picture src={img} alt={post.imageAlt} formats={["avif"]} fallbackFormat="webp" widths={[400, 640, 900]} sizes="(min-width: 800px) 736px, 92vw" quality={60} loading="eager" class="my-6 w-full rounded-2xl" />}
+    <div class="en-post" set:html={post.body} />
+    <h2 class="mt-10 text-2xl font-bold text-charcoal">FAQ</h2>
+    <div class="mt-4 space-y-4">
+      {post.faqs.map((f) => (<div><p class="font-semibold text-charcoal">{f.question}</p><p class="mt-1 text-charcoal/80 leading-7">{f.answer}</p></div>))}
+    </div>
+    <div class="mt-10"><WhatsAppButton label="Get a quote on WhatsApp" /></div>
+  </article>
+</BaseLayout>
+<style>
+  .en-post :global(h2) { margin-top: 2.5rem; font-size: 1.5rem; line-height: 2rem; font-weight: 700; color: var(--color-charcoal, #2b2b2b); }
+  .en-post :global(p) { margin-top: 1rem; line-height: 2rem; opacity: .9; }
+  .en-post :global(ul) { margin-top: 1rem; list-style: disc; padding-inline-start: 1.5rem; line-height: 1.75rem; }
+  .en-post :global(li) { margin-top: .5rem; }
+  .en-post :global(a) { text-decoration: underline; color: var(--color-olive, #6b7046); }
+</style>

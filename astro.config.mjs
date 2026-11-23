@@ -48,11 +48,15 @@ const gitDate = (...files) => {
 };
 // النشر المجدول: الملف يُرفع قبل موعده بأيام، فتاريخ آخر commit أقدم من ظهور الصفحة. lastmod = الأحدث
 // بين تاريخ الـcommit وتاريخ النشر publishDate (إن وُجد في frontmatter) — حتى يعكس sitemap يوم ظهورها الفعلي.
-const withPublishDate = (git, file) => {
-  if (!existsSync(file)) return git;
-  const m = /^publishDate:\s*["']?(\d{4}-\d{2}-\d{2})/m.exec(readFileSync(file, 'utf8').split(/^---\s*$/m)[1] ?? '');
-  if (!m) return git;
-  const pub = `${m[1]}T06:00:00+03:00`;
+const enPosts = JSON.parse(readFileSync(fileURLToPath(new URL('./src/data/en-posts.json', import.meta.url)), 'utf8'));
+const withPublishDate = (git, file, day) => {
+  if (!day) {
+    if (!file || !existsSync(file)) return git;
+    const m = /^(?:publishDate|pubDate):\s*["']?(\d{4}-\d{2}-\d{2})/m.exec(readFileSync(file, 'utf8').split(/^---\s*$/m)[1] ?? '');
+    if (!m) return git;
+    day = m[1];
+  }
+  const pub = `${day}T06:00:00+03:00`;
   return !git || new Date(pub) > new Date(git) ? pub : git;
 };
 const lastmodFor = (pathname) => {
@@ -61,6 +65,11 @@ const lastmodFor = (pathname) => {
   // TECH-01: صفحات المشاريع الإنجليزية تُبنى من ملف المشروع العربي نفسه + نصوص projects-en.ts
   if (parts[0] === 'en' && parts[1] === 'projects' && parts.length === 3)
     return gitDate(`src/content/projects/${parts[2]}.md`, 'src/data/projects-en.ts', 'src/pages/en/projects/[slug].astro');
+  // المقالات الإنجليزية المجدولة (src/data/en-posts.json): lastmod = يوم نشرها
+  if (parts[0] === 'en' && parts[1] === 'blog' && parts.length === 3) {
+    const sched = enPosts.find((p) => p.slug === parts[2]);
+    if (sched) return withPublishDate(gitDate('src/data/en-posts.json'), null, sched.pubDate);
+  }
   const dir = contentDirs[parts[0]];
   if (dir && parts.length === 2) return withPublishDate(gitDate(`src/content/${dir}/${parts[1]}.md`), `src/content/${dir}/${parts[1]}.md`);
   if (dir && parts.length === 1) return gitDate(`src/content/${dir}`, `src/pages/${parts[0]}/index.astro`);
